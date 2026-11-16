@@ -1,0 +1,346 @@
+/* ===================================================================
+   CICR Autonomous AI Assistant Widget Styles
+   =================================================================== */
+
+.cicr-bot-wrapper {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
+  font-family: var(--font-body, -apple-system, sans-serif);
+}
+
+/* Floating Launcher Button */
+.cicr-bot-launcher {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00f0ff 0%, #6366f1 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #07090e;
+  box-shadow: 0 8px 30px rgba(0, 240, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.cicr-bot-launcher:hover {
+  transform: scale(1.08) rotate(5deg);
+  box-shadow: 0 12px 35px rgba(0, 240, 255, 0.6);
+}
+
+.launcher-icon-chat,
+.launcher-icon-close {
+  font-size: 1.4rem;
+  transition: all 0.25s ease;
+  position: absolute;
+}
+
+.launcher-icon-close {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+
+.cicr-bot-wrapper.open .launcher-icon-chat {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+
+.cicr-bot-wrapper.open .launcher-icon-close {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+/* Launcher Ping Ripple */
+.launcher-ping {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
+  background-color: #10b981;
+  border: 2px solid #07090e;
+  border-radius: 50%;
+}
+
+/* Chat Window Container */
+.cicr-bot-window {
+  position: absolute;
+  bottom: 75px;
+  right: 0;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  height: 550px;
+  max-height: calc(100vh - 120px);
+  background: rgba(11, 15, 25, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 240, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: bottom right;
+}
+
+.cicr-bot-wrapper.open .cicr-bot-window {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+/* Header */
+.bot-window-header {
+  padding: 16px 20px;
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bot-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bot-avatar-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00f0ff;
+  font-size: 1.2rem;
+  position: relative;
+}
+
+.bot-online-dot {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background-color: #10b981;
+  border: 2px solid #07090e;
+  border-radius: 50%;
+}
+
+.bot-header-info h4 {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.98rem;
+  color: #ffffff;
+  font-weight: 700;
+  margin: 0;
+}
+
+.bot-header-info span {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  color: #00f0ff;
+}
+
+.bot-header-actions button {
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.bot-header-actions button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Quick Question Pills */
+.bot-quick-chips {
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.bot-quick-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-chip {
+  padding: 5px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body, sans-serif);
+}
+
+.quick-chip:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: rgba(0, 240, 255, 0.35);
+  color: #00f0ff;
+}
+
+/* Messages Area */
+.bot-messages-container {
+  flex: 1;
+  padding: 18px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.chat-bubble {
+  max-width: 82%;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  border-radius: 16px;
+  animation: fadeInBubble 0.25s ease-out;
+}
+
+@keyframes fadeInBubble {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bot-bubble {
+  align-self: flex-start;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+  border-bottom-left-radius: 4px;
+}
+
+.bot-bubble strong {
+  color: #00f0ff;
+}
+
+.bot-bubble a {
+  color: #00f0ff;
+  text-decoration: underline;
+}
+
+.user-bubble {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
+}
+
+/* Typing Indicator */
+.bot-typing-indicator {
+  display: none;
+  align-self: flex-start;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px 16px;
+  border-radius: 16px;
+  border-bottom-left-radius: 4px;
+  gap: 5px;
+  align-items: center;
+}
+
+.bot-typing-indicator.active {
+  display: flex;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background: #00f0ff;
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1.1); opacity: 1; }
+}
+
+/* Input Bar */
+.bot-input-area {
+  padding: 14px 18px;
+  background: rgba(15, 23, 42, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bot-input-field {
+  flex: 1;
+  background: rgba(10, 14, 24, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.bot-input-field:focus {
+  border-color: #00f0ff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.bot-send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #00f0ff;
+  color: #07090e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.bot-send-btn:hover {
+  background: #38bdf8;
+  transform: scale(1.05);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  .cicr-bot-wrapper {
+    bottom: 20px;
+    right: 20px;
+  }
+  .cicr-bot-window {
+    width: calc(100vw - 30px);
+    right: -5px;
+    height: 80vh;
+    bottom: 70px;
+  }
+}
+

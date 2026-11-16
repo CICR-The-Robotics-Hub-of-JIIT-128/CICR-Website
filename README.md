@@ -1,264 +1,136 @@
-# CICR - The Robotics Hub of JIIT-128
+# CICR - Centre for Innovation in Computational Robotics
+### The Official Robotics & Autonomous Systems Hub of JIIT-128 (React Edition)
 
-A modern, responsive website for the Centre for Innovation in Computational Robotics (CICR) at JIIT-128, featuring an interactive design with AI-powered chatbot integration.
+![CICR Logo](public/cicr-logo.png)
 
-## 🚀 Features
-
-### Core Features
-- **Responsive Design**: Fully responsive layout optimized for desktop, tablet, and mobile devices
-- **Interactive Particle System**: Dynamic particle animations using Particles.js
-- **Glitch Text Effects**: Cyberpunk-style animated text effects
-- **Loading Animation**: Smooth loading screen with progress indicator
-- **AI Chatbot**: Integrated AI-powered assistant for user interaction
-- **Mobile-First Design**: Optimized for mobile devices with touch-friendly interfaces
-
-### Sections
-- **Hero Section**: Eye-catching landing area with animated particles
-- **About Section**: Information about CICR with animated statistics
-- **Features Section**: Showcase of club capabilities and facilities
-- **Events Section**: Upcoming robotics events and workshops
-- **Past Events Section**: Archive of completed events
-- **Contact Section**: Multiple contact methods and social links
-
-### Advanced Features
-- **Smooth Scrolling**: Enhanced navigation experience
-- **Intersection Observer**: Scroll-triggered animations for statistics
-- **Mobile Menu**: Hamburger menu for mobile navigation
-- **Floating Action Button**: Quick access to events registration
-- **Social Media Integration**: Links to GitHub, LinkedIn, and Instagram
-
-## 🛠️ Technologies Used
-
-### Frontend
-- **HTML5**: Semantic markup structure
-- **CSS3**: Advanced styling with custom properties and animations
-- **Vanilla JavaScript**: Interactive functionality and animations
-- **Particles.js**: Particle system for visual effects
-
-### External Libraries
-- **Font Awesome 6.0.0**: Icon library for UI elements
-- **Google Fonts**: Custom typography (Orbitron, Roboto)
-- **Particles.js 2.0.0**: Particle animation system
-
-### Design System
-- **CSS Custom Properties**: Consistent color scheme and theming
-- **Flexbox & Grid**: Modern layout techniques
-- **CSS Animations**: Smooth transitions and hover effects
-- **Responsive Design**: Mobile-first approach with breakpoints
-
-## 📁 Project Structure
-
-```
-CICR-Website/
-├── index.html              # Main HTML file
-├── chatbot.css            # Chatbot styling
-├── chatbot.js             # Chatbot functionality
-├── cicr-logo.png          # CICR logo image
-└── README.md              # Project documentation
-```
-
-## 🎨 Design Elements
-
-### Color Scheme
-```css
-:root {
-    --primary-color: #0ff;        /* Cyan */
-    --secondary-color: #ff00ff;   /* Magenta */
-    --accent-color: #7928ca;      /* Purple */
-    --bg-color: #0a0a0a;          /* Dark background */
-    --bg-secondary: #111;         /* Secondary background */
-    --text-color: #fff;           /* White text */
-    --text-secondary: #b3b3b3;    /* Gray text */
-}
-```
-
-### Typography
-- **Primary Font**: Orbitron (headings, titles)
-- **Secondary Font**: Roboto (body text)
-- **Font Loading**: Optimized with display=swap
-
-### Animations
-- **Glitch Effect**: Cyberpunk-style text animation
-- **Particle System**: Interactive background particles
-- **Loading Animation**: Progress bar with shine effect
-- **Hover Effects**: Smooth transitions on interactive elements
-
-## 📱 Mobile Optimization
-
-### Responsive Breakpoints
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: > 1024px
-
-### Mobile Features
-- **Touch-Friendly**: 44px minimum touch targets
-- **Collapsible Navigation**: Hamburger menu for mobile
-- **Optimized Performance**: Reduced particles for mobile devices
-- **Full-Screen Chatbot**: Mobile-optimized chatbot interface
-
-## 🤖 Chatbot Integration
-
-### Files
-- `chatbot.css`: Chatbot styling and responsive design
-- `chatbot.js`: Chatbot functionality and API integration
-
-### Features
-- **Responsive Design**: Adapts to different screen sizes
-- **Real-time Messaging**: Instant responses
-- **Mobile Optimization**: Full-screen experience on mobile
-- **Persistent Chat**: Maintains conversation state
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Internet connection (for external libraries)
-
-### Installation
-1. Clone the repository:
-```bash
-git clone https://github.com/CICR-The-Robotics-Hub-of-JIIT-128/CICR-Website.git
-```
-
-2. Navigate to the project directory:
-```bash
-cd CICR-Website
-```
-
-3. Open `index.html` in your web browser or serve it using a local server:
-```bash
-# Using Python 3
-python -m http.server 8000
-
-# Using Node.js (http-server)
-npx http-server
-
-# Using PHP
-php -S localhost:8000
-```
-
-### Deployment
-The website is optimized for deployment on:
-- **Vercel**: Recommended for static hosting
-- **Netlify**: Alternative static hosting platform
-- **GitHub Pages**: Free hosting for GitHub repositories
-
-## 📊 Performance Optimizations
-
-### Loading Performance
-- **Lazy Loading**: Images and resources loaded on demand
-- **Minified CSS**: Optimized stylesheet delivery
-- **Efficient Animations**: Hardware-accelerated CSS animations
-- **Optimized Images**: Compressed logo and assets
-
-### Mobile Performance
-- **Reduced Particles**: Fewer particles on mobile devices
-- **Touch Optimization**: Optimized touch interactions
-- **Viewport Optimization**: Proper viewport meta tag
-- **Font Loading**: Optimized font loading strategy
-
-## 🔧 Customization
-
-### Changing Colors
-Update the CSS custom properties in the `:root` selector:
-```css
-:root {
-    --primary-color: #your-color;
-    --secondary-color: #your-color;
-    /* ... other colors */
-}
-```
-
-### Updating Content
-- **Events**: Modify the events section in `index.html`
-- **About Information**: Update the about cards and statistics
-- **Contact Details**: Change contact information and social links
-
-### Particle Configuration
-Modify the particle system in the JavaScript section:
-```javascript
-particlesJS('particles-js', {
-    particles: {
-        number: {
-            value: 80, // Adjust particle count
-            // ... other settings
-        }
-    }
-});
-```
-
-## 📈 Analytics & Monitoring
-
-### Recommended Tools
-- **Google Analytics**: User behavior tracking
-- **Google Search Console**: SEO monitoring
-- **PageSpeed Insights**: Performance monitoring
-- **Lighthouse**: Web vitals assessment
-
-## 🐛 Browser Support
-
-### Supported Browsers
-- **Chrome**: 70+
-- **Firefox**: 65+
-- **Safari**: 12+
-- **Edge**: 79+
-
-### Fallbacks
-- **CSS Grid**: Flexbox fallback for older browsers
-- **Custom Properties**: Fallback values provided
-- **Modern Features**: Progressive enhancement approach
-
-## 🔐 Security Considerations
-
-### Content Security Policy
-Consider implementing CSP headers:
-```html
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
-```
-
-### External Resources
-- All external libraries loaded from trusted CDNs
-- HTTPS-only resource loading
-- Subresource integrity for critical resources
-
-## 📝 Contributing
-
-### Development Setup
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test across different devices
-5. Submit a pull request
-
-### Code Standards
-- **HTML**: Semantic markup, proper indentation
-- **CSS**: Consistent naming conventions, organized structure
-- **JavaScript**: ES6+ features, proper error handling
-- **Comments**: Clear documentation for complex logic
-
-## 📞 Support & Contact
-
-### Technical Support
-- **Email**: contact@cicr.in
-- **WhatsApp**: [Join Community](https://chat.whatsapp.com/GZNiuEOZYYPGOUZQUV1JVa)
-- **GitHub**: [Issues](https://github.com/CICR-The-Robotics-Hub-of-JIIT-128/CICR-Website/issues)
-
-### Social Media
-- **LinkedIn**: [CICR JIIT-128](https://www.linkedin.com/company/cicrjiit128/)
-- **Instagram**: [@cicr_jiit](https://www.instagram.com/cicr_jiit/)
-- **GitHub**: [CICR Organization](https://github.com/CICR-The-Robotics-Hub-of-JIIT-128)
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- **JIIT-128**: For providing the platform and support
-- **Particles.js**: For the amazing particle system
-- **Font Awesome**: For the comprehensive icon library
-- **Google Fonts**: For the typography resources
+A cutting-edge, high-performance official web application for **CICR (Creative & Innovative Cell in Robotics)** at Jaypee Institute of Information Technology (JIIT Sector 128, Noida), engineered entirely with modern **React**, **Three.js**, **Vite**, and **Lucide Icons**.
 
 ---
 
-**Built with ❤️ by CICR
+## 📁 Repository Structure
+
+```
+CICR-Website/
+├── 📁 current-code/       # Standalone folder containing the modern React 2.0 website
+│   ├── 📁 src/           # Components, Pages, Data, Styles
+│   ├── 📁 public/        # Videos (memories, footer, preloader), Images, Gallery
+│   ├── 📁 assets/        # Visual assets & logos
+│   ├── package.json      # React project dependencies & scripts
+│   ├── vite.config.js    # Vite build & server configuration
+│   └── index.html        # Entry HTML
+│
+├── 📁 previous-code/      # Archive of the previous legacy website
+│   ├── 📁 chatbot_backend/ # Python chatbot backend
+│   ├── index.html        # Legacy static HTML site
+│   ├── chatbot.js        # Legacy chatbot scripts
+│   ├── chatbot.css       # Legacy chatbot styles
+│   └── styles.css        # Legacy CSS styles
+│
+└── 📁 (root)              # Active workspace, root Vite dev server & Vercel deployment
+```
+
+---
+
+## 🚀 Key Pages & Architecture
+
+### 1. 🪐 Landing Page with 3D Cybernetic Core
+- **Interactive Three.js 3D Visualizer**: Real-time rendering of an autonomous robotic gimbal/gyroscope core, glowing icosahedron compute engine, orbiting sensor satellites, ambient particle starfield, and pointer tracking.
+- **Bold Cyberpunk Typography & HUD**: Electric Cyan & Laser Indigo gradients, dynamic telemetry status ticker (`ROS2 HUMBLE CORE LOADED // ROOM 140 JIIT-128`).
+- **Live Metrics Ticker**: Real-time statistics counters for active engineers, engineered bot prototypes, national podiums, and mentored students.
+- **The 4 Engineering Wings**: Autonomous Navigation & ROS, Embedded Systems & Custom PCB Design, Computer Vision & Edge AI, and Combat & Sports Robotics.
+- **Bot Fleet Showcase with Live Category Filters**: *Robo-Soccer Striker V2*, *Algo-Benchmaker*, *Autonomous LiDAR SLAM Rover*, *Circuit Rush Speedster*, *Tactical Quadcopters*, and *IoT Diagnostics*.
+- **Dedicated Inventory Site Spotlight**: High-impact feature section promoting the component lending system.
+- **Recruitment Roadmap 2026-27**: Step-by-step 4-stage onboarding guide for new recruits.
+- **Interactive FAQ & Direct Transmission**: Fast accordion Q&A and instant message form.
+
+### 2. 👥 Dedicated Team Page
+- Complete roster with category filters: **All Members**, **Faculty & Mentors**, **Core Leadership**, **Technical Wing Leads**, and **Alumni Network**.
+- Member cards with domain badges, departments, role descriptions, bios, and direct links to **LinkedIn**, **GitHub**, and **Email**.
+- "Join the Team" recruitment callout banner.
+
+### 3. 📅 Dedicated Events & Workshops Page
+- Complete event catalog with category filters: **All Events**, **Upcoming Bootcamps**, **Arena Tournaments**, and **National Expeditions**.
+- **TechTonic 3.0 Deep Dive**: Detailed 3-day curriculum breakdown (Microcontrollers & Sensors &rarr; Chassis Assembly & Soldering &rarr; ROS Nodes & Arena Championship).
+- Tournament archives for **Robo Soccer Arena Championship** and **Circuit Rush Obstacle Sprint**.
+- National expeditions recap for **Techfest (IIT Bombay)** and **Plinth (LNMIIT)**.
+
+### 4. 📦 Inventory Site Button
+- Prominent button featured in the fixed glassmorphic navigation header, hero section, and dedicated portal spotlight.
+- Seamlessly redirects users to the live deployed external portal: **[`https://inventory.cicr.in`](https://inventory.cicr.in)**.
+
+### 5. 🤖 Autonomous AI Assistant
+- Integrated React glassmorphic modal assistant with instant client-side responses powered by CICR's knowledge base.
+- Quick prompt chips for *Recruitment 2026*, *TechTonic Bootcamp*, *Inventory Portal*, *Room 140 Lab*, and *Bot Fleet*.
+
+---
+
+## 🛠️ Modern Tech Stack
+
+- **Framework**: [React 18](https://react.dev/)
+- **Bundler & Dev Server**: [Vite 6](https://vitejs.dev/)
+- **3D Graphics**: [Three.js](https://threejs.org/) (Custom WebGL holographic core & particle nebula)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Styling**: Modern CSS3 Custom Properties, Glassmorphism, CSS Grid & Flexbox
+- **Typography**: Google Fonts (`Orbitron`, `Syne`, `Inter`, `JetBrains Mono`)
+- **Deployment**: Vercel ready (`dist/` build output + `vercel.json` SPA rewrites)
+
+---
+
+## 📁 Repository Structure
+
+```
+CICR-Website/
+├── public/
+│   └── cicr-logo.png          # Official high-resolution CICR logo
+├── src/
+│   ├── components/
+│   │   ├── Canvas3D.jsx       # Three.js 3D Interactive Cyber-Robotics Core
+│   │   ├── Navbar.jsx         # Fixed glassmorphic navbar with Inventory Site button
+│   │   ├── Footer.jsx         # Cyber dark footer with links & Room 140 location
+│   │   └── AIChatModal.jsx    # Autonomous AI Assistant modal widget
+│   ├── pages/
+│   │   ├── LandingPage.jsx    # 3D Hero, Ticker, Wings, Fleet, Inventory Spotlight
+│   │   ├── TeamPage.jsx       # Dedicated Team & Mentors page
+│   │   └── EventsPage.jsx     # Dedicated Workshops & Events page
+│   ├── data/
+│   │   ├── teamData.js        # Faculty, leadership, wing leads, and alumni records
+│   │   └── eventsData.js      # TechTonic 3.0, tournaments, and schedules
+│   ├── App.jsx                # SPA state router with hash synchronization
+│   ├── main.jsx               # React 18 DOM mount
+│   └── index.css              # Master styling system
+├── previous-code/             # 100% UNTOUCHED archive of the previous website
+│   ├── chatbot_backend/
+│   ├── index.html
+│   ├── chatbot.css
+│   ├── chatbot.js
+│   ├── cicr-logo.png
+│   └── README.md
+├── index.html                 # Vite HTML entry point
+├── package.json               # NPM package configuration
+├── vite.config.js             # Vite configuration
+└── vercel.json                # Vercel deployment & rewrite rules
+```
+
+---
+
+## 💻 Getting Started Locally
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Run local development server
+npm run dev
+
+# 3. Build optimized production bundle
+npm run build
+
+# 4. Preview production build
+npm run preview
+```
+
+---
+
+## 🔒 Untouched Legacy Code
+
+All previous code and legacy files remain completely preserved and untouched in the **[`previous-code/`](previous-code/)** folder.

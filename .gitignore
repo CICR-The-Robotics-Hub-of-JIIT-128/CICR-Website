@@ -1,9 +1,10 @@
-old.html
-script.js
-style.css
-styles.css
+node_modules/
+dist/
+.DS_Store
 .vscode/
 .env
+.env.*
+!.env.example
 venv/
 __pycache__/
-chatbot.html
+scratch/
