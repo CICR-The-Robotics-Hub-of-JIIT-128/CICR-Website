@@ -11,7 +11,7 @@ export default function Preloader({ onComplete }) {
     setIsFading(true);
     setTimeout(() => {
       if (onComplete) onComplete();
-    }, 350);
+    }, 700);
   };
 
   useEffect(() => {
@@ -33,10 +33,10 @@ export default function Preloader({ onComplete }) {
       }
     }
 
-    // Safety timeout: If video stalls or takes long, dismiss quickly to avoid black screen
+    // Safety timeout: If video stalls or takes long, dismiss gracefully
     const timeout = setTimeout(() => {
       handleFinish();
-    }, 2400);
+    }, 8000);
 
     return () => {
       clearTimeout(timeout);

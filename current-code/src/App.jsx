@@ -9,6 +9,7 @@ import EventsPage from './pages/EventsPage';
 import AIChatModal from './components/AIChatModal';
 import Chatbot from './components/Chatbot';
 import ExitGuard from './components/ExitGuard';
+import Preloader from './components/Preloader';
 
 export default function App() {
   // Synchronously determine initial route from URL path to eliminate any blank ticks
@@ -25,6 +26,7 @@ export default function App() {
   });
 
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showPreloader, setShowPreloader] = useState(true);
 
   // Sync state with URL pathname on load and popstate
   useEffect(() => {
@@ -83,6 +85,11 @@ export default function App() {
 
   return (
     <div className="cicr-app-root">
+      {/* Starting Video Animation Preloader */}
+      {showPreloader && (
+        <Preloader onComplete={() => setShowPreloader(false)} />
+      )}
+
       {/* Universal Swipe & Multi-Back Exit Guard */}
       <ExitGuard
         currentPage={currentPage}

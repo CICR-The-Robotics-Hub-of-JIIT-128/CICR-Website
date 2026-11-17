@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchTeamMembers, subscribeToTeamMembers } from '../lib/supabase';
 import { teamData } from '../data/teamData';
 import { generateInstantAvatar } from '../utils/avatar';
-import { ChevronLeft, ChevronRight, Instagram, Linkedin, Github, Globe, ExternalLink, Users } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Instagram, Linkedin, Github, Globe, Users } from 'lucide-react';
 import CommunityJoinCard from '../components/CommunityJoinCard';
 
 /**
@@ -268,18 +268,7 @@ export default function TeamPage({ setCurrentPage }) {
                     </a>
                   )}
 
-                  {currentMember.driveUrl && (
-                    <a
-                      href={currentMember.driveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="spotlight-social-item"
-                      title="View uploaded photo on Google Drive"
-                    >
-                      <ExternalLink size={16} />
-                      <span>Drive Photo</span>
-                    </a>
-                  )}
+
                 </div>
               </div>
             </div>
