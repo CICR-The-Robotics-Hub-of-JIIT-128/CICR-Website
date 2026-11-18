@@ -24,7 +24,7 @@ export default function EventsPage({ setCurrentPage }) {
     async function loadEvents() {
       try {
         const data = await fetchEvents();
-        if (data && Array.isArray(data)) {
+        if (data && Array.isArray(data) && data.length > 0) {
           setEvents(data);
         }
       } catch (err) {
