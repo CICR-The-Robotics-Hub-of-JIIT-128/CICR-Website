@@ -11,8 +11,7 @@ import {
   Clock,
   MapPin,
   ArrowRight,
-  ShieldCheck,
-  Radio
+  ShieldCheck
 } from 'lucide-react';
 
 export default function EventsPage({ setCurrentPage }) {
@@ -57,25 +56,6 @@ export default function EventsPage({ setCurrentPage }) {
       <div className="events-page-content-wrapper">
         {/* Page Header */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '6px 16px',
-              borderRadius: '9999px',
-              background: 'rgba(255, 96, 28, 0.1)',
-              border: '1px solid rgba(255, 96, 28, 0.35)',
-              color: '#ff601c',
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              marginBottom: '16px'
-            }}
-          >
-            <Radio size={14} className="animate-pulse" />
-            <span>CICR Robotics Calendar</span>
-          </div>
-
           <h1
             style={{
               fontSize: 'clamp(2rem, 5vw, 3.2rem)',
