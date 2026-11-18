@@ -58,20 +58,21 @@ export default function RegistrationPage({ setCurrentPage, isEmbedded = false })
   useEffect(() => {
     async function loadEvents() {
       const data = await fetchActiveEvents();
-      if (data && data.length > 0) {
-        setActiveEvents(data);
+      const eventsList = (data && data.length > 0) ? data : (eventsCatalog || []);
+      if (eventsList && eventsList.length > 0) {
+        setActiveEvents(eventsList);
 
         // Check if URL has ?event= query param
         try {
           const urlParams = new URLSearchParams(window.location.search);
           const eventParam = urlParams.get('event');
-          if (eventParam && data.some((e) => e.slug === eventParam)) {
+          if (eventParam && eventsList.some((e) => e.slug === eventParam || e.id === eventParam)) {
             setSelectedEventSlug(eventParam);
           } else {
-            setSelectedEventSlug(data[0].slug);
+            setSelectedEventSlug(eventsList[0].slug || eventsList[0].id);
           }
         } catch {
-          setSelectedEventSlug(data[0].slug);
+          setSelectedEventSlug(eventsList[0].slug || eventsList[0].id);
         }
       } else {
         setActiveEvents([]);

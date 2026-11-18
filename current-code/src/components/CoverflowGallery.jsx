@@ -20,12 +20,6 @@ const GALLERY_ITEMS = [
     fallbackBg: 'linear-gradient(145deg, #1c140d 0%, #2f2015 100%)'
   },
   {
-    id: 4,
-    // 4th Picture: The uploaded screenshot of CICR team members
-    image: '/gallery/cicr-moment-4.jpg',
-    fallbackBg: 'linear-gradient(145deg, #1f1124 0%, #341a3c 100%)'
-  },
-  {
     id: 5,
     image: '/gallery/cicr-moment-5.jpg',
     fallbackBg: 'linear-gradient(145deg, #071528 0%, #0e274a 100%)'
@@ -81,18 +75,18 @@ function getInterpolatedValues(absD, isMobile) {
 }
 
 export default function CoverflowGallery() {
-  const [activeDot, setActiveDot] = useState(3);
+  const [activeDot, setActiveDot] = useState(2);
   const [overlayIndex, setOverlayIndex] = useState(null);
   const total = GALLERY_ITEMS.length;
 
   const stageRef = useRef(null);
   const cardRefs = useRef([]);
-  const offsetRef = useRef(3.0); // start focused at photo 4 (index 3)
+  const offsetRef = useRef(2.0);
   const isHoveredRef = useRef(false);
   const isDraggingRef = useRef(false);
   const isMobileRef = useRef(false);
   const dragStartX = useRef(0);
-  const dragStartOffset = useRef(3.0);
+  const dragStartOffset = useRef(2.0);
   const hasDragged = useRef(false);
 
   // Responsive check
@@ -151,7 +145,7 @@ export default function CoverflowGallery() {
   useEffect(() => {
     let animId;
     let lastTime = performance.now();
-    let lastDotIdx = 3;
+    let lastDotIdx = 2;
 
     const tick = (now) => {
       const delta = Math.min((now - lastTime) / 1000, 0.1);
