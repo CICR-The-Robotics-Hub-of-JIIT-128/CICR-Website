@@ -63,23 +63,11 @@ export default function EventsPage({ setCurrentPage }) {
               color: '#ffffff',
               lineHeight: 1.15,
               letterSpacing: '-0.02em',
-              margin: '0 0 12px'
+              margin: 0
             }}
           >
             Events & Workshops
           </h1>
-
-          <p
-            style={{
-              color: '#94a3b8',
-              fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
-              maxWidth: '620px',
-              margin: '0 auto',
-              lineHeight: 1.6
-            }}
-          >
-            Hands-on hardware bootcamps, autonomous drone tournaments, and inter-collegiate robotics championships at JIIT-128.
-          </p>
         </div>
 
         {/* Category Tabs if events exist */}
