@@ -2274,14 +2274,26 @@ button {
 @media (max-width: 680px) {
   .events-cards-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 28px;
   }
   .events-category-nav-bar {
-    gap: 20px;
+    gap: 16px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 0 4px 10px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  .events-category-nav-bar::-webkit-scrollbar {
+    display: none;
   }
   .events-category-tab-btn {
-    font-size: 0.8rem;
-    letter-spacing: 1.2px;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .floating-year-dock {
     gap: 16px;

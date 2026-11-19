@@ -2,6 +2,10 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { initSecurityShield } from './utils/securityShield';
+
+// Initialize global client anti-tamper and DevTools protection
+initSecurityShield();
 
 class RootErrorBoundary extends React.Component {
   constructor(props) {

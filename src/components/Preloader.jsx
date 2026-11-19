@@ -64,19 +64,6 @@ export default function Preloader({ onComplete }) {
         onError={handleFinish}
         className="cicr-preloader-video-fullscreen"
       />
-
-      {/* Instant Skip Button */}
-      <button
-        type="button"
-        className="preloader-skip-btn"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleFinish();
-        }}
-        aria-label="Skip Intro"
-      >
-        <span>Skip Intro &rarr;</span>
-      </button>
     </div>
   );
 }

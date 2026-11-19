@@ -83,9 +83,7 @@ export default function TeamPage({ setCurrentPage }) {
       return;
     }
 
-    const selectedEl =
-      track.querySelector('.team-portrait-card-slot.selected') ||
-      track.querySelector('.carousel-avatar-slot.selected');
+    const selectedEl = track.querySelector('.carousel-avatar-slot.selected');
     if (selectedEl) {
       const slotLeft = selectedEl.offsetLeft;
       const slotWidth = selectedEl.offsetWidth;
@@ -362,7 +360,7 @@ export default function TeamPage({ setCurrentPage }) {
         )}
 
         {/* =================================================================
-             3. Interactive Member Card Carousel Track (Modern Portrait Design)
+             3. Interactive Avatar Carousel Track
              ================================================================= */}
         {currentMembers.length > 0 && (
           <section className="avatar-carousel-container">
@@ -382,27 +380,22 @@ export default function TeamPage({ setCurrentPage }) {
                 return (
                   <div
                     key={member.id || idx}
-                    className={`team-portrait-card-slot ${isSelected ? 'selected' : ''}`}
+                    className={`carousel-avatar-slot ${isSelected ? 'selected' : ''}`}
                     onClick={() => setSelectedIndex(idx)}
                     title={member.name}
                   >
-                    <div className="portrait-card-inner">
+                    <div className="carousel-img-ring">
                       <img
                         src={avatarSrc}
                         alt={member.name}
                         loading="lazy"
                         decoding="async"
-                        className="portrait-card-img"
+                        className="carousel-avatar-img"
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                           e.currentTarget.src = generateInstantAvatar(member.name, member.domain);
                         }}
                       />
-                      <div className="portrait-card-gradient" />
-                      <div className="portrait-card-glass-badge">
-                        <span className="portrait-card-name">{member.name}</span>
-                        <span className="portrait-card-role">{member.role || member.domain || 'Member'}</span>
-                      </div>
                     </div>
                   </div>
                 );

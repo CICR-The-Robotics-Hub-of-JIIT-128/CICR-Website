@@ -97,11 +97,13 @@ export default function App() {
       />
 
       {/* Fixed Header */}
-      <Navbar
-        currentPage={currentPage}
-        setCurrentPage={handlePageChange}
-        onOpenChat={() => setIsChatOpen(true)}
-      />
+      {!showPreloader && (
+        <Navbar
+          currentPage={currentPage}
+          setCurrentPage={handlePageChange}
+          onOpenChat={() => setIsChatOpen(true)}
+        />
+      )}
 
       {/* Main Routed Page Content */}
       <main className="cicr-main-content">
@@ -135,7 +137,7 @@ export default function App() {
       />
 
       {/* Floating Chatbot Widget in Bottom Right Corner (from previous-code) */}
-      <Chatbot />
+      {!showPreloader && <Chatbot />}
     </div>
   );
 }
