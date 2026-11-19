@@ -3491,13 +3491,13 @@ button {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 4px;
+  background: transparent;
+  border: none;
   border-radius: 9999px;
-  padding: 3px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   height: 38px;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -3528,15 +3528,15 @@ button {
 
 .jodc-dock-item:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.06);
+  background: transparent;
 }
 
 .jodc-dock-item.active-pill {
   color: #ffffff;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .dock-crumb-slash {
