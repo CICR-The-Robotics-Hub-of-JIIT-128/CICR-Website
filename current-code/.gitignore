@@ -2,6 +2,25 @@ node_modules/
 dist/
 .DS_Store
 .vscode/
+
+# Environment variables & secrets - strictly never committed to git
 .env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Credentials & keys
+*.pem
+*.key
+*.cert
+*.id_rsa
+*.p8
+*.p12
+
+# System & runtime
 venv/
 __pycache__/
+scratch/
