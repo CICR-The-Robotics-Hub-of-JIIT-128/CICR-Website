@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { projectsCatalog } from '../data/projectsData';
-import { ArrowRight, Award } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function HorizontalProjectsSection({ setCurrentPage }) {
   const containerRef = useRef(null);
@@ -38,7 +38,7 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
       const maxTranslate = Math.max(0, trackWidth - windowWidth + centerOffset);
 
       // Pacing: 1.1x provides natural, responsive 1:1 feel matching Upmanyu portfolio
-      const scrollTravel = Math.round(maxTranslate * 1.1);
+      const scrollTravel = Math.round(maxTranslate * 1.35);
       // Gentle dwell so user can view Box 13, then continue down with 1 scroll tick
       const endDwell = Math.min(Math.round(windowHeight * 0.22), 180);
 
@@ -256,14 +256,6 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
                       className="h-card-img"
                     />
                     <div className="h-card-img-gradient" />
-
-                    {/* Achievement Pill if present */}
-                    {project.achievement && (
-                      <div className="h-card-award-ribbon">
-                        <Award size={13} className="award-icon" />
-                        <span className="award-text">{project.achievement}</span>
-                      </div>
-                    )}
                   </div>
 
                   {/* Below Card: Structured, Aligned Text Rows */}

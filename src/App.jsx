@@ -56,6 +56,33 @@ export default function App() {
     };
   }, []);
 
+  // Global smooth scrolling with reduced, elegant scroll speed across all pages
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.Lenis) {
+      const lenis = new window.Lenis({
+        lerp: 0.085, // Buttery, slow, luxurious deceleration
+        wheelMultiplier: 0.72, // Reduced scroll speed by ~28% across all pages
+        touchMultiplier: 1.0,
+        smoothWheel: true,
+      });
+
+      window.lenisInstance = lenis;
+
+      let rafId;
+      const raf = (time) => {
+        lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      };
+      rafId = requestAnimationFrame(raf);
+
+      return () => {
+        if (rafId) cancelAnimationFrame(rafId);
+        lenis.destroy();
+        window.lenisInstance = null;
+      };
+    }
+  }, []);
+
   const handlePageChange = (page, anchor = null) => {
     setCurrentPage(page);
     let targetPath = '/';
@@ -76,10 +103,20 @@ export default function App() {
     if (anchor) {
       setTimeout(() => {
         const el = document.getElementById(anchor);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        if (el) {
+          if (window.lenisInstance) {
+            window.lenisInstance.scrollTo(el, { offset: -60, duration: 1.2 });
+          } else {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
       }, 100);
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.lenisInstance) {
+        window.lenisInstance.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
     }
   };
 
