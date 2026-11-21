@@ -106,6 +106,9 @@ export default function ExitGuard({ currentPage, setCurrentPage }) {
       const deltaX = currentX - touchStartX;
       const deltaY = currentY - touchStartY;
 
+      // Never intercept gestures near the top navbar area
+      if (touchStartY < 75) return;
+
       // Intercept touches that start within 25px of the device screen edges
       const isScreenEdge = touchStartX < 25 || touchStartX > window.innerWidth - 25;
       if (isScreenEdge && Math.abs(deltaX) > Math.abs(deltaY)) {

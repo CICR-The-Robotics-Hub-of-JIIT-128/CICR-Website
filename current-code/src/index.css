@@ -3674,13 +3674,16 @@ button {
   display: none;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
   color: #ffffff;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
 }
 
 @media (max-width: 960px) {
@@ -3688,6 +3691,7 @@ button {
   .jodc-navbar-outer,
   .jodc-navbar-outer.top-bar-mode,
   .jodc-navbar-outer.scrolled-island-mode {
+    position: fixed !important;
     top: 0 !important;
     bottom: auto !important;
     transform: none !important;
@@ -3696,6 +3700,8 @@ button {
     width: 100% !important;
     box-sizing: border-box !important;
     overflow-x: clip !important;
+    pointer-events: none !important;
+    z-index: 1000 !important;
   }
   .jodc-navbar-capsule,
   .scrolled-island-mode .jodc-navbar-capsule {
@@ -3703,23 +3709,28 @@ button {
     transform: none !important;
     width: 100% !important;
     max-width: 100% !important;
+    height: 52px !important;
     padding: 6px 14px !important;
-    background: rgba(10, 11, 16, 0.92) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
+    background: rgba(10, 11, 16, 0.94) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
     border-radius: 9999px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     box-sizing: border-box !important;
+    pointer-events: auto !important;
   }
   .jodc-nav-brand {
     flex: 0 0 auto !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
   }
   .jodc-brand-subheading {
     display: none !important;
@@ -3728,7 +3739,8 @@ button {
     flex: 0 0 auto !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: 10px !important;
+    pointer-events: auto !important;
   }
   .jodc-nav-center-dock {
     display: none !important;
@@ -3737,47 +3749,80 @@ button {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 36px !important;
-    height: 36px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
     flex-shrink: 0 !important;
     background: rgba(255, 255, 255, 0.08) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 50% !important;
     color: #ffffff !important;
     cursor: pointer !important;
-    transition: background 0.2s ease, transform 0.2s ease !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease !important;
+    position: relative !important;
+    z-index: 25 !important;
   }
-  .jodc-mobile-burger-btn:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
+  .jodc-mobile-burger-btn:hover,
+  .jodc-mobile-burger-btn:active {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border-color: rgba(255, 96, 28, 0.5) !important;
+    transform: scale(1.05) !important;
   }
   /* Notifications on mobile ALWAYS drop down from the top navbar */
   .jodc-notif-dropdown,
   .scrolled-island-mode .jodc-notif-dropdown {
     top: calc(100% + 10px) !important;
     bottom: auto !important;
+    right: 0 !important;
+    left: auto !important;
+    max-width: calc(100vw - 28px) !important;
     animation: jodcDropDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
+  /* On mobile phones, clean header capsule: Brand + Bell + Hamburger.
+     The full-width Join the Club button lives prominently inside the mobile drawer */
+  .jodc-join-club-btn {
+    display: none !important;
+  }
   .jodc-github-icon-btn {
     display: none !important;
   }
-  .jodc-join-club-btn {
-    height: 32px !important;
-    padding: 0 11px !important;
-    font-size: 0.8rem !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
+  .jodc-navbar-outer,
+  .jodc-navbar-outer.top-bar-mode,
+  .jodc-navbar-outer.scrolled-island-mode {
+    padding: 8px 10px 0 !important;
+  }
+  .jodc-navbar-capsule,
+  .scrolled-island-mode .jodc-navbar-capsule {
+    padding: 6px 12px !important;
+    height: 50px !important;
+  }
+  .jodc-brand-logo-img {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .jodc-brand-title-text {
+    font-size: 1.18rem !important;
   }
   .jodc-bell-icon-btn {
-    width: 34px !important;
-    height: 34px !important;
-    flex-shrink: 0 !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+  }
+  .jodc-mobile-burger-btn {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
   }
   .jodc-notif-dropdown {
-    width: min(310px, calc(100vw - 28px)) !important;
-    right: -10px !important;
+    width: min(310px, calc(100vw - 20px)) !important;
+    right: 0 !important;
   }
 }
 
@@ -3785,33 +3830,23 @@ button {
   .jodc-navbar-outer,
   .jodc-navbar-outer.top-bar-mode,
   .jodc-navbar-outer.scrolled-island-mode {
-    padding: 8px 8px 0 !important;
+    padding: 6px 6px 0 !important;
   }
   .jodc-navbar-capsule,
   .scrolled-island-mode .jodc-navbar-capsule {
-    padding: 5px 10px !important;
+    padding: 4px 10px !important;
+    height: 48px !important;
   }
   .jodc-brand-title-text {
-    font-size: 1.05rem !important;
-  }
-  .jodc-join-club-btn {
-    padding: 0 8px !important;
-    font-size: 0.72rem !important;
-    height: 30px !important;
+    font-size: 1.08rem !important;
   }
   .jodc-bell-icon-btn {
-    width: 30px !important;
-    height: 30px !important;
+    width: 34px !important;
+    height: 34px !important;
   }
   .jodc-mobile-burger-btn {
-    width: 30px !important;
-    height: 30px !important;
-  }
-}
-
-@media (max-width: 330px) {
-  .jodc-join-club-btn {
-    display: none !important;
+    width: 36px !important;
+    height: 36px !important;
   }
 }
 
@@ -4031,16 +4066,23 @@ button {
 .jodc-mobile-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(4, 5, 8, 0.78);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  z-index: 2000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(4, 5, 8, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 100000 !important;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 14px 16px;
+  padding: 14px 14px 30px;
   overflow-y: auto;
-  animation: mobileFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  box-sizing: border-box;
+  animation: mobileFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes mobileFadeIn {
@@ -4050,7 +4092,7 @@ button {
   }
   to {
     opacity: 1;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px);
   }
 }
 
@@ -4059,9 +4101,11 @@ button {
   max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   margin: 0 auto;
-  animation: mobileSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  pointer-events: auto;
+  animation: mobileSlideDown 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes mobileSlideDown {
@@ -4080,10 +4124,10 @@ button {
   width: 100%;
   height: 52px;
   border-radius: 9999px;
-  background: rgba(14, 16, 24, 0.95);
+  background: rgba(14, 16, 24, 0.96);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -4092,23 +4136,37 @@ button {
   box-sizing: border-box;
 }
 
+.jodc-mobile-modal-brand {
+  cursor: pointer;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
 .jodc-mobile-modal-close {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: transparent;
-  border: none;
-  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: all 0.2s ease;
 }
 
-.jodc-mobile-modal-close:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+.jodc-mobile-modal-close:hover,
+.jodc-mobile-modal-close:active {
+  color: #ff601c;
+  background: rgba(255, 96, 28, 0.2);
+  border-color: rgba(255, 96, 28, 0.5);
   transform: scale(1.08);
 }
 
@@ -4116,23 +4174,23 @@ button {
 .jodc-mobile-menu-card {
   width: 100%;
   border-radius: 28px;
-  background: radial-gradient(circle at 50% 15%, rgba(255, 96, 28, 0.09) 0%, rgba(14, 16, 24, 0.96) 75%);
+  background: radial-gradient(circle at 50% 12%, rgba(255, 96, 28, 0.1) 0%, rgba(14, 16, 24, 0.98) 75%);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 26px 22px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 22px 20px 20px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 /* Nav Items List */
 .jodc-mobile-nav-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 7px;
 }
 
 .jodc-mobile-nav-item {
@@ -4140,42 +4198,56 @@ button {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #ffffff;
   text-decoration: none;
-  padding: 4px 6px;
-  border-radius: 8px;
+  padding: 11px 16px;
+  border-radius: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
+}
+
+.jodc-mobile-nav-item:hover,
+.jodc-mobile-nav-item:active {
+  background: rgba(255, 96, 28, 0.12);
+  border-color: rgba(255, 96, 28, 0.35);
+  color: #ff601c;
+  transform: translateX(4px);
 }
 
 .jodc-mobile-nav-item.active-orange {
   color: #ff601c !important;
+  background: rgba(255, 96, 28, 0.15) !important;
+  border-color: rgba(255, 96, 28, 0.45) !important;
 }
 
-.jodc-mobile-nav-item:hover {
+.mobile-nav-arrow {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.35);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.jodc-mobile-nav-item:hover .mobile-nav-arrow,
+.jodc-mobile-nav-item:active .mobile-nav-arrow {
   color: #ff601c;
   transform: translateX(3px);
 }
 
-.mobile-chevron-icon {
-  color: #ff601c;
-  transition: transform 0.2s ease;
-}
-
 .jodc-mobile-spotlight-badge {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.8px;
   color: #ff601c;
-  background: rgba(255, 96, 28, 0.1);
-  border: 1px solid rgba(255, 96, 28, 0.35);
+  background: rgba(255, 96, 28, 0.12);
+  border: 1px solid rgba(255, 96, 28, 0.4);
   padding: 4px 10px;
   border-radius: 9999px;
   text-transform: uppercase;
@@ -4187,22 +4259,25 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 52px;
+  height: 50px;
   width: 100%;
   border-radius: 9999px;
   background: #ff601c;
   color: #0a0a0d;
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   font-weight: 700;
   text-decoration: none;
   box-shadow: 0 6px 24px rgba(255, 96, 28, 0.45);
-  transition: all 0.25s ease;
-  margin-top: 6px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease;
+  margin-top: 4px;
   box-sizing: border-box;
 }
 
-.jodc-mobile-card-join-btn:hover {
+.jodc-mobile-card-join-btn:hover,
+.jodc-mobile-card-join-btn:active {
   background: #ff7336;
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(255, 96, 28, 0.65);
@@ -4217,22 +4292,25 @@ button {
 }
 
 .jodc-mobile-social-card {
-  height: 52px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 48px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3af;
+  color: #cbd5e1;
   text-decoration: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: all 0.2s ease;
 }
 
-.jodc-mobile-social-card:hover {
+.jodc-mobile-social-card:hover,
+.jodc-mobile-social-card:active {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 96, 28, 0.15);
+  border-color: rgba(255, 96, 28, 0.4);
   transform: translateY(-2px);
 }
 
@@ -8120,7 +8198,12 @@ button {
 .team-subdomain-pill,
 .jodc-dock-item,
 .jodc-mobile-nav-item,
-.jodc-join-club-btn {
+.jodc-join-club-btn,
+.jodc-mobile-burger-btn,
+.jodc-mobile-modal-close,
+.jodc-mobile-card-join-btn,
+.jodc-mobile-social-card,
+.jodc-bell-icon-btn {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -8170,15 +8253,21 @@ button {
 }
 
 .jodc-brand-subheading {
-  display: block !important;
-  font-size: 0.56rem !important;
-  letter-spacing: 0.04em !important;
-  color: #94a3b8 !important;
-  font-weight: 500 !important;
-  margin-top: 2px !important;
-  white-space: nowrap !important;
-  opacity: 0.85 !important;
-  line-height: 1 !important;
+  display: block;
+  font-size: 0.56rem;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-top: 2px;
+  white-space: nowrap;
+  opacity: 0.85;
+  line-height: 1;
+}
+
+@media (max-width: 960px) {
+  .jodc-brand-subheading {
+    display: none !important;
+  }
 }
 
 /* ===================================================================

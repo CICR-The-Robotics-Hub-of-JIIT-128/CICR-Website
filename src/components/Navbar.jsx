@@ -80,26 +80,35 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [notificationsOpen]);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll and pause Lenis when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      if (window.lenisInstance) {
+        window.lenisInstance.stop();
+      }
+    } else {
+      document.body.style.overflow = '';
+      if (window.lenisInstance) {
+        window.lenisInstance.start();
+      }
+    }
     return () => {
       document.body.style.overflow = '';
+      if (window.lenisInstance) {
+        window.lenisInstance.start();
+      }
     };
   }, [mobileMenuOpen]);
 
   const handleNavClick = (pageId, anchor = null) => {
-    setCurrentPage(pageId);
     setMobileMenuOpen(false);
     setNotificationsOpen(false);
-    if (anchor) {
-      setTimeout(() => {
-        const el = document.getElementById(anchor);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.style.overflow = '';
+    if (window.lenisInstance) {
+      window.lenisInstance.start();
     }
+    setCurrentPage(pageId, anchor);
   };
 
   return (
@@ -269,9 +278,14 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
 
             {/* Mobile Hamburger Toggle */}
             <button
+              type="button"
               className="jodc-mobile-burger-btn"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle Navigation Menu"
+              onClick={() => {
+                setNotificationsOpen(false);
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -279,34 +293,47 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
         </div>
       </header>
 
-      {/* Mobile JODC-Style Overlay & Card Modal (Exact Match to User's Screenshot) */}
+      {/* Mobile JODC-Style Overlay & Card Modal */}
       {mobileMenuOpen && (
-        <div className="jodc-mobile-overlay" onClick={() => setMobileMenuOpen(false)}>
-          <div className="jodc-mobile-modal-container" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="jodc-mobile-overlay"
+          onClick={() => setMobileMenuOpen(false)}
+          data-lenis-prevent
+        >
+          <div
+            className="jodc-mobile-modal-container"
+            onClick={(e) => e.stopPropagation()}
+            data-lenis-prevent
+          >
             {/* Top Header Pill Capsule */}
             <div className="jodc-mobile-top-capsule">
-              <div className="jodc-nav-brand" onClick={() => handleNavClick('home')}>
+              <div
+                className="jodc-nav-brand jodc-mobile-modal-brand"
+                onClick={() => handleNavClick('home')}
+                role="button"
+                tabIndex={0}
+              >
+                <img
+                  src={cicrLogo}
+                  alt="CICR Logo"
+                  className="jodc-brand-logo-img"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/cicr-logo.png';
+                  }}
+                />
                 <div className="jodc-brand-logo-row">
-                  <img
-                    src={cicrLogo}
-                    alt="CICR Logo"
-                    className="jodc-brand-logo-img"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = '/cicr-logo.png';
-                    }}
-                  />
                   <span className="jodc-brand-title-text">CICR</span>
                   <span className="brand-dot-orange">.</span>
                 </div>
-                <span className="jodc-brand-subheading">The Robotic Society of JIIT 128</span>
               </div>
               <button
+                type="button"
                 className="jodc-mobile-modal-close"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
-                <X size={20} />
+                <X size={22} />
               </button>
             </div>
 
@@ -316,34 +343,52 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
               <div className="jodc-mobile-nav-list">
                 {/* Home */}
                 <button
+                  type="button"
                   className={`jodc-mobile-nav-item ${currentPage === 'home' ? 'active-orange' : ''}`}
                   onClick={() => handleNavClick('home')}
                 >
                   <span>Home</span>
+                  <span className="mobile-nav-arrow">→</span>
                 </button>
 
                 {/* Events */}
                 <button
+                  type="button"
                   className={`jodc-mobile-nav-item ${currentPage === 'events' ? 'active-orange' : ''}`}
                   onClick={() => handleNavClick('events')}
                 >
                   <span>Events</span>
+                  <span className="mobile-nav-arrow">→</span>
                 </button>
 
                 {/* Projects */}
                 <button
+                  type="button"
                   className={`jodc-mobile-nav-item ${currentPage === 'projects' ? 'active-orange' : ''}`}
                   onClick={() => handleNavClick('projects')}
                 >
                   <span>Projects</span>
+                  <span className="mobile-nav-arrow">→</span>
                 </button>
 
                 {/* Team */}
                 <button
+                  type="button"
                   className={`jodc-mobile-nav-item ${currentPage === 'team' ? 'active-orange' : ''}`}
                   onClick={() => handleNavClick('team')}
                 >
                   <span>Team</span>
+                  <span className="mobile-nav-arrow">→</span>
+                </button>
+
+                {/* Register */}
+                <button
+                  type="button"
+                  className={`jodc-mobile-nav-item ${currentPage === 'registrations' ? 'active-orange' : ''}`}
+                  onClick={() => handleNavClick('registrations')}
+                >
+                  <span>Register</span>
+                  <span className="mobile-nav-arrow">→</span>
                 </button>
 
                 {/* Inventory with SPOTLIGHT badge */}
@@ -354,7 +399,7 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
                   className="jodc-mobile-nav-item"
                 >
                   <span>Inventory</span>
-                  <span className="jodc-mobile-spotlight-badge">SPOTLIGHT</span>
+                  <span className="jodc-mobile-spotlight-badge">LIVE PORTAL</span>
                 </a>
               </div>
 
