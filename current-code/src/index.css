@@ -565,6 +565,7 @@ button {
   display: block;
   background: linear-gradient(135deg, #ffffff 15%, #00f0ff 65%, #818cf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -1618,6 +1619,7 @@ button {
   font-family: var(--font-body);
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2013,6 +2015,7 @@ button {
 .events-category-tab-btn.active {
   background: linear-gradient(90deg, #ec4899 0%, #a855f7 50%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   border-bottom: none;
 }
@@ -4688,6 +4691,7 @@ button {
   font-size: 1.08em;
   background: linear-gradient(90deg, #ec4899 0%, #a855f7 50%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
   display: inline-block;
@@ -5343,6 +5347,7 @@ button {
   line-height: 1.15;
   background: linear-gradient(100deg, #ffffff 0%, #ffffff 22%, #f472b6 48%, #a855f7 74%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
   display: inline-block;
@@ -5353,6 +5358,7 @@ button {
 .memory-dot {
   background: linear-gradient(90deg, #a855f7 0%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -5691,6 +5697,7 @@ button {
   font-weight: 800;
   background: linear-gradient(90deg, #ec4899 0%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 12px;
 }
@@ -6162,6 +6169,7 @@ button {
   margin-bottom: 10px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex-grow: 1;
@@ -6530,6 +6538,7 @@ button {
   display: inline-block;
   background: linear-gradient(90deg, #ec4899 0%, #a855f7 50%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
@@ -6949,6 +6958,7 @@ button {
   line-height: 1.15;
   background: linear-gradient(100deg, #ffffff 0%, #ffffff 22%, #f472b6 48%, #a855f7 74%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
   display: inline-block;
@@ -6959,6 +6969,7 @@ button {
 .gallery-dot {
   background: linear-gradient(90deg, #a855f7 0%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -7830,6 +7841,7 @@ button {
 .projects-title-gradient {
   background: linear-gradient(135deg, #ffffff 30%, #ff601c 80%, #ff8a4c 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -8531,6 +8543,7 @@ button {
   line-height: 1.15;
   background: linear-gradient(100deg, #ffffff 0%, #ffffff 22%, #f472b6 48%, #a855f7 74%, #38bdf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
