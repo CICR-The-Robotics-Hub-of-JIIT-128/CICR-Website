@@ -67,7 +67,7 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentPage]);
 
-  // Close notifications on outside click
+  // Close notifications on outside click or touch
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (notifRef.current && !notifRef.current.contains(e.target)) {
@@ -76,8 +76,12 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
     };
     if (notificationsOpen) {
       document.addEventListener('mousedown', handleOutsideClick);
+      document.addEventListener('touchstart', handleOutsideClick, { passive: true });
     }
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('touchstart', handleOutsideClick);
+    };
   }, [notificationsOpen]);
 
   // Lock body scroll and pause Lenis when mobile menu is open
@@ -211,58 +215,72 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
 
               {/* Notifications Flyout Dropdown */}
               {notificationsOpen && (
-                <div className="jodc-notif-dropdown">
-                  <div className="jodc-notif-head">
-                    <span className="jodc-notif-title">Announcements</span>
-                    <span className="jodc-notif-badge">3 New</span>
-                  </div>
-
-                  <div className="jodc-notif-body">
-                    <div
-                      className="jodc-notif-item"
-                      onClick={() => {
-                        handleNavClick('projects');
-                        setNotificationsOpen(false);
-                      }}
-                    >
-                      <span className="notif-dot-gradient"></span>
-                      <div className="jodc-notif-item-text">
-                        <h6>Autonomous Drone Fleet</h6>
-                        <p>Explore upcoming projects and research developments.</p>
+                <>
+                  <div
+                    className="jodc-notif-backdrop"
+                    onClick={() => setNotificationsOpen(false)}
+                    onTouchStart={() => setNotificationsOpen(false)}
+                  />
+                  <div className="jodc-notif-dropdown" data-lenis-prevent>
+                    <div className="jodc-notif-head">
+                      <div className="jodc-notif-head-title-wrap">
+                        <span className="jodc-notif-title">Announcements</span>
+                        <span className="jodc-notif-badge">3 New</span>
                       </div>
+                      <button
+                        type="button"
+                        className="jodc-notif-close-btn"
+                        onClick={() => setNotificationsOpen(false)}
+                        aria-label="Close announcements"
+                      >
+                        <X size={16} />
+                      </button>
                     </div>
 
-                    <div
-                      className="jodc-notif-item"
-                      onClick={() => {
-                        handleNavClick('registrations');
-                        setNotificationsOpen(false);
-                      }}
-                    >
-                      <span className="notif-dot-gradient"></span>
-                      <div className="jodc-notif-item-text">
-                        <h6>Permanent Registration Endpoint</h6>
-                        <p>Instant scannable QR code and direct registration live.</p>
-                      </div>
-                    </div>
-
-                    <a
-                      href="https://inventory.cicr.in"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="jodc-notif-item"
-                    >
-                      <span className="notif-dot-gradient"></span>
-                      <div className="jodc-notif-item-text">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <h6>Inventory Portal Online</h6>
-                          <ExternalLink size={11} color="#38bdf8" />
+                    <div className="jodc-notif-body" data-lenis-prevent>
+                      <button
+                        type="button"
+                        className="jodc-notif-item"
+                        onClick={() => handleNavClick('projects')}
+                      >
+                        <span className="notif-dot-gradient"></span>
+                        <div className="jodc-notif-item-text">
+                          <h6>Autonomous Drone Fleet</h6>
+                          <p>Explore upcoming projects and research developments.</p>
                         </div>
-                        <p>Reserve sensors, boards and LiPo batteries on inventory.cicr.in</p>
-                      </div>
-                    </a>
+                      </button>
+
+                      <button
+                        type="button"
+                        className="jodc-notif-item"
+                        onClick={() => handleNavClick('registrations')}
+                      >
+                        <span className="notif-dot-gradient"></span>
+                        <div className="jodc-notif-item-text">
+                          <h6>Permanent Registration Endpoint</h6>
+                          <p>Instant scannable QR code and direct registration live.</p>
+                        </div>
+                      </button>
+
+                      <a
+                        href="https://inventory.cicr.in"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="jodc-notif-item"
+                        onClick={() => setNotificationsOpen(false)}
+                      >
+                        <span className="notif-dot-gradient"></span>
+                        <div className="jodc-notif-item-text">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <h6>Inventory Portal Online</h6>
+                            <ExternalLink size={11} color="#38bdf8" />
+                          </div>
+                          <p>Reserve sensors, boards and LiPo batteries on inventory.cicr.in</p>
+                        </div>
+                      </a>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
 

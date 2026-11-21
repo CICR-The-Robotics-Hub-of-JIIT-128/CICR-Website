@@ -3820,9 +3820,19 @@ button {
     height: 38px !important;
     min-width: 38px !important;
   }
-  .jodc-notif-dropdown {
-    width: min(310px, calc(100vw - 20px)) !important;
-    right: 0 !important;
+  /* Mobile Announcements Flyout Dropdown: centered, fixed, perfectly framed */
+  .jodc-notif-dropdown,
+  .scrolled-island-mode .jodc-notif-dropdown {
+    position: fixed !important;
+    top: 66px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: 380px !important;
+    margin: 0 auto !important;
+    border-radius: 20px !important;
+    z-index: 100001 !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
   }
 }
 
@@ -3907,12 +3917,62 @@ button {
   }
 }
 
+.jodc-notif-backdrop {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .jodc-notif-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+
 .jodc-notif-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 14px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.jodc-notif-head-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.jodc-notif-close-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease;
+}
+
+.jodc-notif-close-btn:hover,
+.jodc-notif-close-btn:active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .jodc-notif-close-btn {
+    display: flex;
+  }
 }
 
 .jodc-notif-title {
@@ -3938,20 +3998,35 @@ button {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  max-height: 360px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .jodc-notif-item {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 11px 12px;
   border-radius: 12px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  background: transparent;
+  border: 1px solid transparent;
+  width: 100%;
+  text-align: left;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.jodc-notif-item:hover {
-  background: rgba(255, 255, 255, 0.06);
+.jodc-notif-item:hover,
+.jodc-notif-item:active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .notif-dot-gradient {
@@ -8729,31 +8804,46 @@ button {
     height: 380vh;
   }
   .horizontal-sticky-viewport {
-    padding-top: 14px;
-    padding-bottom: 80px;
+    height: 100vh;
+    height: 100dvh;
+    padding-top: 76px !important; /* Clears fixed top navbar so project heading is 100% visible */
+    padding-bottom: 24px !important;
   }
   .h-projects-header-centered {
-    margin-bottom: 10px;
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
+    padding: 0 16px !important;
+  }
+  .h-projects-accent-serif {
+    font-size: clamp(1.85rem, 6.5vw, 2.3rem) !important;
+    line-height: 1.15 !important;
+    padding-bottom: 4px !important;
+  }
+  .h-projects-underline-svg {
+    height: 14px !important;
+    bottom: -2px !important;
   }
   .h-projects-track {
     padding: 0 16px;
     gap: 16px;
   }
   .h-project-intro-card {
-    width: 290px;
-    margin-right: 16px;
+    width: 280px;
+    height: clamp(340px, 48vh, 380px) !important;
+    margin-right: 14px;
   }
   .h-intro-title {
-    font-size: 2.2rem;
+    font-size: 2.0rem !important;
   }
   .h-intro-desc {
-    font-size: 0.88rem;
+    font-size: 0.85rem !important;
   }
   .h-project-card {
     width: 280px;
+    height: clamp(340px, 48vh, 380px) !important;
   }
   .h-card-image-box {
-    height: 165px;
+    height: clamp(140px, 20vh, 165px) !important;
   }
 }
 
