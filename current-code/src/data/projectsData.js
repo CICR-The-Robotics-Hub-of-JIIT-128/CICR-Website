@@ -7,7 +7,7 @@ export const projectsCatalog = [
     category: 'Robotics',
     tags: ['Robotics', 'Computer Vision', 'Embedded AI'],
     description:
-      'An expressive animatronic robotic head designed for lifelike human interaction. Built with 10 precision servo motors for natural facial articulation and jaw movement, powered by an NVIDIA Jetson Orin Nano with depth-sensing vision to follow and respond to people in real time.',
+      'An expressive animatronic robotic skull engineered for natural human-robot interaction. Features 10 precision servo motors coordinating lifelike jaw, eye, and neck articulation. Driven by an NVIDIA Jetson Orin Nano with RealSense depth vision and embedded AI neural nets to track faces, mimic gaze, and respond interactively in real time.',
     image: '/projects/skully.jpg',
     highlights: ['NVIDIA Jetson Orin Nano', 'Intel RealSense Depth Camera', '10x Precision Servos', 'ESP32 Control'],
     achievement: 'Selected among Top 10 in CircuitDigest Smart Home and Wearables Contest 2025',
@@ -20,7 +20,7 @@ export const projectsCatalog = [
     category: 'Artificial Intelligence',
     tags: ['AI Host', 'Face Recognition', 'Voice AI'],
     description:
-      'A charming interactive AI companion that greeted visitors by name at Converge 2026. Equipped with high-speed facial recognition and real-time conversational intelligence, it engages in witty banter, answers questions, and guides guests through campus events.',
+      'A charismatic interactive AI companion that welcomed guests and dignitaries by name at Converge 2026. Powered by ultra-low-latency Groq LLM inference, DeepFace facial recognition, and FAISS vector indexing, it engages in dynamic vocal conversations, campus navigation assistance, and context-aware event guidance.',
     image: '/projects/jarvis.jpg',
     highlights: ['Groq Fast LLM', 'DeepFace + FAISS Vector DB', 'Sarvam AI STT & TTS', 'Silero VAD'],
     achievement: 'Featured interactive AI Host at Converge 2026',
@@ -33,7 +33,7 @@ export const projectsCatalog = [
     category: 'IoT',
     tags: ['IoT', 'RFID', 'Smart Navigation'],
     description:
-      'A smart library assistant that takes the frustration out of finding books. Combines RFID shelf tracking with illuminated shelf guides and a touch kiosk, letting readers pinpoint exact book locations in seconds while providing automated checkouts.',
+      'An award-winning smart library navigation and cataloging assistant that eliminates the hassle of locating physical books. Combines high-frequency RFID shelf antennas, dynamic LED shelf indicators, and an intuitive touchscreen kiosk, providing readers with instant 3D shelf directions and automated self-checkout.',
     image: '/projects/find-my-book.jpg',
     highlights: ['ESP32-S3 Box 3', 'Raspberry Pi Backend', 'RFID Issuing & Anti-Theft', 'Touchscreen Kiosk'],
     achievement: 'Secured 2nd Position in CircuitDigest Contest 2025 (Won ₹70,000)',
@@ -46,7 +46,7 @@ export const projectsCatalog = [
     category: 'IoT',
     tags: ['Smart Retail', 'Computer Vision', 'RFID'],
     description:
-      'A cashier-less smart checkout system designed to eliminate retail queues. Shoppers simply pass through the terminal where RFID readers instantly tally their basket, paired with computer vision verification to make shopping quick, seamless, and secure.',
+      'A frictionless cashier-less retail checkout terminal engineered to eradicate shopping queues. Customers walk through an automated scanning portal where multi-tag RFID arrays instantly tally items in the basket, while overhead computer vision and YOLOv5 algorithms verify contents for swift, fraud-free transactions.',
     image: '/projects/deque.jpg',
     highlights: ['Raspberry Pi 4', 'Pi Camera V2', 'YOLOv5 Passenger Detection', 'Node.js & MongoDB'],
     achievement: 'Secured 3rd Place at HACKIN\'WINTER by DSC-JIIT62',
@@ -59,7 +59,7 @@ export const projectsCatalog = [
     category: 'Avionics',
     tags: ['Quadcopter', 'Avionics', 'Autonomous Flight'],
     description:
-      'An autonomous cargo quadcopter engineered for reliable point-to-point delivery. Built on an F450 frame with GPS waypoint autopilot, fail-safe return-to-home navigation, and a servo gripper that safely carries and drops small payloads on target.',
+      'A heavy-lift autonomous cargo quadcopter designed for precision emergency and campus delivery missions. Built on a reinforced F450 frame with Pixhawk flight controller, dual-frequency GPS waypoint autopilot, fail-safe return-to-home navigation, and an electronic quick-release servo gripper for safe drop-offs.',
     image: '/projects/payload-drone.jpg',
     highlights: ['Pixhawk Autopilot', 'GPS & Compass Navigation', 'DJI 920Kv Motors', 'Servo Gripper Mechanism'],
     achievement: 'Autonomous Aerial Delivery Platform',
@@ -72,7 +72,7 @@ export const projectsCatalog = [
     category: 'Hardware',
     tags: ['Hardware', 'LED System', 'Signal Processing'],
     description:
-      'An immersive home theatre backlight system that brings movies and games to life. Uses a Raspberry Pi with addressable LED strips and real-time HDMI video capture to cast screen-matching ambient light across the room at a smooth 60 frames per second.',
+      'An immersive visual synchronization system that projects screen-matching ambient backlighting onto surrounding walls. Utilizes a dedicated Raspberry Pi, WS2812B individually addressable LED arrays, and zero-latency HDMI hardware capture to compute and render 60 FPS dynamic color fields that expand the viewing experience.',
     image: '/projects/ambient-tv.jpg',
     highlights: ['Raspberry Pi Controller', 'WS2812B Addressable LEDs', 'Hyperion Signal Engine', 'HDMI Capture at 60 FPS'],
     achievement: 'Custom Immersive Media System',
@@ -85,7 +85,7 @@ export const projectsCatalog = [
     category: 'Digital Fabrication',
     tags: ['3D Printing', 'CAD Design', 'Precision Control'],
     description:
-      'A modular, custom-engineered Cartesian 3D printer built from the ground up for the CICR lab. Designed in CAD with a rigid interlocking structure, precision stepper motors, and open-source control electronics for dependable rapid prototyping.',
+      'A rigid, high-precision Cartesian 3D printer designed and fabricated entirely in-house for the CICR prototyping lab. Built with a custom laser-cut interlocking chassis, dual Z-axis NEMA 17 stepper motors, an all-metal hotend, and RAMPS 1.4 firmware for reliable rapid prototyping of robotics parts and brackets.',
     image: '/projects/cartesian-3d-printer.jpg',
     highlights: ['Arduino Mega 2560', 'RAMPS 1.4 Controller', 'CAD Modular Chassis', 'Multi-Axis Steppers'],
     achievement: 'In-House Rapid Prototyping System',
@@ -98,7 +98,7 @@ export const projectsCatalog = [
     category: 'IoT',
     tags: ['IoT', 'Home Automation', 'Mobile App'],
     description:
-      'A practical smart home switch that blends tradition with modern convenience. It allows effortless control of room lighting and appliances both from familiar physical wall switches and remotely via a custom mobile app over Wi-Fi.',
+      'A robust smart infrastructure controller bridging legacy physical electrical installations with modern wireless convenience. Features an 8-channel optocoupled relay system driven by an ESP8266, enabling independent control of home appliances via physical wall switches, MQTT cloud synchronization, and a custom mobile app.',
     image: '/projects/smart-switch.jpg',
     highlights: ['ESP8266 Wi-Fi Module', '8-Channel Relay Module', 'Custom Mobile Application', 'Dual Manual & Remote Mode'],
     achievement: 'Sustainable Smart Home Automation',
@@ -111,7 +111,7 @@ export const projectsCatalog = [
     category: 'Virtual Reality',
     tags: ['Virtual Reality', 'Robotics', 'Motion Tracking'],
     description:
-      'A gesture-controlled robotic arm simulation designed for medical and training applications. Using a smart sensor glove that mirrors natural hand movements, users can intuitively manipulate a virtual robotic arm inside Unreal Engine in real time.',
+      'A high-fidelity gesture-controlled robotic arm simulation environment developed for medical and surgical training. Worn sensor gloves with MPU6050 6-axis IMUs and flex sensors transmit micro-movements with sub-millisecond latency to replicate articulate robotic arm maneuvers inside an interactive Unreal Engine physics world.',
     image: '/projects/chikitsaarm.jpg',
     highlights: ['ESP32 Wi-Fi Microcontroller', 'Unreal Engine VR Simulator', 'MPU6050 6-DOF IMU', 'Flex Sensor Array'],
     achievement: 'Medical Training VR Simulation Prototype',
@@ -124,7 +124,7 @@ export const projectsCatalog = [
     category: 'IoT',
     tags: ['IoT', 'Hydroponics', 'Solar Energy', 'Python Dashboard'],
     description:
-      'A solar-powered hydroponic farming system that grows fresh produce in nutrient-rich water without soil. It constantly monitors climate conditions with IoT sensors and automates nutrient circulation, all visible through an interactive Python dashboard.',
+      'An automated, solar-powered vertical hydroponic farm that produces fresh organic crops using closed-loop nutrient circulation. Integrates ESP32 telemetry, water EC and pH probes, ambient environmental sensors, and an interactive real-time Python dashboard for complete data-driven precision agriculture.',
     image: '/projects/technogrow.jpg',
     highlights: ['Solar-Powered Clean Energy', 'Soil-less Hydroponic Rig', 'Python Live Dashboard', 'Automated Water Circulation'],
     achievement: 'Automated Solar Smart Agriculture System',
@@ -137,7 +137,7 @@ export const projectsCatalog = [
     category: 'Robotics',
     tags: ['Robotics', 'Gesture Control', 'Wireless RF', 'Embedded Systems'],
     description:
-      'A responsive robotic car steered entirely with natural hand tilts using a sensor glove. Wireless signals translate hand motions into instant forward, reverse, and turning maneuvers, with ultrasonic sensing to prevent accidental collisions.',
+      'A responsive acrobatic robotic rover navigated completely through natural hand gestures and wrist orientation. A transmitter glove outfitted with a 3-axis gyroscope and accelerometer broadcasts motion packets via RF links to an onboard differential motor driver, coupled with ultrasonic collision avoidance.',
     image: '/projects/gesture-controlled-car.jpg',
     highlights: ['Gyroscope Gesture Glove', 'Low-Latency Wireless Link', 'Ultrasonic Collision Guard', 'Real-Time Motor Response'],
     achievement: 'Intuitive Hands-Free Robotics Platform',
@@ -150,7 +150,7 @@ export const projectsCatalog = [
     category: 'Avionics',
     tags: ['Avionics', 'Custom PCB', 'ESP32', 'Micro-Quadcopter'],
     description:
-      'A pocket-sized micro-quadcopter built directly on a custom circuit board that doubles as both the electronics hub and structural frame. Powered by an ESP32 and precision 6-axis gyro, it delivers agile and stable indoor flight.',
+      'An ultra-compact palm-sized micro-quadcopter where the 4-layer custom PCB serves simultaneously as the structural airframe and electrical circuit. Powered by a dual-core ESP32, high-RPM brushed coreless motors, and a fine-tuned PID stabilization loop utilizing an MPU6050 6-axis gyro for agile indoor flight.',
     image: '/projects/esp32-minidrone.jpg',
     highlights: ['Custom Integrated PCB Frame', 'ESP32 Microcontroller', 'MPU6050 6-Axis Gyro', 'High-RPM Coreless DC Motors'],
     achievement: 'Ultra-Compact Custom PCB Drone',
@@ -163,7 +163,7 @@ export const projectsCatalog = [
     category: 'IoT',
     tags: ['IoT', 'Home Automation', 'ESP8266', 'Water Management'],
     description:
-      'An intelligent home management system combining Wi-Fi appliance control with automated water conservation. Residents can toggle lights from a mobile web dashboard while ultrasonic tank sensors prevent dry runs and overflow automatically.',
+      'An integrated IoT building automation system combining distributed Wi-Fi appliance controls with automated water tank management. Ultrasonic sensors monitor live reservoir levels to prevent motor dry-runs and tank overflows, while a mobile web portal allows residents to schedule pumps and lights from anywhere.',
     image: '/projects/smart-iot-home-automation.jpg',
     highlights: ['ESP8266 Wi-Fi Core', 'Ultrasonic Tank Level Sensing', 'Mobile Web Dashboard', 'Automated Pump Protection'],
     achievement: 'Dual-Mode Home & Water Automation System',

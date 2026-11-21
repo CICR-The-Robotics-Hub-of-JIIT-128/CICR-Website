@@ -6,27 +6,23 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
 
-  // Cached layout metrics to avoid reading DOM inside RAF loop (eliminates layout thrashing)
   const metricsRef = useRef({
     maxTranslate: 0,
-    horizontalScrollTravel: 0,
-    totalScrollTravel: 0,
+    scrollTravel: 0,
+    endDwell: 0,
     windowHeight: 0,
   });
 
-  // Inertial RAF lerp state (matches Lenis smooth-scroll feel with 0 lag and 0 React re-renders)
-  const animStateRef = useRef({
-    targetX: 0,
+  const stateRef = useRef({
     currentX: 0,
-    isAnimating: false,
+    targetX: 0,
+    skew: 0,
+    targetSkew: 0,
+    isLooping: false,
     rafId: null,
   });
 
   useEffect(() => {
-    // 0.085 provides luxurious, buttery-smooth deceleration matching Lenis lerp
-    const LERP_FACTOR = 0.12;
-
-    // Dynamically calculate wrapper height based on actual track width and screen dimensions
     const updateMetrics = () => {
       if (!containerRef.current || !trackRef.current) return;
 
@@ -34,129 +30,113 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
 
-      // Find last card width dynamically so Card 09 ends up centered in the viewport
       const lastCard = trackRef.current.querySelector('.h-project-card:last-child');
-      const lastCardWidth = lastCard ? lastCard.offsetWidth : 390;
+      const lastCardWidth = lastCard ? lastCard.offsetWidth : 360;
 
-      // Center the 9th project horizontally on screen when fully translated
+      // Center the 13th project horizontally on screen when fully translated
       const centerOffset = Math.max((windowWidth - lastCardWidth) / 2, 40);
       const maxTranslate = Math.max(0, trackWidth - windowWidth + centerOffset);
 
-      // SCROLL PACING:
-      // Allocate 1.85x vertical scroll space for the horizontal movement.
-      // This slows down the scroll speed by ~46%, making each project glide smoothly
-      // and comfortably across the screen instead of whizzing past.
-      // SCROLL PACING:
-      // Allocate generous vertical scroll space so every project (1 to 9)
-      // glides smoothly and is completely visible before unpinning.
-      const SCROLL_PACING = 2.0;
-      const horizontalScrollTravel = maxTranslate * SCROLL_PACING;
+      // Pacing: 1.1x provides natural, responsive 1:1 feel matching Upmanyu portfolio
+      const scrollTravel = Math.round(maxTranslate * 1.1);
+      // Gentle dwell so user can view Box 13, then continue down with 1 scroll tick
+      const endDwell = Math.min(Math.round(windowHeight * 0.22), 180);
 
-      // Keep screen firmly pinned on the projects showcase until all projects
-      // have been fully displayed across the screen!
-      const pauseOnLastProject = Math.max(windowHeight * 0.65, 500);
-
-      // Total vertical scroll space allocated for horizontal traversal + last card viewing
-      const totalScrollTravel = horizontalScrollTravel + pauseOnLastProject;
-      const totalHeight = windowHeight + totalScrollTravel;
-
-      containerRef.current.style.height = `${totalHeight}px`;
+      containerRef.current.style.height = `${windowHeight + scrollTravel + endDwell}px`;
 
       metricsRef.current = {
         maxTranslate,
-        horizontalScrollTravel,
-        totalScrollTravel,
+        scrollTravel,
+        endDwell,
         windowHeight,
       };
     };
 
-    // Continuous RAF animation loop with lerp (GPU accelerated translate3d, 0 lag)
-    const animate = () => {
-      const anim = animStateRef.current;
-      const diff = anim.targetX - anim.currentX;
-
-      if (Math.abs(diff) > 0.15) {
-        anim.currentX += diff * LERP_FACTOR;
-        if (trackRef.current) {
-          trackRef.current.style.transform = `translate3d(-${anim.currentX.toFixed(2)}px, 0, 0)`;
-        }
-        anim.rafId = requestAnimationFrame(animate);
-      } else {
-        anim.currentX = anim.targetX;
-        if (trackRef.current) {
-          trackRef.current.style.transform = `translate3d(-${anim.currentX.toFixed(2)}px, 0, 0)`;
-        }
-        anim.isAnimating = false;
-      }
-    };
-
-    // Passive scroll handler: computes targetX and wakes RAF loop if sleeping
-    const handleScroll = () => {
-      if (!containerRef.current || !trackRef.current) return;
-
-      const { maxTranslate, horizontalScrollTravel } = metricsRef.current;
+    const updateTargetFromScroll = () => {
+      if (!containerRef.current) return;
+      const { maxTranslate, scrollTravel } = metricsRef.current;
       if (maxTranslate <= 0) return;
 
       const rect = containerRef.current.getBoundingClientRect();
       const scrolled = -rect.top;
-      const anim = animStateRef.current;
+      const state = stateRef.current;
 
       if (scrolled <= 0) {
-        anim.targetX = 0;
-      } else if (scrolled >= horizontalScrollTravel) {
-        // Locked at Card 09 throughout the dwell buffer!
-        anim.targetX = maxTranslate;
+        state.targetX = 0;
+      } else if (scrolled >= scrollTravel) {
+        state.targetX = maxTranslate;
       } else {
-        // Smooth, slow, controlled gliding
-        const progress = scrolled / horizontalScrollTravel;
-        anim.targetX = progress * maxTranslate;
-      }
-
-      if (!anim.isAnimating) {
-        anim.isAnimating = true;
-        anim.rafId = requestAnimationFrame(animate);
+        state.targetX = (scrolled / scrollTravel) * maxTranslate;
       }
     };
 
-    // Immediate sync on initial render or resize without jump
+    // Smooth, high-performance animation loop (Zero lag, buttery 60/120fps, Lenis/Upmanyu feel)
+    const tick = () => {
+      const state = stateRef.current;
+      const track = trackRef.current;
+
+      if (!track) {
+        state.isLooping = false;
+        return;
+      }
+
+      updateTargetFromScroll();
+
+      const diff = state.targetX - state.currentX;
+
+      // 0.26 lerp: instantly responsive, zero lag, smooth wheel smoothing
+      if (Math.abs(diff) > 0.08) {
+        state.currentX += diff * 0.26;
+      } else {
+        state.currentX = state.targetX;
+      }
+
+      // Dynamic velocity tilt matching Upmanyu portfolio
+      const velocity = diff;
+      state.targetSkew = Math.max(-2.5, Math.min(2.5, velocity * 0.07));
+      state.skew += (state.targetSkew - state.skew) * 0.18;
+
+      track.style.transform = `translate3d(-${state.currentX.toFixed(2)}px, 0, 0)`;
+
+      // Continue animating until completely settled
+      if (Math.abs(diff) > 0.1 || Math.abs(state.skew) > 0.05) {
+        state.rafId = requestAnimationFrame(tick);
+      } else {
+        state.isLooping = false;
+      }
+    };
+
+    const onScroll = () => {
+      const state = stateRef.current;
+      if (!state.isLooping) {
+        state.isLooping = true;
+        state.rafId = requestAnimationFrame(tick);
+      }
+    };
+
     const syncImmediate = () => {
       updateMetrics();
-      if (!containerRef.current || !trackRef.current) return;
-      const { maxTranslate, horizontalScrollTravel } = metricsRef.current;
-      if (maxTranslate <= 0) return;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      const scrolled = -rect.top;
-      const anim = animStateRef.current;
-
-      let initialX = 0;
-      if (scrolled <= 0) {
-        initialX = 0;
-      } else if (scrolled >= horizontalScrollTravel) {
-        initialX = maxTranslate;
-      } else {
-        initialX = (scrolled / horizontalScrollTravel) * maxTranslate;
+      updateTargetFromScroll();
+      const state = stateRef.current;
+      state.currentX = state.targetX;
+      state.skew = 0;
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translate3d(-${state.currentX.toFixed(2)}px, 0, 0)`;
       }
-
-      anim.targetX = initialX;
-      anim.currentX = initialX;
-      trackRef.current.style.transform = `translate3d(-${initialX.toFixed(2)}px, 0, 0)`;
     };
 
     syncImmediate();
 
-    // Recompute after images load / layout finishes settling
     const timer1 = setTimeout(syncImmediate, 200);
     const timer2 = setTimeout(syncImmediate, 800);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     const onResize = () => {
       updateMetrics();
-      handleScroll();
+      onScroll();
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    // Automatically recalculate metrics as images finish loading
     let resizeObserver = null;
     if (typeof ResizeObserver !== 'undefined' && trackRef.current) {
       resizeObserver = new ResizeObserver(() => {
@@ -165,10 +145,10 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
       resizeObserver.observe(trackRef.current);
     }
 
-    // Support horizontal trackpad swipe seamlessly
+    // Support horizontal trackpad gestures
     const handleWheel = (e) => {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 12) {
-        window.scrollBy({ top: e.deltaX * 0.7, behavior: 'auto' });
+        window.scrollBy({ top: e.deltaX * 0.8, behavior: 'auto' });
       }
     };
     const containerEl = containerRef.current;
@@ -179,7 +159,7 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
       if (resizeObserver) {
         resizeObserver.disconnect();
@@ -187,8 +167,8 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
       if (containerEl) {
         containerEl.removeEventListener('wheel', handleWheel);
       }
-      if (animStateRef.current.rafId) {
-        cancelAnimationFrame(animStateRef.current.rafId);
+      if (stateRef.current.rafId) {
+        cancelAnimationFrame(stateRef.current.rafId);
       }
     };
   }, []);
@@ -219,10 +199,10 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
                 />
                 <defs>
                   <linearGradient id="projects-gradient-white-mix" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#ffffff" />
-                    <stop offset="25%" stopColor="#f472b6" />
-                    <stop offset="65%" stopColor="#a855f7" />
-                    <stop offset="100%" stopColor="#38bdf8" />
+                    <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+                    <stop offset="40%" stopColor="#f472b6" stopOpacity="0.9" />
+                    <stop offset="75%" stopColor="#a855f7" stopOpacity="0.95" />
+                    <stop offset="100%" stopColor="#38bdf8" stopOpacity="1" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -230,10 +210,10 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
           </h2>
         </div>
 
-        {/* Horizontal Sliding Track */}
+        {/* Sliding Stage */}
         <div className="h-projects-sliding-stage">
           <div className="h-projects-track" ref={trackRef}>
-            {/* 1. Intro Hero Column (slides left along with the cards) */}
+            {/* 1. Intro Callout Card */}
             <div className="h-project-intro-card">
               <div className="h-intro-inner">
                 <h2 className="h-intro-title">
@@ -253,12 +233,10 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
                   <span>Explore All Projects</span>
                   <ArrowRight size={15} />
                 </button>
-
-                
               </div>
             </div>
 
-            {/* 2. The 9 Featured Project Cards */}
+            {/* 2. The 13 Featured Project Cards */}
             {projectsCatalog.map((project, idx) => {
               const numStr = String(idx + 1).padStart(2, '0');
               return (
