@@ -33,7 +33,6 @@ export default function TeamPage({ setCurrentPage }) {
   });
   const [loading, setLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState('faculty'); // 'faculty' | 'leads' | 'core' | 'volunteers'
-  const [coreDomainFilter, setCoreDomainFilter] = useState('all'); // 'all' | 'Technical' | 'Management' | 'Creative'
   const [selectedIndex, setSelectedIndex] = useState(0);
   const trackRef = useRef(null);
 
@@ -62,14 +61,7 @@ export default function TeamPage({ setCurrentPage }) {
     };
   }, []);
 
-  const rawMembers = teamMembersData[activeCategory] || [];
-
-  // Filter core team members by domain if active
-  const currentMembers =
-    activeCategory === 'core' && coreDomainFilter !== 'all'
-      ? rawMembers.filter((m) => m.domain === coreDomainFilter)
-      : rawMembers;
-
+  const currentMembers = teamMembersData[activeCategory] || [];
   const validIndex = currentMembers.length > 0 ? Math.min(selectedIndex, currentMembers.length - 1) : 0;
   const currentMember = currentMembers[validIndex] || null;
 
@@ -91,19 +83,10 @@ export default function TeamPage({ setCurrentPage }) {
       const targetLeft = slotLeft - (trackWidth / 2) + (slotWidth / 2);
       track.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
     }
-  }, [validIndex, activeCategory, coreDomainFilter]);
+  }, [validIndex, activeCategory]);
 
   const handleCategoryChange = (catKey) => {
     setActiveCategory(catKey);
-    setCoreDomainFilter('all');
-    setSelectedIndex(0);
-    if (trackRef.current) {
-      trackRef.current.scrollTo({ left: 0, behavior: 'instant' });
-    }
-  };
-
-  const handleDomainFilterChange = (domKey) => {
-    setCoreDomainFilter(domKey);
     setSelectedIndex(0);
     if (trackRef.current) {
       trackRef.current.scrollTo({ left: 0, behavior: 'instant' });
@@ -145,12 +128,6 @@ export default function TeamPage({ setCurrentPage }) {
     return <span className="spotlight-name-gradient">{name}</span>;
   };
 
-  // Counts for core domain sub-buttons
-  const allCore = teamMembersData.core || [];
-  const techCount = allCore.filter((m) => m.domain === 'Technical').length;
-  const mgmtCount = allCore.filter((m) => m.domain === 'Management').length;
-  const creativeCount = allCore.filter((m) => m.domain === 'Creative').length;
-
   return (
     <div className="gdg-team-page">
       {/* Background Grid Pattern (Only clean gridlines) */}
@@ -180,10 +157,6 @@ export default function TeamPage({ setCurrentPage }) {
 
               {/* Right: Info & Bio */}
               <div className="spotlight-details">
-                <div className="spotlight-role-pill">
-                  <span>{currentMember.role}</span>
-                </div>
-
                 <h1 className="spotlight-greeting">Hi, my name is</h1>
 
                 <h2 className="spotlight-name">
@@ -310,7 +283,7 @@ export default function TeamPage({ setCurrentPage }) {
             className={`team-category-nav-btn ${activeCategory === 'core' ? 'active' : ''}`}
             onClick={() => handleCategoryChange('core')}
           >
-            Core Team ({allCore.length})
+            Core Team ({(teamMembersData.core || []).length})
           </button>
 
           <button
@@ -320,44 +293,6 @@ export default function TeamPage({ setCurrentPage }) {
             Volunteers ({(teamMembersData.volunteers || []).length})
           </button>
         </div>
-
-        {/* =================================================================
-             2b. Core Team Domain Sub-Buttons (Technical | Management | Creative)
-             ================================================================= */}
-        {activeCategory === 'core' && (
-          <div className="team-subdomain-nav-bar" aria-label="Core Team Domain Filter">
-            <button
-              className={`team-subdomain-pill ${coreDomainFilter === 'all' ? 'active' : ''}`}
-              onClick={() => handleDomainFilterChange('all')}
-            >
-              <span>All Core ({allCore.length})</span>
-            </button>
-
-            <button
-              className={`team-subdomain-pill ${coreDomainFilter === 'Technical' ? 'active' : ''}`}
-              onClick={() => handleDomainFilterChange('Technical')}
-            >
-              <span className="subdomain-dot dot-cyan"></span>
-              <span>Technical ({techCount})</span>
-            </button>
-
-            <button
-              className={`team-subdomain-pill ${coreDomainFilter === 'Management' ? 'active' : ''}`}
-              onClick={() => handleDomainFilterChange('Management')}
-            >
-              <span className="subdomain-dot dot-orange"></span>
-              <span>Management ({mgmtCount})</span>
-            </button>
-
-            <button
-              className={`team-subdomain-pill ${coreDomainFilter === 'Creative' ? 'active' : ''}`}
-              onClick={() => handleDomainFilterChange('Creative')}
-            >
-              <span className="subdomain-dot dot-pink"></span>
-              <span>Creative ({creativeCount})</span>
-            </button>
-          </div>
-        )}
 
         {/* =================================================================
              3. Interactive Avatar Carousel Track

@@ -40,6 +40,7 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
             { id: 'footer', name: 'Footer' },
             { id: 'community', name: 'Footer' },
             { id: 'gallery', name: 'CICR Diaries' },
+            { id: 'featured-projects', name: 'Projects' },
             { id: 'memories', name: 'Memories' }
           ];
 
@@ -106,7 +107,7 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
       {/* Outer Header Wrapper: changes between Full-Width (1st SS) and Floating Island Capsule (2nd SS) */}
       <header className={`jodc-navbar-outer ${isScrolled ? 'scrolled-island-mode' : 'top-bar-mode'}`}>
         <div className="jodc-navbar-capsule">
-          {/* Left: Official CICR Stencil Logo + Orange Dot + Subheading */}
+          {/* Left: Official CICR Stencil Logo + Orange Dot + Subheading (Aligned Text Column) */}
           <div
             className="jodc-nav-brand"
             onClick={() => handleNavClick('home')}
@@ -114,20 +115,22 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
             tabIndex={0}
             title="CICR - The Robotic Society of JIIT 128"
           >
-            <div className="jodc-brand-logo-row">
-              <img
-                src={cicrLogo}
-                alt="CICR Logo"
-                className="jodc-brand-logo-img"
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/cicr-logo.png';
-                }}
-              />
-              <span className="jodc-brand-title-text">CICR</span>
-              <span className="brand-dot-orange">.</span>
+            <img
+              src={cicrLogo}
+              alt="CICR Logo"
+              className="jodc-brand-logo-img"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/cicr-logo.png';
+              }}
+            />
+            <div className="jodc-brand-text-col">
+              <div className="jodc-brand-logo-row">
+                <span className="jodc-brand-title-text">CICR</span>
+                <span className="brand-dot-orange">.</span>
+              </div>
+              <span className="jodc-brand-subheading">The Robotic Society of JIIT 128</span>
             </div>
-            <span className="jodc-brand-subheading">The Robotic Society of JIIT 128</span>
           </div>
 
           {/* Center: Nav Links Dock */}
@@ -146,7 +149,7 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
               )}
             </button>
 
-            {/* 2. Events (Between Home & Team Page) */}
+            {/* 2. Events */}
             <button
               className={`jodc-dock-item ${currentPage === 'events' ? 'active-pill' : ''}`}
               onClick={() => handleNavClick('events')}
@@ -154,20 +157,20 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
               <span>Events</span>
             </button>
 
-            {/* 3. Team */}
-            <button
-              className={`jodc-dock-item ${currentPage === 'team' ? 'active-pill' : ''}`}
-              onClick={() => handleNavClick('team')}
-            >
-              <span>Team</span>
-            </button>
-
-            {/* 4. Projects */}
+            {/* 3. Projects */}
             <button
               className={`jodc-dock-item ${currentPage === 'projects' ? 'active-pill' : ''}`}
               onClick={() => handleNavClick('projects')}
             >
               <span>Projects</span>
+            </button>
+
+            {/* 4. Team */}
+            <button
+              className={`jodc-dock-item ${currentPage === 'team' ? 'active-pill' : ''}`}
+              onClick={() => handleNavClick('team')}
+            >
+              <span>Team</span>
             </button>
 
             {/* 5. Inventory */}
@@ -319,20 +322,12 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
                   <span>Home</span>
                 </button>
 
-                {/* Events (Between Home & Team Page) */}
+                {/* Events */}
                 <button
                   className={`jodc-mobile-nav-item ${currentPage === 'events' ? 'active-orange' : ''}`}
                   onClick={() => handleNavClick('events')}
                 >
                   <span>Events</span>
-                </button>
-
-                {/* Team */}
-                <button
-                  className={`jodc-mobile-nav-item ${currentPage === 'team' ? 'active-orange' : ''}`}
-                  onClick={() => handleNavClick('team')}
-                >
-                  <span>Team</span>
                 </button>
 
                 {/* Projects */}
@@ -341,6 +336,14 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
                   onClick={() => handleNavClick('projects')}
                 >
                   <span>Projects</span>
+                </button>
+
+                {/* Team */}
+                <button
+                  className={`jodc-mobile-nav-item ${currentPage === 'team' ? 'active-orange' : ''}`}
+                  onClick={() => handleNavClick('team')}
+                >
+                  <span>Team</span>
                 </button>
 
                 {/* Inventory with SPOTLIGHT badge */}

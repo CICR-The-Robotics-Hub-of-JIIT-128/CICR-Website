@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Exactly 7 items for the 3D gallery with the user's authentic CICR photos
+// Authentic CICR Moments for the 3D Diaries Gallery
 const GALLERY_ITEMS = [
   {
     id: 1,
@@ -15,7 +15,6 @@ const GALLERY_ITEMS = [
   },
   {
     id: 3,
-    // 3rd Picture: DRON-O-WAR 1.0 Registration Desk at JIIT-128
     image: '/gallery/cicr-moment-3.jpg',
     fallbackBg: 'linear-gradient(145deg, #1c140d 0%, #2f2015 100%)'
   },
@@ -33,6 +32,81 @@ const GALLERY_ITEMS = [
     id: 7,
     image: '/gallery/cicr-moment-7.jpg',
     fallbackBg: 'linear-gradient(145deg, #220610 0%, #3a0d1e 100%)'
+  },
+  {
+    id: 8,
+    image: '/gallery/cicr-moment-8.jpg',
+    fallbackBg: 'linear-gradient(145deg, #1e1b4b 0%, #312e81 100%)'
+  },
+  {
+    id: 9,
+    image: '/gallery/cicr-moment-9.jpg',
+    fallbackBg: 'linear-gradient(145deg, #0f172a 0%, #1e293b 100%)'
+  },
+  {
+    id: 10,
+    image: '/gallery/cicr-moment-10.jpg',
+    fallbackBg: 'linear-gradient(145deg, #18181b 0%, #27272a 100%)'
+  },
+  {
+    id: 11,
+    image: '/gallery/cicr-moment-11.jpg',
+    fallbackBg: 'linear-gradient(145deg, #172554 0%, #1e3a8a 100%)'
+  },
+  {
+    id: 12,
+    image: '/gallery/cicr-moment-12.jpg',
+    fallbackBg: 'linear-gradient(145deg, #042f2e 0%, #115e59 100%)'
+  },
+  {
+    id: 13,
+    image: '/gallery/cicr-moment-13.jpg',
+    fallbackBg: 'linear-gradient(145deg, #2e1065 0%, #4c1d95 100%)'
+  },
+  {
+    id: 14,
+    image: '/gallery/cicr-moment-14.jpg',
+    fallbackBg: 'linear-gradient(145deg, #1c1917 0%, #292524 100%)'
+  },
+  {
+    id: 15,
+    image: '/gallery/cicr-moment-15.jpg',
+    fallbackBg: 'linear-gradient(145deg, #14532d 0%, #166534 100%)'
+  },
+  {
+    id: 16,
+    image: '/gallery/cicr-moment-16.jpg',
+    fallbackBg: 'linear-gradient(145deg, #3b0764 0%, #581c87 100%)'
+  },
+  {
+    id: 17,
+    image: '/gallery/cicr-moment-17.jpg',
+    fallbackBg: 'linear-gradient(145deg, #022c22 0%, #064e3b 100%)'
+  },
+  {
+    id: 18,
+    image: '/gallery/cicr-moment-18.jpg',
+    fallbackBg: 'linear-gradient(145deg, #1e1b4b 0%, #312e81 100%)'
+  },
+  {
+    id: 19,
+    image: '/gallery/cicr-moment-19.jpg',
+    fallbackBg: 'linear-gradient(145deg, #1c1917 0%, #292524 100%)'
+  },
+  {
+    id: 20,
+    image: '/gallery/cicr-moment-20.jpg',
+    fallbackBg: 'linear-gradient(145deg, #172554 0%, #1e3a8a 100%)'
+  },
+  {
+    id: 21,
+    image: '/gallery/cicr-moment-21.jpg',
+    fallbackBg: 'linear-gradient(145deg, #3b0764 0%, #581c87 100%)'
+  },
+  {
+    id: 22,
+    image: '/gallery/cicr-moment-22.jpg',
+    fallbackBg: 'linear-gradient(145deg, #18181b 0%, #27272a 100%)'
   }
 ];
 

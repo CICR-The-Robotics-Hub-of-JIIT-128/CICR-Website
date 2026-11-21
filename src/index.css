@@ -8124,3 +8124,566 @@ button {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+
+
+/* ===================================================================
+   NAVBAR BRAND ALIGNMENT
+   =================================================================== */
+.jodc-nav-brand {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.jodc-brand-logo-img {
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.jodc-brand-text-col {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+}
+
+.jodc-brand-logo-row {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 2px !important;
+}
+
+.jodc-brand-title-text {
+  font-family: var(--font-heading, 'Orbitron', sans-serif);
+  font-size: 1.22rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.jodc-brand-subheading {
+  display: block !important;
+  font-size: 0.56rem !important;
+  letter-spacing: 0.04em !important;
+  color: #94a3b8 !important;
+  font-weight: 500 !important;
+  margin-top: 2px !important;
+  white-space: nowrap !important;
+  opacity: 0.85 !important;
+  line-height: 1 !important;
+}
+
+/* ===================================================================
+   PROJECTS PAGE SIMPLE HERO & CARD ENHANCEMENTS
+   =================================================================== */
+.projects-hero-header-simple {
+  text-align: center;
+  padding: 24px 0 48px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.projects-simple-headline {
+  font-family: var(--font-heading, 'Orbitron', sans-serif);
+  font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  line-height: 1.2;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.projects-headline-serif {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  background: linear-gradient(100deg, #ffffff 0%, #ffffff 22%, #f472b6 48%, #a855f7 74%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.projects-headline-underline {
+  position: absolute;
+  left: -2%;
+  bottom: -4px;
+  width: 104%;
+  height: 18px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.projects-page-content-wrapper {
+  padding-bottom: 160px;
+}
+
+.project-card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 210px;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.project-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cicr-project-card:hover .project-card-img {
+  transform: scale(1.05);
+}
+
+.project-card-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 65%, rgba(10, 12, 16, 0.8) 100%);
+  pointer-events: none;
+}
+
+.project-img-status-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(10, 14, 23, 0.88);
+  border: 1px solid rgba(255, 96, 28, 0.5);
+  color: #ff8a4c;
+  font-size: 0.68rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.project-card-subtitle {
+  font-size: 0.74rem;
+  color: #38bdf8;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.project-achievement-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  color: #fbbf24;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.achievement-icon {
+  flex-shrink: 0;
+  color: #f59e0b;
+}
+
+/* ===================================================================
+   HORIZONTAL PINNED SCROLL PROJECTS SHOWCASE (LANDING PAGE)
+   =================================================================== */
+.horizontal-projects-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  height: 420vh;
+  background: transparent;
+  z-index: 10;
+}
+
+.horizontal-sticky-viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: clamp(16px, 3vh, 32px);
+  padding-bottom: clamp(75px, 11vh, 95px);
+  box-sizing: border-box;
+  background-color: #06070a;
+  background-size: 38px 38px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.h-projects-header-centered {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 20;
+  pointer-events: none;
+  padding: 0 20px;
+  margin-bottom: clamp(6px, 1.6vh, 16px);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.h-projects-title-heading {
+  margin: 0;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+}
+
+.h-projects-accent-serif {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+  line-height: 1.15;
+  background: linear-gradient(100deg, #ffffff 0%, #ffffff 22%, #f472b6 48%, #a855f7 74%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.h-projects-underline-svg {
+  position: absolute;
+  left: -2%;
+  bottom: -4px;
+  width: 104%;
+  height: 18px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.h-projects-sliding-stage {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  min-height: 0;
+}
+
+.h-projects-track {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: clamp(14px, 1.8vw, 24px);
+  padding: 0 clamp(20px, 4vw, 50px);
+  will-change: transform;
+}
+
+.h-project-intro-card {
+  flex-shrink: 0;
+  width: clamp(280px, 26vw, 380px);
+  max-width: 85vw;
+  height: clamp(355px, 49vh, 395px);
+  margin-right: clamp(12px, 2vw, 28px);
+  padding: 10px 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.h-intro-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+}
+
+.h-intro-title {
+  font-family: var(--font-heading, 'Orbitron', sans-serif);
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  line-height: 1.05;
+  margin: 0 0 clamp(10px, 1.8vh, 18px);
+}
+
+.h-intro-serif {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.h-intro-desc {
+  font-size: clamp(0.88rem, 1.1vw, 1.02rem);
+  color: #94a3b8;
+  line-height: 1.55;
+  margin: 0 0 clamp(16px, 2.5vh, 26px);
+  max-width: 360px;
+}
+
+.h-intro-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+}
+
+.h-intro-cta-btn:hover {
+  background: #ff601c;
+  border-color: #ff601c;
+  color: #06070a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 96, 28, 0.4);
+}
+
+/* Individual Horizontal Project Card (Uniform dimensions matching 13th box) */
+.h-project-card {
+  flex-shrink: 0;
+  width: clamp(310px, 24vw, 360px);
+  max-width: 85vw;
+  height: clamp(355px, 49vh, 395px);
+  background: rgba(14, 17, 24, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: clamp(10px, 1.4vh, 14px);
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.h-project-card:hover {
+  transform: translateY(-6px) scale(1.018);
+  border-color: rgba(255, 96, 28, 0.55);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(255, 96, 28, 0.18);
+}
+
+.h-card-image-box {
+  position: relative;
+  width: 100%;
+  height: clamp(155px, 22vh, 195px);
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #090b10;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.h-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.h-project-card:hover .h-card-img {
+  transform: scale(1.07);
+}
+
+.h-card-img-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(10, 12, 16, 0.9) 100%);
+  pointer-events: none;
+}
+
+.h-card-award-ribbon {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245, 158, 11, 0.94);
+  color: #0b0c10;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 7px;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  line-height: 1.25;
+}
+
+.h-card-award-ribbon .award-icon {
+  flex-shrink: 0;
+  color: #0b0c10;
+}
+
+.h-card-award-ribbon .award-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.h-card-footer-meta {
+  padding: 10px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.h-card-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 3px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.h-card-subtitle-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.h-card-index-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 44px;
+}
+
+.h-num-accent {
+  color: #ff601c;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.h-title-text {
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.h-sub-text {
+  color: #38bdf8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.h-card-short-idea {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .horizontal-projects-scroll-wrapper {
+    height: 380vh;
+  }
+  .horizontal-sticky-viewport {
+    padding-top: 14px;
+    padding-bottom: 80px;
+  }
+  .h-projects-header-centered {
+    margin-bottom: 10px;
+  }
+  .h-projects-track {
+    padding: 0 16px;
+    gap: 16px;
+  }
+  .h-project-intro-card {
+    width: 290px;
+    margin-right: 16px;
+  }
+  .h-intro-title {
+    font-size: 2.2rem;
+  }
+  .h-intro-desc {
+    font-size: 0.88rem;
+  }
+  .h-project-card {
+    width: 280px;
+  }
+  .h-card-image-box {
+    height: 165px;
+  }
+}
+
+/* Smooth transition for memory video card shell */
+.memory-card-shell {
+  position: relative;
+  overflow: hidden;
+  background: #000000;
+  transition: width 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+              border-radius 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.38s ease,
+              transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease;
+  transform-origin: center center;
+  margin: 0 auto;
+  box-sizing: border-box;
+  will-change: width, transform, border-radius;
+}
+
+/* Landing wrapper overflow-x protection */
+.jodc-landing-wrapper {
+  overflow-x: clip;
+}

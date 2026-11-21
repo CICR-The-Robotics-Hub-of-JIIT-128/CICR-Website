@@ -1,9 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
+import { teamData } from '../data/teamData.js';
 
 // Fetch Supabase configuration strictly from environment variables
 // NEVER hardcode credentials in code files
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) || (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_URL) || '';
+const supabaseAnonKey = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) || (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_ANON_KEY) || '';
 
 // Initialize Supabase Client
 export const supabase = (supabaseUrl && supabaseAnonKey)
@@ -176,6 +177,50 @@ export async function fetchTeamMembers() {
           instagram: m.instagram_url
         });
       });
+      if (teamData) {
+        ['faculty', 'leads', 'core', 'volunteers'].forEach((cat) => {
+          if (grouped[cat] && teamData[cat]) {
+            const orderMap = new Map();
+            teamData[cat].forEach((tm, idx) => {
+              if (tm.id) orderMap.set(String(tm.id).toLowerCase().trim(), idx);
+              if (tm.name) orderMap.set(String(tm.name).toLowerCase().trim(), idx);
+            });
+            grouped[cat] = grouped[cat]
+              .map((item) => {
+                const key_id = item.id ? String(item.id).toLowerCase().trim() : '';
+                const key_name = item.name ? String(item.name).toLowerCase().trim() : '';
+                const curated = teamData[cat].find((tm) => {
+                  const tm_id = tm.id ? String(tm.id).toLowerCase().trim() : '';
+                  const tm_name = tm.name ? String(tm.name).toLowerCase().trim() : '';
+                  return (
+                    (key_id && tm_id && (key_id === tm_id || key_id.includes(tm_id) || tm_id.includes(key_id))) ||
+                    (key_name && tm_name && (key_name === tm_name || key_name.includes(tm_name) || tm_name.includes(key_name)))
+                  );
+                });
+                if (curated) {
+                  return {
+                    ...item,
+                    role: curated.role || item.role,
+                    image:
+                      item.image && typeof item.image === 'string' && item.image.trim() !== '' && item.image !== 'null'
+                        ? item.image
+                        : curated.image || item.image,
+                  };
+                }
+                return item;
+              })
+              .sort((a, b) => {
+                const keyA_id = a.id ? String(a.id).toLowerCase().trim() : '';
+                const keyA_name = a.name ? String(a.name).toLowerCase().trim() : '';
+                const keyB_id = b.id ? String(b.id).toLowerCase().trim() : '';
+                const keyB_name = b.name ? String(b.name).toLowerCase().trim() : '';
+                const orderA = orderMap.has(keyA_id) ? orderMap.get(keyA_id) : (orderMap.has(keyA_name) ? orderMap.get(keyA_name) : 999);
+                const orderB = orderMap.has(keyB_id) ? orderMap.get(keyB_id) : (orderMap.has(keyB_name) ? orderMap.get(keyB_name) : 999);
+                return orderA - orderB;
+              });
+          }
+        });
+      }
       return grouped;
     }
     return emptyGroup;

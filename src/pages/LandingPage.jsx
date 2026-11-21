@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import CommunityJoinCard from '../components/CommunityJoinCard';
 import Canvas3D from '../components/Canvas3D';
 import CoverflowGallery from '../components/CoverflowGallery';
+import HorizontalProjectsSection from '../components/HorizontalProjectsSection';
 import {
   ExternalLink,
   ArrowRight,
@@ -378,7 +379,12 @@ export default function LandingPage({ setCurrentPage, onOpenChat }) {
       </section>
 
       {/* =================================================================
-           3. 3D COVERFLOW GALLERY (Advanced Media Gallery like CodeCanyon 3D Photo Scroll)
+           3. HORIZONTAL SCROLL PROJECTS SHOWCASE (Upmanyu Portfolio Reference)
+           ================================================================= */}
+      <HorizontalProjectsSection setCurrentPage={setCurrentPage} />
+
+      {/* =================================================================
+           4. 3D COVERFLOW GALLERY (Advanced Media Gallery like CodeCanyon 3D Photo Scroll)
            ================================================================= */}
       <CoverflowGallery />
 
