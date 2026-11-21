@@ -20,6 +20,11 @@ dist/
 *.p8
 *.p12
 
+# Supabase database schemas & queries
+supabase/
+**/supabase/
+*.sql
+
 # System & runtime
 venv/
 __pycache__/
