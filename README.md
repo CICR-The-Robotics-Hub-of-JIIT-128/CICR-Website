@@ -62,6 +62,27 @@ CICR-Website/
 - Integrated React glassmorphic modal assistant with instant client-side responses powered by CICR's knowledge base.
 - Quick prompt chips for *Recruitment 2026*, *TechTonic Bootcamp*, *Inventory Portal*, *Room 140 Lab*, and *Bot Fleet*.
 
+### 6. 📜 Certificate Verification System (`/certificate/:id`)
+- **Public Verification Portal**: Standalone route displaying recipient credentials, award citations, issue timestamps, and interactive Google Drive PDF preview.
+- **Cinematic Transition**: Starts with the full-screen CICR animation video preloader before seamlessly revealing the verified credential.
+- **Serverless API Engine**: Backend endpoint at `GET /api/certificates/[id]` running on Vercel Serverless Functions querying Supabase securely.
+- **Batch Generator**: Dedicated offline generation engine located in `techtonic2.0_certificates/` (see [`techtonic2.0_certificates/README.md`](techtonic2.0_certificates/README.md)).
+
+---
+
+## 🔑 Environment Variables
+
+For Vercel deployment and local verification API support:
+
+```env
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+> [!NOTE]
+> Supabase keys do **not** use the `VITE_` prefix to ensure they are strictly accessed server-side and never exposed to client-side bundles.
+
 ---
 
 ## 🛠️ Modern Tech Stack
