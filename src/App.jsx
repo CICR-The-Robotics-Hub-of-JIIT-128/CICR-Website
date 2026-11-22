@@ -139,19 +139,19 @@ export default function App() {
 
   return (
     <div className="cicr-app-root">
-      {/* Certificate verification page — standalone, no preloader/navbar/footer */}
-      {currentPage === 'certificate' && (
+      {/* Starting Video Animation Preloader (plays first for all routes) */}
+      {showPreloader && (
+        <Preloader onComplete={() => setShowPreloader(false)} />
+      )}
+
+      {/* Certificate verification page — shown after the video animation finishes */}
+      {!showPreloader && currentPage === 'certificate' && (
         <CertificatePage certificateId={certificateId} />
       )}
 
       {/* All other pages with the standard CICR chrome */}
-      {currentPage !== 'certificate' && (
+      {!showPreloader && currentPage !== 'certificate' && (
         <>
-          {/* Starting Video Animation Preloader */}
-          {showPreloader && (
-            <Preloader onComplete={() => setShowPreloader(false)} />
-          )}
-
           {/* Universal Swipe & Multi-Back Exit Guard */}
           <ExitGuard
             currentPage={currentPage}
@@ -159,13 +159,11 @@ export default function App() {
           />
 
           {/* Fixed Header */}
-          {!showPreloader && (
-            <Navbar
-              currentPage={currentPage}
-              setCurrentPage={handlePageChange}
-              onOpenChat={() => setIsChatOpen(true)}
-            />
-          )}
+          <Navbar
+            currentPage={currentPage}
+            setCurrentPage={handlePageChange}
+            onOpenChat={() => setIsChatOpen(true)}
+          />
 
           {/* Main Routed Page Content */}
           <main className="cicr-main-content">
@@ -199,7 +197,7 @@ export default function App() {
           />
 
           {/* Floating Chatbot Widget in Bottom Right Corner (from previous-code) */}
-          {!showPreloader && <Chatbot />}
+          <Chatbot />
         </>
       )}
     </div>
