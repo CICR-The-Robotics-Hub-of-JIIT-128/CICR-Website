@@ -23,7 +23,7 @@ const ROLE_DESCRIPTIONS = {
       'This certificate is awarded for the successful completion of TechTonic 2.0 — a three-day hands-on workshop on Artificial Intelligence, Computer Vision and Edge AI, organised by CICR (Creative & Innovative Cell in Robotics) at Jaypee Institute of Information Technology, Sector 128, Noida. The recipient engaged in intensive practical learning sessions, project development, and demonstrated dedication throughout the programme.',
     color: '#00f0ff',
     glow: 'rgba(0, 240, 255, 0.35)',
-    badge: '🎓',
+    badge: '',
   },
   team_member: {
     label: 'Core Team Member',
@@ -32,7 +32,7 @@ const ROLE_DESCRIPTIONS = {
       "This certificate is awarded in recognition of outstanding dedication and contribution as a core team member of CICR towards the planning, coordination, and successful execution of TechTonic 2.0 — the three-day hands-on workshop on Artificial Intelligence, Computer Vision and Edge AI. The recipient's commitment and hard work were instrumental in making the event a success.",
     color: '#a855f7',
     glow: 'rgba(168, 85, 247, 0.35)',
-    badge: '⭐',
+    badge: '',
   },
 };
 
@@ -109,15 +109,60 @@ export default function CertificatePage({ certificateId, setCurrentPage }) {
     fetchCertificate();
   }, [fetchCertificate]);
 
-  const copyCertificateId = () => {
+  const copyCertificateId = async () => {
     if (!certData?.certificate_id) return;
-    navigator.clipboard.writeText(certData.certificate_id);
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(certData.certificate_id);
+      } else {
+        throw new Error('Fallback needed');
+      }
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = certData.certificate_id;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
     setCopiedId(true);
     setTimeout(() => setCopiedId(false), 2000);
   };
 
-  const copyVerificationUrl = () => {
-    navigator.clipboard.writeText(window.location.href);
+  const copyVerificationUrl = async () => {
+    const url = window.location.href;
+    // Native Mobile Share Sheet on mobile phones/tablets
+    if (navigator.share && /mobile|android|iphone|ipad|ipod/i.test(navigator.userAgent)) {
+      try {
+        await navigator.share({
+          title: `${certData?.name || 'Certificate'} - ${roleInfo?.title || 'TechTonic 2.0'} | CICR`,
+          text: `Verify official credential for ${certData?.name || 'Participant'} issued by CICR (JIIT Sector 128).`,
+          url,
+        });
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        throw new Error('Fallback needed');
+      }
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
   };
@@ -157,8 +202,14 @@ export default function CertificatePage({ certificateId, setCurrentPage }) {
               }
               setTimeout(() => {
                 const el = document.getElementById('techtonic-2');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }, 120);
+                if (el) {
+                  if (window.lenisInstance) {
+                    window.lenisInstance.scrollTo(el, { offset: -70, duration: 1.2 });
+                  } else {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }
+              }, 150);
             }}
           >
             TechTonic 2.0
@@ -243,104 +294,80 @@ export default function CertificatePage({ certificateId, setCurrentPage }) {
               >
                 {/* Left: Main Award & Recipient Details */}
                 <div className="cert-main-details-col">
-                  <div className="cert-event-tag">TechTonic 2.0 · CICR · JIIT-128</div>
-
+                  <div className="cert-award-kicker">Official Credential</div>
                   <h1 className="cert-awarded-heading">{roleInfo.title}</h1>
 
-                  <div className="cert-awarded-label">Awarded to</div>
-                  <h2 className="cert-recipient-name-large">
-                    <span className="spotlight-name-gradient">{certData.name}</span>
-                  </h2>
+                  <div className="cert-awarded-recipient-wrap">
+                    <span className="cert-awarded-label">Proudly Awarded to</span>
+                    <h2 className="cert-recipient-name-large">
+                      <span className="spotlight-name-gradient">{certData.name}</span>
+                    </h2>
+                  </div>
 
                   <div className="cert-description-box">
                     <p className="cert-description-text">{roleInfo.description}</p>
                   </div>
                 </div>
 
-                {/* Right: Metadata Cards & Quick Actions */}
+                {/* Right: Specifications & Quick Actions */}
                 <div className="cert-sidebar-meta-col">
-                  <div className="cert-meta-cards-grid">
-                    {/* Certificate ID */}
-                    <div className="cert-meta-stat-card">
-                      <div className="cert-meta-stat-header">
-                        <Hash size={15} className="cert-meta-stat-icon" />
-                        <span className="cert-meta-stat-label">Certificate ID</span>
-                      </div>
-                      <div className="cert-meta-stat-body">
+                  <div className="cert-specs-card">
+                    {/* Certificate ID in 1 single line */}
+                    <div className="cert-spec-item">
+                      <div className="cert-spec-left">
+                        <Hash size={14} className="cert-spec-icon" />
+                        <span className="cert-spec-label">Certificate ID:</span>
                         <span className="cert-id-mono">{certData.certificate_id}</span>
-                        <button
-                          type="button"
-                          onClick={copyCertificateId}
-                          className="cert-id-copy-btn"
-                          title="Copy Certificate ID"
-                        >
-                          {copiedId ? <Check size={14} className="cert-text-emerald" /> : <Copy size={14} />}
-                        </button>
                       </div>
+                      <button
+                        type="button"
+                        onClick={copyCertificateId}
+                        className="cert-id-copy-btn"
+                        title="Copy Certificate ID"
+                      >
+                        {copiedId ? <Check size={13} className="cert-text-emerald" /> : <Copy size={13} />}
+                      </button>
                     </div>
 
-                    {/* Role Track */}
-                    <div className="cert-meta-stat-card">
-                      <div className="cert-meta-stat-header">
-                        <Award size={15} className="cert-meta-stat-icon" />
-                        <span className="cert-meta-stat-label">Award Track</span>
-                      </div>
-                      <div className="cert-meta-stat-body">
+                    <div className="cert-spec-divider" />
+
+                    {/* Award Track in 1 single line */}
+                    <div className="cert-spec-item">
+                      <div className="cert-spec-left">
+                        <Award size={14} className="cert-spec-icon" />
+                        <span className="cert-spec-label">Award Track:</span>
                         <span
                           className="cert-role-chip"
                           style={{
-                            background: `${roleInfo.color}1f`,
-                            borderColor: `${roleInfo.color}44`,
+                            background: `${roleInfo.color}15`,
+                            borderColor: `${roleInfo.color}35`,
                             color: roleInfo.color,
                           }}
                         >
-                          {roleInfo.badge} {roleInfo.label}
+                          {roleInfo.label}
                         </span>
                       </div>
                     </div>
 
-                    {/* Issue Date */}
+                    {/* Issue Date in 1 single line */}
                     {certData.issued_at && (
-                      <div className="cert-meta-stat-card">
-                        <div className="cert-meta-stat-header">
-                          <Calendar size={15} className="cert-meta-stat-icon" />
-                          <span className="cert-meta-stat-label">Issued Date</span>
+                      <>
+                        <div className="cert-spec-divider" />
+                        <div className="cert-spec-item">
+                          <div className="cert-spec-left">
+                            <Calendar size={14} className="cert-spec-icon" />
+                            <span className="cert-spec-label">Issued Date:</span>
+                            <span className="cert-spec-val">
+                              {new Date(certData.issued_at).toLocaleDateString('en-IN', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                              })}
+                            </span>
+                          </div>
                         </div>
-                        <div className="cert-meta-stat-body">
-                          <span className="cert-meta-stat-val">
-                            {new Date(certData.issued_at).toLocaleDateString('en-IN', {
-                              day: 'numeric',
-                              month: 'long',
-                              year: 'numeric',
-                            })}
-                          </span>
-                        </div>
-                      </div>
+                      </>
                     )}
-                  </div>
-
-                  {/* Actions Column */}
-                  <div className="cert-actions-cluster">
-                    {pdfAvailable && driveViewUrl && (
-                      <a
-                        href={driveViewUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="cert-primary-action-btn"
-                      >
-                        <ExternalLink size={16} />
-                        <span>Open Full Certificate PDF</span>
-                      </a>
-                    )}
-
-                    <button
-                      type="button"
-                      onClick={copyVerificationUrl}
-                      className="cert-secondary-action-btn"
-                    >
-                      {copiedLink ? <Check size={16} className="cert-text-emerald" /> : <Share2 size={16} />}
-                      <span>{copiedLink ? 'Verification URL Copied!' : 'Copy Verification URL'}</span>
-                    </button>
                   </div>
                 </div>
               </div>

@@ -124,6 +124,12 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
           <div
             className="jodc-nav-brand"
             onClick={() => handleNavClick('home')}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleNavClick('home');
+              }
+            }}
             role="button"
             tabIndex={0}
             title="CICR - The Robotic Society of JIIT 128"
@@ -328,6 +334,12 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
               <div
                 className="jodc-nav-brand jodc-mobile-modal-brand"
                 onClick={() => handleNavClick('home')}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleNavClick('home');
+                  }
+                }}
                 role="button"
                 tabIndex={0}
               >
