@@ -30,6 +30,13 @@ venv/
 __pycache__/
 scratch/
 
-# TechTonic 2.0 certificate generation tool (local Python generator only — not needed for website verification)
-techtonic2.0_certificates/
+# TechTonic 2.0 certificate generator private outputs & secrets (never committed to git)
+techtonic2.0_certificates/.env
+techtonic2.0_certificates/.env.*
+techtonic2.0_certificates/credentials/
+techtonic2.0_certificates/output/
+techtonic2.0_certificates/venv/
+techtonic2.0_certificates/__pycache__/
+!techtonic2.0_certificates/schema.sql
+!techtonic2.0_certificates/.env.example
 
