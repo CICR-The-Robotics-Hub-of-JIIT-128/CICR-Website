@@ -36,41 +36,41 @@ from datetime import datetime, timezone
 
 # ── Dependency checks ────────────────────────────────────────────────────────
 try:
-    import pymupdf as fitz
+    import pymupdf as fitz  # type: ignore[import-not-found,import-untyped]
 except ImportError:
     try:
-        import fitz
+        import fitz  # type: ignore[import-not-found,import-untyped]
     except ImportError:
         sys.exit("ERROR: PyMuPDF not installed. Run: pip install pymupdf")
 
 try:
-    import qrcode
-    from qrcode.image.pil import PilImage
+    import qrcode  # type: ignore[import-not-found,import-untyped]
+    from qrcode.image.pil import PilImage  # type: ignore[import-not-found,import-untyped]
 except ImportError:
     sys.exit("ERROR: qrcode not installed. Run: pip install qrcode[pil]")
 
 try:
-    from PIL import Image
+    from PIL import Image  # type: ignore[import-not-found,import-untyped]
 except ImportError:
     sys.exit("ERROR: Pillow not installed. Run: pip install pillow")
 
 try:
-    from supabase import create_client, Client
+    from supabase import create_client, Client  # type: ignore[import-not-found,import-untyped]
 except ImportError:
     sys.exit("ERROR: supabase not installed. Run: pip install supabase")
 
 try:
-    from googleapiclient.discovery import build
-    from googleapiclient.http import MediaIoBaseUpload
-    from google.oauth2 import service_account
-    from google.oauth2.credentials import Credentials
-    from google.auth.transport.requests import Request
-    from google_auth_oauthlib.flow import InstalledAppFlow
+    from googleapiclient.discovery import build  # type: ignore[import-not-found,import-untyped]
+    from googleapiclient.http import MediaIoBaseUpload  # type: ignore[import-not-found,import-untyped]
+    from google.oauth2 import service_account  # type: ignore[import-not-found,import-untyped]
+    from google.oauth2.credentials import Credentials  # type: ignore[import-not-found,import-untyped]
+    from google.auth.transport.requests import Request  # type: ignore[import-not-found,import-untyped]
+    from google_auth_oauthlib.flow import InstalledAppFlow  # type: ignore[import-not-found,import-untyped]
 except ImportError:
     sys.exit("ERROR: Google API client not installed. Run: pip install google-api-python-client google-auth google-auth-oauthlib")
 
 # ── Load environment variables from .env ─────────────────────────────────────
-from dotenv import load_dotenv  # pip install python-dotenv
+from dotenv import load_dotenv  # type: ignore[import-not-found,import-untyped]
 load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
 
@@ -338,12 +338,12 @@ def build_qr_code(url: str, style: str = "rounded") -> Image.Image:
     qr.make(fit=True)
 
     try:
-        from qrcode.image.styledpil import StyledPilImage
-        from qrcode.image.styles.moduledrawers.pil import (
+        from qrcode.image.styledpil import StyledPilImage  # type: ignore[import-not-found,import-untyped]
+        from qrcode.image.styles.moduledrawers.pil import (  # type: ignore[import-not-found,import-untyped]
             RoundedModuleDrawer,
             CircleModuleDrawer,
         )
-        from qrcode.image.styles.colormasks import SolidFillColorMask
+        from qrcode.image.styles.colormasks import SolidFillColorMask  # type: ignore[import-not-found,import-untyped]
 
         drawer = CircleModuleDrawer() if style == "circles" else RoundedModuleDrawer()
         img = qr.make_image(
@@ -912,7 +912,7 @@ def load_recipients_from_csv(csv_path: str) -> list[dict]:
 
 def load_recipients_from_excel(xlsx_path: str) -> list[dict]:
     try:
-        import pandas as pd
+        import pandas as pd  # type: ignore[import-not-found,import-untyped]
     except ImportError:
         sys.exit("ERROR: pandas not installed. Run: pip install pandas openpyxl")
     df = pd.read_excel(xlsx_path)

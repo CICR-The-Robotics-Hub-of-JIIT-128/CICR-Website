@@ -144,13 +144,8 @@ export default function App() {
         <Preloader onComplete={() => setShowPreloader(false)} />
       )}
 
-      {/* Certificate verification page — shown after the video animation finishes */}
-      {!showPreloader && currentPage === 'certificate' && (
-        <CertificatePage certificateId={certificateId} />
-      )}
-
-      {/* All other pages with the standard CICR chrome */}
-      {!showPreloader && currentPage !== 'certificate' && (
+      {/* Main App Chrome (Navbar, Routed Page, Footer, Assistant) */}
+      {!showPreloader && (
         <>
           {/* Universal Swipe & Multi-Back Exit Guard */}
           <ExitGuard
@@ -184,6 +179,12 @@ export default function App() {
             )}
             {currentPage === 'registrations' && (
               <RegistrationPage setCurrentPage={handlePageChange} />
+            )}
+            {currentPage === 'certificate' && (
+              <CertificatePage
+                certificateId={certificateId}
+                setCurrentPage={handlePageChange}
+              />
             )}
           </main>
 

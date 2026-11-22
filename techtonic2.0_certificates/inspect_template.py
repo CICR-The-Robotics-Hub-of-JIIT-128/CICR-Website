@@ -15,12 +15,15 @@ import sys
 from pathlib import Path
 
 try:
-    import pymupdf as fitz
+    import pymupdf as fitz  # type: ignore[import-not-found,import-untyped]
 except ImportError:
     try:
-        import fitz
+        import fitz  # type: ignore[import-not-found,import-untyped]
     except ImportError:
-        sys.exit("Install PyMuPDF: pip install pymupdf")
+        fitz = None
+
+if fitz is None:
+    sys.exit("Install PyMuPDF: pip install pymupdf")
 
 
 def inspect_pdf(pdf_path: str) -> None:

@@ -350,7 +350,7 @@ export default function EventsPage({ setCurrentPage }) {
           <div className="events-cards-grid-section">
             <div className="events-cards-grid">
               {filteredEvents.map((evt) => (
-                <article key={evt.id} className="gdg-event-card">
+                <article key={evt.id} id={evt.slug || evt.id} className="gdg-event-card">
                   {evt.image && (
                     <div className="gdg-event-img-wrap">
                       <img
