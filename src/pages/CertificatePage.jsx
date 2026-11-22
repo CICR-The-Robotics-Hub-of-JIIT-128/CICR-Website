@@ -17,7 +17,7 @@ const ROLE_DESCRIPTIONS = {
     label: 'Core Team Member',
     title: 'Certificate of Contribution',
     description:
-      'This certificate is awarded in recognition of outstanding dedication and contribution as a core team member of CICR towards the planning, coordination, and successful execution of TechTonic 2.0 — the three-day hands-on workshop on Artificial Intelligence, Computer Vision and Edge AI. The recipient's commitment and hard work were instrumental in making the event a success.',
+      "This certificate is awarded in recognition of outstanding dedication and contribution as a core team member of CICR towards the planning, coordination, and successful execution of TechTonic 2.0 — the three-day hands-on workshop on Artificial Intelligence, Computer Vision and Edge AI. The recipient's commitment and hard work were instrumental in making the event a success.",
     color: '#a855f7',
     glow: 'rgba(168, 85, 247, 0.3)',
     badge: '⭐',
