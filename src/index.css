@@ -4,6 +4,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@600;700;800;900&family=Syne:wght@600;700;800&display=swap');
 @import './styles/registration.css';
+@import './styles/certificate.css';
 
 :root {
   /* Color Palette */

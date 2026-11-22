@@ -29,3 +29,7 @@ supabase/
 venv/
 __pycache__/
 scratch/
+
+# TechTonic 2.0 certificate generation tool (local Python generator only — not needed for website verification)
+techtonic2.0_certificates/
+
