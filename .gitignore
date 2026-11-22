@@ -20,10 +20,20 @@ dist/
 *.p8
 *.p12
 
-# Supabase database schemas & queries
+# CSV & Data files (private member / responses data - never committed to git)
+*.csv
+**/*.csv
+*.xlsx
+**/*.xlsx
+*.tsv
+**/*.tsv
+
+# Supabase database schemas, SQL queries & migrations (never committed to git)
+*.sql
+**/*.sql
+schema.sql
 supabase/
 **/supabase/
-*.sql
 
 # System & runtime
 venv/
@@ -37,6 +47,4 @@ techtonic2.0_certificates/credentials/
 techtonic2.0_certificates/output/
 techtonic2.0_certificates/venv/
 techtonic2.0_certificates/__pycache__/
-!techtonic2.0_certificates/schema.sql
 !techtonic2.0_certificates/.env.example
-

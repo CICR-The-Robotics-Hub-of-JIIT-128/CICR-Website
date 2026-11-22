@@ -1,15 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 import { teamData } from '../data/teamData.js';
 
-// Fetch Supabase configuration strictly from environment variables (No VITE_ prefix)
+// Fetch Supabase configuration strictly from environment variables (Supports VITE_, SUPABASE_, and NEXT_PUBLIC_)
 // NEVER hardcode credentials in code files
 const supabaseUrl =
   (typeof import.meta !== 'undefined' && (
+    import.meta.env?.VITE_SUPABASE_URL ||
     import.meta.env?.SUPABASE_URL ||
     import.meta.env?.NEXT_PUBLIC_SUPABASE_URL ||
     import.meta.env?.PUBLIC_SUPABASE_URL
   )) ||
   (typeof process !== 'undefined' && process.env && (
+    process.env.VITE_SUPABASE_URL ||
     process.env.SUPABASE_URL ||
     process.env.NEXT_PUBLIC_SUPABASE_URL ||
     process.env.PUBLIC_SUPABASE_URL
@@ -17,11 +19,13 @@ const supabaseUrl =
 
 const supabaseAnonKey =
   (typeof import.meta !== 'undefined' && (
+    import.meta.env?.VITE_SUPABASE_ANON_KEY ||
     import.meta.env?.SUPABASE_ANON_KEY ||
     import.meta.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
     import.meta.env?.PUBLIC_SUPABASE_ANON_KEY
   )) ||
   (typeof process !== 'undefined' && process.env && (
+    process.env.VITE_SUPABASE_ANON_KEY ||
     process.env.SUPABASE_ANON_KEY ||
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
     process.env.PUBLIC_SUPABASE_ANON_KEY

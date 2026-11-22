@@ -89,14 +89,14 @@ cp .env.example .env
 Edit `techtonic2.0_certificates/.env`:
 ```env
 # Google Drive Parent Folder (URL or ID)
-GOOGLE_DRIVE_FOLDER_ID=1BdyPfPIQAWavRiT_7bcDjgBxoI4sIwin
+GOOGLE_DRIVE_FOLDER_ID=your-google-drive-parent-folder-id
 
 # Optional: Direct Subfolder IDs (auto-discovered if omitted)
-PARTICIPATION_GOOGLE_DRIVE_FOLDER_ID=1rdol-P_8_wPyGPga5VaM4M-bBotclUp-
-CONTRIBUTION_GOOGLE_DRIVE_FOLDER_ID=1RbgjiSQSI9RQleJmKZOB7eAJYczReV03
+PARTICIPATION_GOOGLE_DRIVE_FOLDER_ID=your-participation-folder-id
+CONTRIBUTION_GOOGLE_DRIVE_FOLDER_ID=your-contribution-folder-id
 
 # Supabase Credentials (from Supabase Dashboard -> Project Settings -> API)
-SUPABASE_URL=https://zascuaokfrokfuxvlzeg.supabase.co
+SUPABASE_URL=https://your-project-id.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key-here
 ```
 

@@ -163,8 +163,8 @@ To resolve this completely, the generator utilizes an **OAuth 2.0 Desktop App cl
 
 ### 4.2 Auto-Folder Routing
 The generator reads the parent `GOOGLE_DRIVE_FOLDER_ID` (or extracts it from full URLs) and automatically uploads into the respective subfolders:
-- Role `participant` ➔ Uploaded to `Participation/` subfolder (`1rdol-P_8_wPyGPga5VaM4M-bBotclUp-`)
-- Role `team_member` ➔ Uploaded to `Contribution/` subfolder (`1RbgjiSQSI9RQleJmKZOB7eAJYczReV03`)
+- Role `participant` ➔ Uploaded to `Participation/` subfolder (configured via `PARTICIPATION_GOOGLE_DRIVE_FOLDER_ID` in `.env`)
+- Role `team_member` ➔ Uploaded to `Contribution/` subfolder (configured via `CONTRIBUTION_GOOGLE_DRIVE_FOLDER_ID` in `.env`)
 - Each uploaded PDF is set to `anyone with link can view` (`type="anyone", role="reader"`), allowing the verification portal to embed it.
 
 ---
@@ -285,8 +285,8 @@ This log documents every real-world error encountered during development and dep
 
 ### Issue 4: Drive API 404 "File Not Found: ." from Full URL
 - **Error**: `HttpError 404: File not found: .` when querying folder parents.
-- **Root Cause**: The `.env` variable `GOOGLE_DRIVE_FOLDER_ID` contained the entire web URL (`https://drive.google.com/drive/u/1/folders/1BdyPfPIQAWavRiT_7bcDjgBxoI4sIwin`) rather than the raw alphanumeric folder ID.
-- **Fix**: Implemented `extract_folder_id()` with regular expressions in `generate.py` to automatically strip protocol and path prefixes, leaving only `1BdyPfPIQAWavRiT_7bcDjgBxoI4sIwin`.
+- **Root Cause**: The `.env` variable `GOOGLE_DRIVE_FOLDER_ID` contained the entire web URL (`https://drive.google.com/drive/u/1/folders/<folder_id>`) rather than the raw alphanumeric folder ID.
+- **Fix**: Implemented `extract_folder_id()` with regular expressions in `generate.py` to automatically strip protocol and path prefixes, leaving only the clean alphanumeric folder ID.
 
 ---
 
