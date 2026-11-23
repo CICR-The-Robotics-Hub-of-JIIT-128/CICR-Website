@@ -18,7 +18,7 @@ export const eventsCatalog = [
     tagline: 'Heavyweight battlebots, computer vision tracking & collegiate battles.',
     image: '/gallery/techtonic-2/techtonic-2-1.jpg',
     status: 'upcoming',
-    isActiveForRegistration: true,
+    isActiveForRegistration: false,
     gallery: [
       '/gallery/techtonic-2/techtonic-2-1.jpg',
       '/gallery/techtonic-2/techtonic-2-2.jpg',
@@ -44,7 +44,7 @@ export const eventsCatalog = [
     tagline: 'Hands-on hardware masterclass in circuit design, sensor fusion & autonomous rovers.',
     image: '/gallery/cicr-ki-kaksha/kaksha-1.jpg',
     status: 'upcoming',
-    isActiveForRegistration: true,
+    isActiveForRegistration: false,
     gallery: [
       '/gallery/cicr-ki-kaksha/kaksha-1.jpg',
       '/gallery/cicr-ki-kaksha/kaksha-2.jpg',
@@ -70,7 +70,7 @@ export const eventsCatalog = [
     tagline: 'High-speed FPV drone racing through illuminated gates & aerial dogfights.',
     image: '/gallery/cicr-moment-3.jpg',
     status: 'upcoming',
-    isActiveForRegistration: true,
+    isActiveForRegistration: false,
     gallery: [
       '/gallery/cicr-moment-3.jpg',
       '/gallery/cicr-moment-6.jpg'
@@ -84,7 +84,7 @@ export const eventsCatalog = [
     tagline: 'Robotics innovation conclave, hardware project expo & keynote symposium.',
     image: '/gallery/cicr-moment-7.jpg',
     status: 'upcoming',
-    isActiveForRegistration: true,
+    isActiveForRegistration: false,
     gallery: [
       '/gallery/cicr-moment-7.jpg',
       '/gallery/cicr-moment-2.jpg'
@@ -98,7 +98,7 @@ export const eventsCatalog = [
     tagline: 'Autonomous line trackers, maze solvers & 24hr hardware hackathon sprint.',
     image: '/gallery/cicr-moment-6.jpg',
     status: 'upcoming',
-    isActiveForRegistration: true,
+    isActiveForRegistration: false,
     gallery: [
       '/gallery/cicr-moment-6.jpg',
       '/gallery/cicr-moment-4.jpg',
