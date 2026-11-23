@@ -3,7 +3,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
 import TeamPage from './pages/TeamPage';
-import RegistrationPage from './pages/RegistrationPage';
 import ProjectsPage from './pages/ProjectsPage';
 import EventsPage from './pages/EventsPage';
 import CertificatePage from './pages/CertificatePage';
@@ -21,7 +20,6 @@ export default function App() {
       if (path === '/events' || path === '/event' || hash === 'events' || hash === 'event') return 'events';
       if (path === '/team' || hash === 'team') return 'team';
       if (path === '/projects' || path === '/project' || hash === 'projects' || hash === 'project') return 'projects';
-      if (path === '/register' || path === '/registration' || path === '/registrations' || hash === 'register' || hash === 'registrations') return 'registrations';
       if (path.startsWith('/certificate/')) return 'certificate';
     }
     return 'home';
@@ -52,8 +50,6 @@ export default function App() {
         setCurrentPage('team');
       } else if (path === '/projects' || path === '/project' || hash === 'projects' || hash === 'project') {
         setCurrentPage('projects');
-      } else if (path === '/register' || path === '/registration' || path === '/registrations' || hash === 'register' || hash === 'registrations') {
-        setCurrentPage('registrations');
       } else if (window.location.pathname.match(/^\/certificate\/.+/i)) {
         // Extract certificate ID from actual pathname (preserve original case)
         const match = window.location.pathname.match(/^\/certificate\/(.+)$/i);
@@ -109,8 +105,6 @@ export default function App() {
       targetPath = '/team';
     } else if (page === 'projects') {
       targetPath = '/projects';
-    } else if (page === 'registrations') {
-      targetPath = '/register';
     }
 
     if (window.location.pathname !== targetPath) {
@@ -176,9 +170,6 @@ export default function App() {
             )}
             {currentPage === 'team' && (
               <TeamPage setCurrentPage={handlePageChange} />
-            )}
-            {currentPage === 'registrations' && (
-              <RegistrationPage setCurrentPage={handlePageChange} />
             )}
             {currentPage === 'certificate' && (
               <CertificatePage

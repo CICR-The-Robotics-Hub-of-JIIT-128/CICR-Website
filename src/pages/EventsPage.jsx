@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 // Explicit chronological order requested: new/recent events on top
-// 1. TechTonic 2.0 -> 2. CICR की कक्षा -> 3. Dron-O-War -> 4. Converge -> 5. TechTonic 1.0
+// 1. TechTonic 2.0 -> 2. CICR की कक्षा -> 3. Dron-o-war 1.0 -> 4. Converge -> 5. TechTonic 1.0
 const EVENT_CHRONO_ORDER = {
   'techtonic-2': 1,
   'cicr-ki-kaksha': 2,
@@ -55,7 +55,7 @@ export default function EventsPage({ setCurrentPage }) {
             const local = catalogMap.get(dbEvt.slug) || catalogMap.get(dbEvt.id);
             return {
               ...dbEvt,
-              title: dbEvt.title || local?.title,
+              title: local?.title || dbEvt.title,
               category: dbEvt.category || local?.category,
               tagline: dbEvt.tagline || dbEvt.desc || local?.tagline,
               image: (local?.gallery && local.gallery.length > 0) ? (local.image || dbEvt.image) : (dbEvt.image || local?.image),
@@ -174,21 +174,38 @@ export default function EventsPage({ setCurrentPage }) {
       <div className="bg-grid-pattern"></div>
 
       <div className="events-page-content-wrapper">
-        {/* Page Header */}
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <h1
-            style={{
-              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
-              fontWeight: 800,
-              color: '#ffffff',
-              lineHeight: 1.15,
-              letterSpacing: '-0.02em',
-              margin: 0
-            }}
-          >
-            Events & Workshops
+        {/* Page Header matching 2nd screenshot aesthetic */}
+        <section className="projects-hero-header-simple" style={{ padding: '16px 0 32px' }}>
+          <h1 className="projects-simple-headline">
+            Events &amp;{' '}
+            <span className="projects-headline-serif">
+              Workshops<span className="memory-dot">.</span>
+              <svg
+                viewBox="0 0 280 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="projects-headline-underline"
+                aria-hidden="true"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M4 14 C 60 4, 130 4, 190 9 S 250 16, 276 8"
+                  stroke="url(#events-gradient-white-mix)"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                />
+                <defs>
+                  <linearGradient id="events-gradient-white-mix" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="25%" stopColor="#f472b6" />
+                    <stop offset="65%" stopColor="#a855f7" />
+                    <stop offset="100%" stopColor="#38bdf8" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </span>
           </h1>
-        </div>
+        </section>
 
         {/* Category Tabs if events exist */}
         {events.length > 0 && (
@@ -394,7 +411,7 @@ export default function EventsPage({ setCurrentPage }) {
                       </p>
                     )}
 
-                    {/* Action Buttons: Register Now & Gallery */}
+                    {/* Action Button: Gallery */}
                     <div
                       style={{
                         display: 'flex',
@@ -404,31 +421,6 @@ export default function EventsPage({ setCurrentPage }) {
                         flexWrap: 'wrap'
                       }}
                     >
-                      <button
-                        type="button"
-                        onClick={() => setCurrentPage('registrations')}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          background: 'linear-gradient(135deg, #ff601c, #ea580c)',
-                          color: '#ffffff',
-                          border: 'none',
-                          borderRadius: '9999px',
-                          padding: '10px 20px',
-                          minHeight: '42px',
-                          fontSize: '0.86rem',
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 14px rgba(255, 96, 28, 0.35)',
-                          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                          touchAction: 'manipulation'
-                        }}
-                      >
-                        <span>Register Now</span>
-                        <ArrowRight size={14} />
-                      </button>
-
                       {evt.gallery && evt.gallery.length > 0 && (
                         <button
                           type="button"
@@ -442,44 +434,19 @@ export default function EventsPage({ setCurrentPage }) {
                             gap: '7px',
                             background: 'rgba(255, 255, 255, 0.06)',
                             border: '1px solid rgba(255, 255, 255, 0.16)',
-                            color: '#e2e8f0',
+                            color: '#ffffff',
                             borderRadius: '9999px',
-                            padding: '10px 18px',
+                            padding: '10px 20px',
                             minHeight: '42px',
                             fontSize: '0.86rem',
                             fontWeight: 600,
                             cursor: 'pointer',
-                            backdropFilter: 'blur(8px)',
-                            WebkitBackdropFilter: 'blur(8px)',
                             transition: 'all 0.2s ease',
                             touchAction: 'manipulation'
                           }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(56, 189, 248, 0.12)';
-                            e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.4)';
-                            e.currentTarget.style.color = '#38bdf8';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.16)';
-                            e.currentTarget.style.color = '#e2e8f0';
-                          }}
                         >
                           <Images size={15} color="#38bdf8" />
-                          <span>Gallery</span>
-                          <span
-                            style={{
-                              background: 'rgba(56, 189, 248, 0.2)',
-                              color: '#38bdf8',
-                              fontSize: '0.72rem',
-                              fontWeight: 700,
-                              padding: '2px 7px',
-                              borderRadius: '9999px',
-                              marginLeft: '2px'
-                            }}
-                          >
-                            {evt.gallery.length}
-                          </span>
+                          <span>View Gallery ({evt.gallery.length})</span>
                         </button>
                       )}
                     </div>

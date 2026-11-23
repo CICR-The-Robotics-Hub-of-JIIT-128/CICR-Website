@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot, X, Send, Sparkles } from 'lucide-react';
+import { Bot, X, Send } from 'lucide-react';
 import { getAuthoritativeAnswer } from '../utils/cicrKnowledge';
 
 // Clean Markdown-to-HTML parser for modal
@@ -31,11 +31,12 @@ export default function AIChatModal({ isOpen, onClose }) {
   const [messages, setMessages] = useState([
     {
       sender: 'bot',
-      text: formatAiResponse("Hello! I am the **CICR AI Assistant**, strictly limited to answering questions about **CICR (Centre for Innovation, Computing and Robotics)** at JIIT Sector 128, Noida.\n\nAsk me about our robotics rovers, drones, 7 heads, faculty coordinators, team members, events, or how to reserve components on [inventory.cicr.in](https://inventory.cicr.in)!")
+      text: formatAiResponse("Welcome to the CICR Chatbot! 👋\n\nI'm here to assist you with information about CICR (Centre for Innovation, Computing and Robotics). Feel free to ask me anything!")
     }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const messagesContainerRef = useRef(null);
   const messagesEndRef = useRef(null);
 
   // Clear memory on mount
@@ -50,13 +51,26 @@ export default function AIChatModal({ isOpen, onClose }) {
     }
   }, []);
 
+  // Isolate scroll so Lenis does not block modal messages scrolling
+  useEffect(() => {
+    const el = messagesContainerRef.current;
+    if (!el) return;
+    const stopPropagation = (e) => e.stopPropagation();
+    el.addEventListener('wheel', stopPropagation, { passive: true });
+    el.addEventListener('touchmove', stopPropagation, { passive: true });
+    return () => {
+      el.removeEventListener('wheel', stopPropagation);
+      el.removeEventListener('touchmove', stopPropagation);
+    };
+  }, [isOpen]);
+
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, isOpen]);
+  }, [isOpen, messages, isTyping]);
 
-  const handleSend = (textToSend = null) => {
+  const handleSend = (textToSend) => {
     const query = textToSend || inputText;
     if (!query || !query.trim() || isTyping) return;
 
@@ -69,14 +83,20 @@ export default function AIChatModal({ isOpen, onClose }) {
       setIsTyping(false);
       const answer = getAuthoritativeAnswer(userMsg);
       setMessages((prev) => [...prev, { sender: 'bot', text: formatAiResponse(answer) }]);
-    }, 350);
+    }, 280);
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="ai-modal-backdrop" onClick={onClose}>
-      <div className="ai-chat-window" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="ai-chat-window"
+        onClick={(e) => e.stopPropagation()}
+        data-lenis-prevent="true"
+        data-lenis-prevent-wheel="true"
+        data-lenis-prevent-touch="true"
+      >
         {/* Header */}
         <div className="ai-chat-header">
           <div className="ai-bot-avatar-wrap">
@@ -84,32 +104,21 @@ export default function AIChatModal({ isOpen, onClose }) {
             <span className="online-indicator"></span>
           </div>
           <div className="ai-bot-titles">
-            <h4>CICR AI Assistant</h4>
-            <span>Strictly CICR Scope // Online</span>
+            <h4>CICR ChatBot</h4>
           </div>
           <button className="ai-chat-close-btn" onClick={onClose} aria-label="Close modal">
             <X size={18} />
           </button>
         </div>
 
-        {/* Quick Suggestion Chips */}
-        <div className="ai-quick-chips">
-          <button className="quick-chip" onClick={() => handleSend('How to join CICR?')}>
-            <Sparkles size={12} /> Recruitment
-          </button>
-          <button className="quick-chip" onClick={() => handleSend('Who are the heads?')}>
-            Heads of CICR
-          </button>
-          <button className="quick-chip" onClick={() => handleSend('Tell me about CICR projects and rovers')}>
-            Robotics Projects
-          </button>
-          <button className="quick-chip" onClick={() => handleSend('How to reserve hardware on inventory?')}>
-            Inventory Portal
-          </button>
-        </div>
-
-        {/* Message Stream */}
-        <div className="ai-messages-stream">
+        {/* Message Stream with Independent Native Scrolling */}
+        <div
+          ref={messagesContainerRef}
+          className="ai-messages-stream"
+          data-lenis-prevent="true"
+          data-lenis-prevent-wheel="true"
+          data-lenis-prevent-touch="true"
+        >
           {messages.map((m, idx) => (
             <div key={idx} className={`ai-bubble ${m.sender === 'user' ? 'ai-bubble-user' : 'ai-bubble-bot'}`}>
               <div dangerouslySetInnerHTML={{ __html: m.text }} />
@@ -130,7 +139,7 @@ export default function AIChatModal({ isOpen, onClose }) {
           <input
             type="text"
             className="ai-input"
-            placeholder="Ask about CICR rovers, heads, lab..."
+            placeholder="Ask about CICR rovers, heads, lab, code..."
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}

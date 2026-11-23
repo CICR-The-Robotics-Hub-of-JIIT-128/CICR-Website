@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, RotateCcw } from 'lucide-react';
+import { X, Send, RotateCcw, Copy, Check } from 'lucide-react';
 import { getAuthoritativeAnswer } from '../utils/cicrKnowledge';
 import '../styles/chatbot.css';
 
-// Sleek, Minimalist Futuristic Robot Face (Clean, aesthetic, zero neon)
+// Minimalist Futuristic Robot Face
 function ModernBotFace({ size = 26, className = '' }) {
   return (
     <svg
@@ -26,7 +26,7 @@ function ModernBotFace({ size = 26, className = '' }) {
         strokeWidth="1.2"
       />
       {/* Top Antenna Node */}
-      <path d="M16 2.5V6" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M16 2.5V6" stroke="rgba(255, 255, 255, 0.45)" strokeWidth="1.5" strokeLinecap="round" />
       <circle cx="16" cy="2.5" r="1.5" fill="#ff601c" />
 
       {/* Cyber Visor Screen */}
@@ -39,15 +39,15 @@ function ModernBotFace({ size = 26, className = '' }) {
         fill="#08090d"
         stroke="rgba(255, 255, 255, 0.08)"
       />
-      {/* Dual Optics (Clean Ice White) */}
+      {/* Dual Optics */}
       <rect x="9.5" y="12.5" width="4.5" height="3.5" rx="1.5" fill="#ffffff" />
       <rect x="18" y="12.5" width="4.5" height="3.5" rx="1.5" fill="#ffffff" />
 
       {/* Speaker Bar */}
       <path d="M11 22H21" stroke="rgba(255, 255, 255, 0.22)" strokeWidth="1.2" strokeLinecap="round" />
       {/* Ear nodes */}
-      <rect x="1.5" y="13" width="1.8" height="7" rx="0.9" fill="rgba(255, 255, 255, 0.25)" />
-      <rect x="28.7" y="13" width="1.8" height="7" rx="0.9" fill="rgba(255, 255, 255, 0.25)" />
+      <rect x="1.5" y="13" width="1.8" height="7" rx="0.9" fill="rgba(255, 255, 255, 0.3)" />
+      <rect x="28.7" y="13" width="1.8" height="7" rx="0.9" fill="rgba(255, 255, 255, 0.3)" />
 
       <defs>
         <linearGradient id="botShellGrad" x1="16" y1="6" x2="16" y2="27" gradientUnits="userSpaceOnUse">
@@ -60,8 +60,9 @@ function ModernBotFace({ size = 26, className = '' }) {
 }
 
 const INITIAL_WELCOME = {
+  id: 'welcome',
   sender: 'bot',
-  text: "Hello! I am the **CICR AI Assistant**, strictly dedicated to answering questions about **CICR (Centre for Innovation, Computing and Robotics)** at JIIT Sector 128, Noida.\n\nAsk me about our robotics rovers, drones, 7 heads, faculty coordinators, team members, events, or how to reserve components on [inventory.cicr.in](https://inventory.cicr.in)!",
+  text: "Welcome to the CICR Chatbot! 👋\n\nI'm here to assist you with information about CICR (Centre for Innovation, Computing and Robotics). Feel free to ask me anything!",
   time: 'Just now'
 };
 
@@ -70,17 +71,24 @@ export default function Chatbot() {
   const [messages, setMessages] = useState([INITIAL_WELCOME]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [windowPos, setWindowPos] = useState({ right: 24, bottom: 90 });
-  const [windowSize, setWindowSize] = useState({ width: 380, height: 510 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
+  const [copiedId, setCopiedId] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const windowRef = useRef(null);
   const toggleRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
-  const dragRef = useRef({ startX: 0, startY: 0, startRight: 24, startBottom: 90 });
-  const resizeRef = useRef({ startX: 0, startY: 0, startWidth: 380, startHeight: 510 });
+
+  // Track viewport width for responsive behaviors
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Delete previous chat history on mount to start fresh
   useEffect(() => {
@@ -101,10 +109,6 @@ export default function Chatbot() {
     if (!isOpen) return;
 
     const handleOutsideClick = (e) => {
-      // Do not close during active drag or resize operations
-      if (isDragging || isResizing) return;
-
-      // Check if click target is inside window or toggle button
       const clickedWindow = windowRef.current && windowRef.current.contains(e.target);
       const clickedToggle = toggleRef.current && toggleRef.current.contains(e.target);
 
@@ -120,15 +124,39 @@ export default function Chatbot() {
       document.removeEventListener('mousedown', handleOutsideClick);
       document.removeEventListener('touchstart', handleOutsideClick);
     };
-  }, [isOpen, isDragging, isResizing]);
+  }, [isOpen]);
+
+  // Isolate mousewheel and touch scroll within messages container so Lenis or parent page never blocks it
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e) => {
+      e.stopPropagation();
+    };
+
+    const handleTouchMove = (e) => {
+      e.stopPropagation();
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+      container.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [isOpen]);
 
   // Scroll to bottom when new messages arrive or when opened
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      inputRef.current?.focus();
+      if (!isMobile) {
+        inputRef.current?.focus();
+      }
     }
-  }, [isOpen, messages, isTyping]);
+  }, [isOpen, messages, isTyping, isMobile]);
 
   // Clean Markdown Parser
   const parseMarkdown = (text) => {
@@ -137,77 +165,37 @@ export default function Chatbot() {
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
-      .replace(/```(\w+)?\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+      // Code blocks ```lang ... ```
+      .replace(/```(\w+)?\n?([\s\S]*?)```/g, '<div class="chat-code-block"><div class="code-lang-tag">$1</div><pre><code>$2</code></pre></div>')
+      // Math formulas
+      .replace(/\$\$([^$]+)\$\$/g, '<div class="math-block">$1</div>')
+      // Bold + Italic
       .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+      // Bold
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      // Italic
       .replace(/(?<!\*)\*(?!\*)([^\*\n]+?)\*(?!\*)/g, '<em>$1</em>')
+      // Inline code
       .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+      // Links
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-      .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/(?<!href=")(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+      // Headings
+      .replace(/^### (.*$)/gim, '<h4>$1</h4>')
+      .replace(/^## (.*$)/gim, '<h3>$1</h3>')
+      // Horizontal Rule
+      .replace(/^---$/gm, '<hr class="chat-hr" />')
+      // List items
       .replace(/^[\s]*[-*+]\s+(.+)$/gm, '<li>$1</li>')
       .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+      // Paragraphs
       .replace(/\n\n/g, '</p><p>')
       .replace(/\n/g, '<br/>');
 
-    if (!html.includes('<p>') && !html.includes('<ul>') && !html.includes('<pre>')) {
+    if (!html.includes('<p>') && !html.includes('<ul>') && !html.includes('<div class="chat-code-block">')) {
       html = `<p>${html}</p>`;
     }
     return html;
-  };
-
-  // Dragging logic
-  const handleMouseDownHeader = (e) => {
-    if (e.target.closest('.header-btn')) return;
-    setIsDragging(true);
-    dragRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      startRight: windowPos.right,
-      startBottom: windowPos.bottom
-    };
-  };
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (isDragging) {
-        const deltaX = dragRef.current.startX - e.clientX;
-        const deltaY = dragRef.current.startY - e.clientY;
-        const newRight = Math.max(10, Math.min(window.innerWidth - 300, dragRef.current.startRight + deltaX));
-        const newBottom = Math.max(10, Math.min(window.innerHeight - 200, dragRef.current.startBottom + deltaY));
-        setWindowPos({ right: newRight, bottom: newBottom });
-      } else if (isResizing) {
-        const deltaX = resizeRef.current.startX - e.clientX;
-        const deltaY = resizeRef.current.startY - e.clientY;
-        const newWidth = Math.max(320, Math.min(600, resizeRef.current.startWidth + deltaX));
-        const newHeight = Math.max(400, Math.min(800, resizeRef.current.startHeight + deltaY));
-        setWindowSize({ width: newWidth, height: newHeight });
-      }
-    };
-
-    const handleMouseUp = () => {
-      setIsDragging(false);
-      setIsResizing(false);
-    };
-
-    if (isDragging || isResizing) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging, isResizing]);
-
-  const handleMouseDownResize = (e) => {
-    e.stopPropagation();
-    setIsResizing(true);
-    resizeRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      startWidth: windowSize.width,
-      startHeight: windowSize.height
-    };
   };
 
   const handleSendMessage = (textToSend) => {
@@ -219,16 +207,17 @@ export default function Chatbot() {
 
     const now = new Date();
     const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const userMsgId = `user-${Date.now()}`;
 
-    setMessages((prev) => [...prev, { sender: 'user', text: userText, time: timeStr }]);
+    setMessages((prev) => [...prev, { id: userMsgId, sender: 'user', text: userText, time: timeStr }]);
     setIsTyping(true);
 
-    // Natural brief thinking indicator before authoritative strictly-scoped response
     setTimeout(() => {
       const reply = getAuthoritativeAnswer(userText);
-      setMessages((prev) => [...prev, { sender: 'bot', text: reply, time: timeStr }]);
+      const botMsgId = `bot-${Date.now()}`;
+      setMessages((prev) => [...prev, { id: botMsgId, sender: 'bot', text: reply, time: timeStr }]);
       setIsTyping(false);
-    }, 350);
+    }, 280);
   };
 
   const handleKeyDown = (e) => {
@@ -238,153 +227,179 @@ export default function Chatbot() {
     }
   };
 
+  const handleCopyMessage = (id, text) => {
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    }).catch(() => {
+      // Fallback ignore
+    });
+  };
+
   const handleResetChat = () => {
-    try {
-      localStorage.removeItem('cicr_chat_history');
-      sessionStorage.removeItem('cicr_chat_history');
-      localStorage.removeItem('cicr_chatbot_messages');
-      sessionStorage.removeItem('cicr_chatbot_messages');
-    } catch {
-      // Ignore
-    }
     setMessages([
       {
+        id: 'reset-welcome',
         sender: 'bot',
-        text: "Conversation cleared. How can I help you with CICR robotics today?",
+        text: "Conversation cleared. How can I assist you with CICR or your technical questions today?",
         time: 'Just now'
       }
     ]);
   };
 
   return (
-    <div className="chatbot-container">
-      {/* Floating Bottom-Right Launcher Button */}
-      <button
-        ref={toggleRef}
-        type="button"
-        className={`chatbot-toggle ${isOpen ? 'active' : ''}`}
-        id="chatbot-toggle"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle CICR AI Chatbot"
-        title="Chat with CICR AI Assistant"
-      >
-        <div className="toggle-bot-icon-wrap">
-          <ModernBotFace size={30} />
-          <span className="toggle-status-dot" />
-        </div>
-        <div className="toggle-close-wrap">
-          <X size={20} />
-        </div>
-      </button>
-
-      {/* Floating Chatbot Window */}
-      <div
-        ref={windowRef}
-        className={`chatbot-window ${isOpen ? 'active' : ''} ${isDragging ? 'dragging' : ''} ${isResizing ? 'resizing' : ''}`}
-        id="chatbot-window"
-        style={{
-          right: `${windowPos.right}px`,
-          bottom: `${windowPos.bottom}px`,
-          width: `${windowSize.width}px`,
-          height: `${windowSize.height}px`
-        }}
-      >
-        {/* Resize Handle Top-Left */}
+    <>
+      {/* Mobile Backdrop for click-outside dismissal */}
+      {isOpen && isMobile && (
         <div
-          className="resize-handle"
-          id="resize-handle"
-          onMouseDown={handleMouseDownResize}
-          title="Drag to resize window"
+          className="chatbot-mobile-backdrop"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
         />
+      )}
 
-        {/* Chatbot Header */}
-        <div className="chatbot-header" onMouseDown={handleMouseDownHeader}>
-          <div className="header-content">
-            <div className="bot-avatar">
-              <ModernBotFace size={26} />
-              <span className="bot-avatar-pulse-dot" />
-            </div>
-            <div className="bot-info">
-              <h3>CICR AI Assistant</h3>
-              <div className="status-row">
-                <span className="status-dot-emerald" />
-                <span className="status-label">Online • CICR Scope</span>
+      <div className={`chatbot-container ${isMobile ? 'is-mobile-view' : ''}`}>
+        {/* Floating Bottom-Right Launcher Button */}
+        <button
+          ref={toggleRef}
+          type="button"
+          className={`chatbot-toggle ${isOpen ? 'active' : ''}`}
+          id="chatbot-toggle"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle CICR ChatBot"
+          title="Chat with CICR ChatBot"
+        >
+          <div className="toggle-bot-icon-wrap">
+            <ModernBotFace size={30} />
+            <span className="toggle-status-dot" />
+          </div>
+          <div className="toggle-close-wrap">
+            <X size={20} />
+          </div>
+        </button>
+
+        {/* Fixed Chatbot Window / Mobile Bottom Sheet */}
+        <div
+          ref={windowRef}
+          className={`chatbot-window ${isOpen ? 'active' : ''}`}
+          id="chatbot-window"
+          data-lenis-prevent="true"
+          data-lenis-prevent-wheel="true"
+          data-lenis-prevent-touch="true"
+        >
+          {/* Mobile Sheet Pull Bar Indicator */}
+          {isMobile && <div className="mobile-sheet-pull-bar" />}
+
+          {/* Chatbot Header */}
+          <div className="chatbot-header">
+            <div className="header-content">
+              <div className="bot-avatar">
+                <ModernBotFace size={26} />
+                <span className="bot-avatar-pulse-dot" />
+              </div>
+              <div className="bot-info">
+                <h3>CICR ChatBot</h3>
               </div>
             </div>
+
+            <div className="header-actions">
+              <button
+                type="button"
+                className="header-btn"
+                onClick={handleResetChat}
+                title="Clear conversation"
+                aria-label="Reset chat"
+              >
+                <RotateCcw size={14} />
+              </button>
+              <button
+                type="button"
+                className="header-btn"
+                onClick={() => setIsOpen(false)}
+                title="Close chat"
+                aria-label="Close"
+              >
+                <X size={15} />
+              </button>
+            </div>
           </div>
 
-          <div className="header-actions">
-            <button
-              type="button"
-              className="header-btn"
-              onClick={handleResetChat}
-              title="Clear chat history"
-              aria-label="Reset chat"
-            >
-              <RotateCcw size={14} />
-            </button>
-            <button
-              type="button"
-              className="header-btn"
-              onClick={() => setIsOpen(false)}
-              title="Close chat"
-              aria-label="Close"
-            >
-              <X size={15} />
-            </button>
-          </div>
-        </div>
+          {/* Chatbot Messages List with Lenis prevention and independent scroll */}
+          <div
+            ref={messagesContainerRef}
+            className="chatbot-messages"
+            id="chatbot-messages"
+            data-lenis-prevent="true"
+            data-lenis-prevent-wheel="true"
+            data-lenis-prevent-touch="true"
+          >
+            {messages.map((msg) => (
+              <div key={msg.id || msg.time} className={`message ${msg.sender}-message`}>
+                <div className="message-bubble-wrap">
+                  <div
+                    className="message-content"
+                    dangerouslySetInnerHTML={{
+                      __html: msg.sender === 'bot' ? parseMarkdown(msg.text) : `<p>${msg.text}</p>`
+                    }}
+                  />
+                  {msg.sender === 'bot' && (
+                    <button
+                      type="button"
+                      className={`copy-msg-btn ${copiedId === msg.id ? 'copied' : ''}`}
+                      onClick={() => handleCopyMessage(msg.id, msg.text)}
+                      title="Copy response"
+                      aria-label="Copy message text"
+                    >
+                      {copiedId === msg.id ? <Check size={12} /> : <Copy size={12} />}
+                      <span>{copiedId === msg.id ? 'Copied' : 'Copy'}</span>
+                    </button>
+                  )}
+                </div>
+                <div className="message-time">{msg.time}</div>
+              </div>
+            ))}
 
-        {/* Chatbot Messages List */}
-        <div className="chatbot-messages" id="chatbot-messages">
-          {messages.map((msg, idx) => (
-            <div key={idx} className={`message ${msg.sender}-message`}>
-              <div
-                className="message-content"
-                dangerouslySetInnerHTML={{
-                  __html: msg.sender === 'bot' ? parseMarkdown(msg.text) : `<p>${msg.text}</p>`
-                }}
+            {isTyping && (
+              <div className="typing-indicator-wrap">
+                <div className="typing-indicator">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <span className="typing-label">CICR ChatBot is typing...</span>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Chatbot Input Box */}
+          <div className="chatbot-input">
+            <div className="input-container">
+              <input
+                type="text"
+                id="message-input"
+                ref={inputRef}
+                placeholder="Ask about CICR projects, heads, lab, code..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                autoComplete="off"
               />
-              <div className="message-time">{msg.time}</div>
+              <button
+                type="button"
+                className={`send-button ${inputValue.trim() ? 'has-input' : ''}`}
+                id="send-button"
+                onClick={() => handleSendMessage()}
+                disabled={!inputValue.trim() || isTyping}
+                aria-label="Send message"
+              >
+                <Send size={15} />
+              </button>
             </div>
-          ))}
-
-          {isTyping && (
-            <div className="typing-indicator">
-              <span />
-              <span />
-              <span />
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Chatbot Input Box */}
-        <div className="chatbot-input">
-          <div className="input-container">
-            <input
-              type="text"
-              id="message-input"
-              ref={inputRef}
-              placeholder="Ask about CICR rovers, heads, lab..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleKeyDown}
-              autoComplete="off"
-            />
-            <button
-              type="button"
-              className={`send-button ${inputValue.trim() ? 'has-input' : ''}`}
-              id="send-button"
-              onClick={() => handleSendMessage()}
-              disabled={!inputValue.trim() || isTyping}
-              aria-label="Send message"
-            >
-              <Send size={15} />
-            </button>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

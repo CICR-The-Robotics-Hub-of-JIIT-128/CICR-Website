@@ -97,41 +97,6 @@ export async function fetchEvents() {
   }
 }
 
-/**
- * Fetch active event(s) open for registration on the universal endpoint directly from database
- */
-export async function fetchActiveEvents() {
-  if (!supabase) return [];
-  try {
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .or('is_active_for_registration.eq.true,status.eq.upcoming')
-      .order('order_seq', { ascending: true });
-
-    if (!error && Array.isArray(data) && data.length > 0) {
-      return data.map((evt) => ({
-        id: evt.slug || evt.id,
-        slug: evt.slug,
-        title: evt.title,
-        tagline: evt.tagline,
-        description: evt.description,
-        year: evt.year,
-        dates: evt.dates,
-        venue: evt.venue,
-        eligibility: evt.eligibility,
-        hardwarePerk: evt.hardware_perk,
-        whatsappCommunityUrl: evt.whatsapp_community_url,
-        highlights: evt.highlights || [],
-        instructions: evt.instructions || []
-      }));
-    }
-    return [];
-  } catch (err) {
-    console.warn('Error fetching active events from Supabase:', err);
-    return [];
-  }
-}
 
 /**
  * Fetch projects in detailed sequential order directly from database
@@ -255,80 +220,6 @@ export async function fetchTeamMembers() {
   }
 }
 
-/**
- * Submit registration on the 1 Universal Registration Endpoint
- * Saves directly into Supabase 'registrations' table in detailed sequential manner
- */
-export async function submitRegistration(registrationForm) {
-  const timestamp = Date.now();
-  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-  const regId = `CICR-REG-${new Date().getFullYear()}-${randomSuffix}`;
-  const qrToken = `PASS-${regId}-${timestamp.toString(36).toUpperCase()}`;
-
-  const payload = {
-    registration_id: regId,
-    event_slug: registrationForm.eventSlug || 'general-event',
-    event_title: registrationForm.eventTitle || 'CICR Event',
-    full_name: registrationForm.fullName.trim(),
-    email: registrationForm.email.trim().toLowerCase(),
-    phone: registrationForm.phone.trim(),
-    college: registrationForm.college.trim(),
-    branch_and_year: registrationForm.branchAndYear.trim(),
-    roll_number: registrationForm.rollNumber ? registrationForm.rollNumber.trim() : null,
-    participation_type: registrationForm.participationType || 'Individual',
-    team_name: registrationForm.teamName ? registrationForm.teamName.trim() : null,
-    team_size: parseInt(registrationForm.teamSize, 10) || 1,
-    notes: registrationForm.notes ? registrationForm.notes.trim() : null,
-    qr_token: qrToken,
-    checked_in: false
-  };
-
-  let savedInSupabase = false;
-  let supabaseError = null;
-
-  if (supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('registrations')
-        .insert([payload])
-        .select()
-        .single();
-
-      if (!error && data) {
-        savedInSupabase = true;
-      } else if (error) {
-        supabaseError = error.message;
-        console.warn('Supabase insertion notice:', error.message);
-      }
-    } catch (err) {
-      supabaseError = err.message;
-      console.warn('Supabase request notice:', err.message);
-    }
-  }
-
-  // Backup locally in localStorage so attendee never loses their pass
-  try {
-    const existing = JSON.parse(localStorage.getItem('cicr_my_registrations') || '[]');
-    existing.unshift({
-      ...payload,
-      savedInSupabase,
-      supabaseError,
-      created_at: new Date().toISOString()
-    });
-    localStorage.setItem('cicr_my_registrations', JSON.stringify(existing));
-  } catch {
-    // Ignore localStorage restrictions
-  }
-
-  return {
-    success: true,
-    savedInSupabase,
-    supabaseError,
-    registrationId: regId,
-    qrToken: qrToken,
-    record: payload
-  };
-}
 
 /**
  * Realtime Automatic Subscriptions (Autosync with Supabase Database)
@@ -375,16 +266,4 @@ export function subscribeToProjects(callback) {
   };
 }
 
-export function subscribeToRegistrations(callback) {
-  if (!supabase) return () => {};
-  const channel = supabase
-    .channel('realtime:registrations')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'registrations' }, () => {
-      if (callback) callback();
-    })
-    .subscribe();
 
-  return () => {
-    supabase.removeChannel(channel);
-  };
-}

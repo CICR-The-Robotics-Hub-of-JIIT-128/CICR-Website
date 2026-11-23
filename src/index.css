@@ -3,7 +3,6 @@
    =================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@600;700;800;900&family=Syne:wght@600;700;800&display=swap');
-@import './styles/registration.css';
 @import './styles/certificate.css';
 
 :root {
@@ -2770,519 +2769,99 @@ button {
 }
 
 /* ===================================================================
-   PERMANENT REGISTRATION HUB STYLES (/register)
+   TEAM & SHOWCASE: EMPTY ROSTER STATE (OBSIDIAN GLASS)
    =================================================================== */
-.registration-page-container {
-  position: relative;
-  min-height: 100vh;
-  padding: 120px 20px 90px;
-  background-color: #0a0a0d;
-  overflow: hidden;
+.empty-category-card {
+  justify-content: center !important;
+  text-align: center !important;
+  min-height: 380px !important;
 }
 
-.registration-content-wrapper {
-  position: relative;
-  z-index: 1;
-  max-width: 1260px;
-  width: 94%;
-  margin: 0 auto;
-}
-
-.registration-header-section {
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-.endpoint-pill-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 18px;
-  border-radius: 9999px;
-  background: rgba(0, 240, 255, 0.08);
-  border: 1px solid rgba(0, 240, 255, 0.3);
-  color: #00f0ff;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  margin-bottom: 18px;
-}
-
-.registration-main-title {
-  font-family: var(--font-body);
-  font-size: clamp(2.2rem, 4vw, 3.2rem);
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.5px;
-  margin-bottom: 14px;
-}
-
-.registration-main-desc {
-  font-size: 1.05rem;
-  color: #94a3b8;
-  max-width: 720px;
-  margin: 0 auto;
-  line-height: 1.65;
-}
-
-.registration-hub-grid {
-  display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 36px;
-  align-items: start;
-  margin-bottom: 70px;
-}
-
-/* Column 1: Permanent Universal QR Code Card */
-.permanent-qr-card {
-  background: rgba(14, 16, 24, 0.88);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 28px;
-  padding: 34px 28px;
+.empty-category-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  position: sticky;
-  top: 100px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
-.qr-badge-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #38bdf8;
-  margin-bottom: 20px;
-  letter-spacing: 0.8px;
-}
-
-.qr-pulse-beacon {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 10px #10b981;
-  animation: blink 1.6s infinite;
-}
-
-.qr-code-frame {
-  width: 250px;
-  height: 250px;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
-  margin-bottom: 22px;
-}
-
-.qr-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-.qr-loading-box {
-  color: #07090e;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.qr-url-box {
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 10px 14px;
-  width: 100%;
-  text-align: center;
+.empty-category-icon {
+  color: #64748b;
   margin-bottom: 18px;
+  opacity: 0.8;
 }
 
-.qr-url-label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: #64748b;
-  margin-bottom: 3px;
-  text-transform: uppercase;
-}
-
-.qr-url-text {
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-  color: #38bdf8;
-  font-weight: 600;
-  word-break: break-all;
-}
-
-.qr-actions-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.qr-action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.copy-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-}
-
-.copy-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: #38bdf8;
-}
-
-.download-btn {
-  background: rgba(0, 240, 255, 0.12);
-  border-color: rgba(0, 240, 255, 0.35);
-  color: #00f0ff;
-}
-
-.download-btn:hover {
-  background: #00f0ff;
-  color: #07090e;
-}
-
-.qr-organizer-note {
-  display: flex;
-  gap: 10px;
-  background: rgba(0, 240, 255, 0.04);
-  border: 1px solid rgba(0, 240, 255, 0.15);
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 0.8rem;
-  color: #94a3b8;
-  line-height: 1.55;
-}
-
-/* Column 2: Active Event Registration Showcase Card */
-.active-event-card {
-  background: rgba(14, 16, 24, 0.88);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 28px;
-  padding: 42px 38px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-}
-
-.active-status-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-}
-
-.status-indicator-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
+.empty-category-title {
+  font-size: 1.4rem;
   font-weight: 700;
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 5px 14px;
-  border-radius: 9999px;
+  color: #f1f5f9;
+  margin-bottom: 10px;
+  font-family: var(--font-body, sans-serif);
 }
 
-.beacon-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 10px #10b981;
-  animation: blink 1.6s infinite;
-}
-
-.edition-badge {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: #94a3b8;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 4px 12px;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.active-event-title {
-  font-family: var(--font-body);
-  font-size: clamp(1.8rem, 3.2vw, 2.3rem);
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 8px;
-  letter-spacing: -0.3px;
-}
-
-.active-event-tagline {
-  font-size: 1.05rem;
-  color: #38bdf8;
-  margin-bottom: 28px;
-  line-height: 1.5;
-}
-
-.active-specs-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 30px;
-}
-
-.active-spec-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 14px;
-}
-
-.spec-label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: #64748b;
-  text-transform: uppercase;
-  margin-bottom: 3px;
-}
-
-.spec-value {
-  display: block;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.active-cta-actions {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 34px;
-}
-
-.btn-register-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: #ffffff;
-  color: #07090e;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 14px 34px;
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: all 0.25s ease;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.45);
-}
-
-.btn-register-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 35px rgba(255, 255, 255, 0.7);
-}
-
-.btn-whatsapp-query {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #cbd5e1;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.92rem;
-  padding: 14px 26px;
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.btn-whatsapp-query:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.active-highlights-section {
-  margin-bottom: 28px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.highlights-heading {
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 14px;
-}
-
-.highlights-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.highlight-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 0.92rem;
-  color: #cbd5e1;
-}
-
-.active-instructions-box {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
-  padding: 18px 22px;
-}
-
-.instructions-title {
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #94a3b8;
-  margin-bottom: 8px;
-}
-
-.instructions-list {
-  padding-left: 18px;
-  font-size: 0.85rem;
-  color: #64748b;
-  line-height: 1.6;
-}
-
-/* Upcoming Registration Queue */
-.upcoming-queue-section {
-  margin-bottom: 70px;
-}
-
-.queue-section-title {
-  font-family: var(--font-heading);
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 8px;
-}
-
-.queue-section-desc {
+.empty-category-text {
   font-size: 0.95rem;
   color: #94a3b8;
-  max-width: 650px;
-}
-
-.queue-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  margin-top: 30px;
-}
-
-.queue-card {
-  background: rgba(14, 16, 24, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.queue-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.queue-num {
-  font-family: var(--font-mono);
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--cyan-primary);
-  opacity: 0.7;
-}
-
-.queue-date {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: #94a3b8;
-}
-
-.queue-card-title {
-  font-family: var(--font-body);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 8px;
-}
-
-.queue-card-desc {
-  font-size: 0.9rem;
-  color: #94a3b8;
   line-height: 1.6;
-  margin-bottom: 16px;
 }
 
-.queue-status-tag {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: #38bdf8;
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  padding: 4px 10px;
+/* ===================================================================
+   UNIVERSAL EXIT GUARD TOAST NOTIFICATION & SWIPE IMMUNITY
+   =================================================================== */
+.cicr-exit-shield-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999999;
+  pointer-events: none;
+  animation: exitToastIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.exit-shield-toast-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
   border-radius: 9999px;
-  width: fit-content;
+  background: rgba(14, 16, 24, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(59, 130, 246, 0.2);
+  color: #f8fafc;
+  font-family: var(--font-body, -apple-system, BlinkMacSystemFont, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
-@media (max-width: 960px) {
-  .registration-hub-grid {
-    grid-template-columns: 1fr;
+.exit-shield-icon {
+  color: #ff601c;
+  flex-shrink: 0;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes exitToastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.95);
   }
-  .permanent-qr-card {
-    position: static;
-  }
-  .active-specs-grid {
-    grid-template-columns: 1fr;
-  }
-  .queue-grid {
-    grid-template-columns: 1fr;
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
   }
 }
 
-
+html,
+body,
+#root,
+.cicr-app-root {
+  overscroll-behavior-x: none !important;
+  -webkit-overscroll-behavior-x: none !important;
+}
 
 /* ===================================================================
    JODC-INSPIRED FLOATING NAVBAR & NIGHT THEME STYLES
@@ -3389,7 +2968,7 @@ button {
   flex: 1 1 0;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-start !important;
 }
 
 .top-bar-mode .jodc-nav-center-dock {
@@ -6627,9 +6206,6 @@ button {
   .queue-grid {
     grid-template-columns: 1fr;
   }
-  .registration-page-container {
-    padding: 95px 16px 60px;
-  }
   .gdg-team-page {
     padding: 95px 16px 60px;
   }
@@ -6830,32 +6406,6 @@ button {
     height: 54px !important;
   }
 
-  /* Registration Page on Mobile */
-  .permanent-qr-card {
-    padding: 20px 14px !important;
-    border-radius: 20px !important;
-  }
-  .qr-code-frame {
-    width: min(200px, 100%) !important;
-    height: auto !important;
-    aspect-ratio: 1 !important;
-  }
-  .active-reg-card {
-    padding: 22px 14px !important;
-    border-radius: 20px !important;
-  }
-  .active-reg-title {
-    font-size: 1.4rem !important;
-  }
-  .btn-google-form-portal,
-  .btn-whatsapp-query {
-    width: 100% !important;
-    justify-content: center !important;
-  }
-  .active-cta-btn-group {
-    flex-direction: column !important;
-    width: 100% !important;
-  }
 }
 
 /* 4. Ultra-Compact Mobile (<= 360px, e.g. iPhone SE 1st gen, Galaxy Fold cover) */
@@ -8082,10 +7632,9 @@ button {
 
 .jodc-nav-brand {
   display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
-  gap: 0 !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
   cursor: pointer;
   user-select: none;
   flex-shrink: 0;
@@ -8311,7 +7860,8 @@ button {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  gap: 12px !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
   cursor: pointer;
   user-select: none;
   flex-shrink: 0;
@@ -8319,12 +7869,13 @@ button {
 }
 
 .jodc-brand-logo-img {
-  height: 54px !important;
-  width: 54px !important;
+  height: 52px !important;
+  width: 52px !important;
   object-fit: contain;
   display: block;
   flex-shrink: 0;
   transition: transform 0.25s ease;
+  margin-left: -4px;
 }
 
 .jodc-brand-text-col {
