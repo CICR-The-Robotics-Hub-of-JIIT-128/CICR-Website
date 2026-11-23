@@ -404,32 +404,30 @@ export default function EventsPage({ setCurrentPage }) {
                         flexWrap: 'wrap'
                       }}
                     >
-                      {evt.isActiveForRegistration && (
-                        <button
-                          type="button"
-                          onClick={() => setCurrentPage('registrations')}
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            background: 'linear-gradient(135deg, #ff601c, #ea580c)',
-                            color: '#ffffff',
-                            border: 'none',
-                            borderRadius: '9999px',
-                            padding: '10px 20px',
-                            minHeight: '42px',
-                            fontSize: '0.86rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            boxShadow: '0 4px 14px rgba(255, 96, 28, 0.35)',
-                            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                            touchAction: 'manipulation'
-                          }}
-                        >
-                          <span>Register Now</span>
-                          <ArrowRight size={14} />
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => setCurrentPage('registrations')}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          background: 'linear-gradient(135deg, #ff601c, #ea580c)',
+                          color: '#ffffff',
+                          border: 'none',
+                          borderRadius: '9999px',
+                          padding: '10px 20px',
+                          minHeight: '42px',
+                          fontSize: '0.86rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 14px rgba(255, 96, 28, 0.35)',
+                          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                          touchAction: 'manipulation'
+                        }}
+                      >
+                        <span>Register Now</span>
+                        <ArrowRight size={14} />
+                      </button>
 
                       {evt.gallery && evt.gallery.length > 0 && (
                         <button

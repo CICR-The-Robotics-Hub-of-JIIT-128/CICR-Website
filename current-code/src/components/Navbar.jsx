@@ -140,7 +140,6 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
             <div className="jodc-brand-text-col">
               <div className="jodc-brand-logo-row">
                 <span className="jodc-brand-title-text">CICR</span>
-                <span className="brand-dot-orange">.</span>
               </div>
               <span className="jodc-brand-subheading">The Robotic Society of JIIT 128</span>
             </div>
@@ -195,7 +194,6 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
               title="Launch deployed hardware inventory portal"
             >
               <span>Inventory</span>
-              <span className="dock-orange-dot" title="Live inventory"></span>
             </a>
           </nav>
 
@@ -225,7 +223,7 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
                     <div className="jodc-notif-head">
                       <div className="jodc-notif-head-title-wrap">
                         <span className="jodc-notif-title">Announcements</span>
-                        <span className="jodc-notif-badge">3 New</span>
+                        <span className="jodc-notif-badge">1 New</span>
                       </div>
                       <button
                         type="button"
@@ -238,30 +236,6 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
                     </div>
 
                     <div className="jodc-notif-body" data-lenis-prevent>
-                      <button
-                        type="button"
-                        className="jodc-notif-item"
-                        onClick={() => handleNavClick('projects')}
-                      >
-                        <span className="notif-dot-gradient"></span>
-                        <div className="jodc-notif-item-text">
-                          <h6>Autonomous Drone Fleet</h6>
-                          <p>Explore upcoming projects and research developments.</p>
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        className="jodc-notif-item"
-                        onClick={() => handleNavClick('registrations')}
-                      >
-                        <span className="notif-dot-gradient"></span>
-                        <div className="jodc-notif-item-text">
-                          <h6>Permanent Registration Endpoint</h6>
-                          <p>Instant scannable QR code and direct registration live.</p>
-                        </div>
-                      </button>
-
                       <a
                         href="https://inventory.cicr.in"
                         target="_blank"
@@ -342,7 +316,6 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
                 />
                 <div className="jodc-brand-logo-row">
                   <span className="jodc-brand-title-text">CICR</span>
-                  <span className="brand-dot-orange">.</span>
                 </div>
               </div>
               <button

@@ -166,7 +166,11 @@ export default function LandingPage({ setCurrentPage, onOpenChat }) {
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      if (window.lenisInstance) {
+        window.lenisInstance.scrollTo(el, { offset: -20, duration: 1.2 });
+      } else {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -245,7 +249,7 @@ export default function LandingPage({ setCurrentPage, onOpenChat }) {
               </a>
 
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('featured-projects')}
                 className="jodc-btn-glass"
               >
                 <span>See What We Do</span>

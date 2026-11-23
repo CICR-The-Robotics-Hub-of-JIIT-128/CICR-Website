@@ -20,7 +20,9 @@ import {
   Printer,
   ExternalLink,
   ShieldCheck,
-  RotateCcw
+  RotateCcw,
+  Lock,
+  AlertCircle
 } from 'lucide-react';
 
 export default function RegistrationPage({ setCurrentPage, isEmbedded = false }) {
@@ -28,8 +30,7 @@ export default function RegistrationPage({ setCurrentPage, isEmbedded = false })
 
   // Active events initialized synchronously from eventsCatalog with live Supabase synchronization
   const [activeEvents, setActiveEvents] = useState(() => {
-    const active = (eventsCatalog || []).filter((e) => e.isActiveForRegistration || e.status === 'upcoming');
-    return active.length > 0 ? active : (eventsCatalog && eventsCatalog.length > 0 ? [eventsCatalog[0]] : []);
+    return (eventsCatalog || []).filter((e) => e.isActiveForRegistration);
   });
   const [selectedEventSlug, setSelectedEventSlug] = useState('techtonic-3');
   const [copied, setCopied] = useState(false);
@@ -59,19 +60,22 @@ export default function RegistrationPage({ setCurrentPage, isEmbedded = false })
     async function loadEvents() {
       const data = await fetchActiveEvents();
       if (data && data.length > 0) {
-        setActiveEvents(data);
+        const active = data.filter((e) => e.isActiveForRegistration);
+        setActiveEvents(active);
 
         // Check if URL has ?event= query param
-        try {
-          const urlParams = new URLSearchParams(window.location.search);
-          const eventParam = urlParams.get('event');
-          if (eventParam && data.some((e) => e.slug === eventParam)) {
-            setSelectedEventSlug(eventParam);
-          } else {
-            setSelectedEventSlug(data[0].slug);
+        if (active.length > 0) {
+          try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventParam = urlParams.get('event');
+            if (eventParam && active.some((e) => e.slug === eventParam)) {
+              setSelectedEventSlug(eventParam);
+            } else {
+              setSelectedEventSlug(active[0].slug);
+            }
+          } catch {
+            setSelectedEventSlug(active[0].slug);
           }
-        } catch {
-          setSelectedEventSlug(data[0].slug);
         }
       } else {
         setActiveEvents([]);
@@ -258,23 +262,101 @@ export default function RegistrationPage({ setCurrentPage, isEmbedded = false })
       {/* Header Section */}
       {!isEmbedded && (
         <section className="registration-header-section">
-          <div className="endpoint-pill-badge">
-            <QrCode size={14} className="text-cyan" />
-            <span>PERMANENT UNIVERSAL REGISTRATION ENDPOINT</span>
-          </div>
+          {!activeEvent ? (
+            <>
+              <div className="endpoint-pill-badge" style={{ borderColor: 'rgba(239, 68, 68, 0.4)', background: 'rgba(239, 68, 68, 0.1)', color: '#f87171' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444', display: 'inline-block', boxShadow: '0 0 10px #ef4444' }} />
+                <span>REGISTRATIONS CURRENTLY CLOSED</span>
+              </div>
 
-          <h1 className="registration-main-title">
-            One Endpoint. One QR. <span className="text-cyan">Direct Website Enrollment.</span>
-          </h1>
+              <h1 className="registration-main-title">
+                Registration Closed <span style={{ color: '#ef4444' }}>for this Event.</span>
+              </h1>
 
-          <p className="registration-main-desc">
-            Organizers print this single permanent QR code on posters, notices, and banners once. 
-            All registrations are handled directly on this official website and stored into our secure database.
-          </p>
+              <p className="registration-main-desc">
+                Admissions, slot reservations, and hardware challenge entries for this event are officially closed.
+                Join our official WhatsApp community below for instant alerts when registrations reopen.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="endpoint-pill-badge">
+                <QrCode size={14} className="text-cyan" />
+                <span>PERMANENT UNIVERSAL REGISTRATION ENDPOINT</span>
+              </div>
+
+              <h1 className="registration-main-title">
+                One Endpoint. One QR. <span className="text-cyan">Direct Website Enrollment.</span>
+              </h1>
+
+              <p className="registration-main-desc">
+                Organizers print this single permanent QR code on posters, notices, and banners once. 
+                All registrations are handled directly on this official website and stored into our secure database.
+              </p>
+            </>
+          )}
         </section>
       )}
 
-        {/* Main Two-Column Hub */}
+      {!activeEvent ? (
+        /* PROMINENT REGISTRATION CLOSED SHOWCASE */
+        <div className="registration-closed-container" style={{ maxWidth: '920px', margin: '0 auto', width: '100%' }}>
+          {/* Large Hero Alert Card */}
+          <div className="registration-closed-hero-card">
+            <div className="closed-hero-glow-accent" />
+
+            <div className="closed-status-pill-big">
+              <span className="closed-pulse-dot-big" />
+              <span>REGISTRATION CLOSED • THIS EVENT</span>
+            </div>
+
+            <div className="closed-hero-icon-box">
+              <Lock size={34} />
+            </div>
+
+            <h2 className="closed-hero-title">
+              Registration Closed for this Event
+            </h2>
+
+            <p className="closed-hero-desc">
+              All participant slots, battlebot entries, and workshop kits for this event have concluded.
+              Join our official WhatsApp community to get instant priority alerts as soon as the next flagship season begins.
+            </p>
+
+            <div className="closed-hero-actions-row">
+              <a
+                href="https://chat.whatsapp.com/JxQJozp3DRO5eipFBK9Tqd?s=cl&p=a&iam=2"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="closed-primary-whatsapp-btn"
+              >
+                <Sparkles size={16} />
+                <span>Join Official WhatsApp Community</span>
+                <ExternalLink size={14} />
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage && setCurrentPage('events')}
+                className="closed-secondary-btn"
+              >
+                <span>Browse Event Galleries</span>
+                <ArrowRight size={15} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage && setCurrentPage('projects')}
+                className="closed-secondary-btn"
+              >
+                <span>Explore Projects</span>
+                <ArrowRight size={15} />
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* Main Two-Column Hub */
         <div className="registration-hub-grid">
           {/* =============================================================
               Column 1: Permanent Universal QR Code Card (For Print & Posters)
@@ -335,439 +417,207 @@ export default function RegistrationPage({ setCurrentPage, isEmbedded = false })
               Column 2: Dynamic Event Card + Native Registration Form
               ============================================================= */}
           <main className="active-event-card">
-            {!activeEvent ? (
-              <div className="no-active-events-card" style={{ textAlign: 'center', padding: '70px 24px' }}>
-                <Calendar size={44} style={{ color: '#ff601c', marginBottom: 18 }} />
-                <h3 style={{ color: '#ffffff', fontSize: '1.45rem', fontWeight: 700, marginBottom: 12 }}>
-                  Registrations Announcing Soon
-                </h3>
-                <p style={{ color: '#94a3b8', fontSize: '0.98rem', maxWidth: 460, margin: '0 auto 28px', lineHeight: 1.65 }}>
-                  New workshops, robotic tournaments, and bootcamps are being scheduled.
-                  Join our official WhatsApp community to get instant notifications when entries open.
-                </p>
-                <a
-                  href="https://chat.whatsapp.com/JxQJozp3DRO5eipFBK9Tqd?s=cl&p=a&iam=2"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="qr-action-btn download-btn"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px', borderRadius: 9999, margin: '0 auto', textDecoration: 'none' }}
-                >
-                  <Sparkles size={16} />
-                  <span>Join Official WhatsApp Community</span>
-                  <ExternalLink size={14} />
-                </a>
+            {/* Event Switcher Pills if multiple events are open */}
+            {activeEvents.length > 1 && (
+              <div className="native-event-selector-wrap">
+                <span className="event-selector-label">
+                  <Sparkles size={14} className="text-orange" />
+                  Select Open Event:
+                </span>
+                <div className="event-picker-pills">
+                  {activeEvents.map((evt) => (
+                    <button
+                      key={evt.slug || evt.id}
+                      type="button"
+                      className={`event-picker-pill ${selectedEventSlug === evt.slug ? 'active' : ''}`}
+                      onClick={() => {
+                        setSelectedEventSlug(evt.slug);
+                        setIssuedPass(null);
+                      }}
+                    >
+                      <span className="event-picker-pill-dot" />
+                      <span>{evt.title}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            ) : (
-              <>
-                {/* Event Switcher Pills if multiple events are open */}
-                {activeEvents.length > 1 && (
-                  <div className="native-event-selector-wrap">
-                    <span className="event-selector-label">
-                      <Sparkles size={14} className="text-orange" />
-                      Select Open Event:
-                    </span>
-                    <div className="event-picker-pills">
-                      {activeEvents.map((evt) => (
-                        <button
-                          key={evt.slug || evt.id}
-                          type="button"
-                          className={`event-picker-pill ${selectedEventSlug === evt.slug ? 'active' : ''}`}
-                          onClick={() => {
-                            setSelectedEventSlug(evt.slug);
-                            setIssuedPass(null);
-                          }}
-                        >
-                          <span className="event-picker-pill-dot" />
-                          <span>{evt.title}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-            {/* Active Status Bar */}
-            <div className="active-status-bar">
-              <div className="status-indicator-live">
-                <span className="beacon-dot"></span>
-                <span>REGISTRATIONS OPEN • OFFICIAL WEBPAGE</span>
-              </div>
-              <span className="edition-badge">{activeEvent?.year || '2025-2026'}</span>
-            </div>
-
-            <h2 className="active-event-title">{activeEvent?.title || 'CICR Event'}</h2>
-            {activeEvent?.tagline && (
-              <p className="active-event-tagline">{activeEvent.tagline}</p>
             )}
 
-            {/* Event Specs Grid */}
-            <div className="active-specs-grid">
-              <div className="active-spec-item">
-                <Calendar size={18} className="text-cyan" />
-                <div>
-                  <span className="spec-label">Timeline / Schedule</span>
-                  <span className="spec-value">{activeEvent?.dates || 'Upcoming'}</span>
-                </div>
+            {/* Selected Active Event Info Banner */}
+            <div className="active-event-header-info">
+              <div className="event-meta-badge-row">
+                <span className="event-category-badge">{activeEvent.category || 'Robotics'}</span>
+                <span className="event-status-badge">
+                  <span className="status-dot"></span>
+                  Official Entry Open
+                </span>
               </div>
-
-              <div className="active-spec-item">
-                <MapPin size={18} className="text-cyan" />
-                <div>
-                  <span className="spec-label">Event Venue</span>
-                  <span className="spec-value">{activeEvent?.venue || 'CICR Robotics Lab, JIIT-128'}</span>
-                </div>
-              </div>
-
-              <div className="active-spec-item">
-                <Users size={18} className="text-cyan" />
-                <div>
-                  <span className="spec-label">Target Eligibility</span>
-                  <span className="spec-value">{activeEvent?.eligibility || 'Open to all students'}</span>
-                </div>
-              </div>
-
-              <div className="active-spec-item">
-                <Cpu size={18} className="text-cyan" />
-                <div>
-                  <span className="spec-label">Hardware Provision</span>
-                  <span className="spec-value">{activeEvent?.hardwarePerk || 'Lab hardware provided'}</span>
-                </div>
-              </div>
+              <h2 className="active-event-headline">{activeEvent.title}</h2>
+              {activeEvent.tagline && (
+                <p className="active-event-tagline-text">{activeEvent.tagline}</p>
+              )}
             </div>
 
-            {/* If Pass Issued: Display Digital Confirmation Ticket Badge */}
+            {/* Registration Form / Issued Pass */}
             {issuedPass ? (
-              <div className="digital-pass-container">
-                <div className="digital-pass-card">
-                  {/* Top Strip */}
-                  <div className="pass-card-strip-top">
-                    <span className="pass-institution">
-                      CENTRE FOR INNOVATION, ROBOTICS &amp; CYBER-PHYSICAL SYSTEMS (CICR)
-                    </span>
-                    <div className="pass-status-badge">
-                      <ShieldCheck size={14} />
-                      <span>VERIFIED ENTRY PASS</span>
-                    </div>
+              <div className="issued-pass-card">
+                <div className="pass-status-badge">
+                  <CheckCircle2 size={16} />
+                  <span>REGISTRATION CONFIRMED</span>
+                </div>
+                <h3 className="pass-title">Official Participant Pass</h3>
+                <p className="pass-desc">
+                  Present this digital pass at the venue desk during reporting.
+                </p>
+                {passQrUrl && (
+                  <div className="pass-qr-frame">
+                    <img src={passQrUrl} alt="Participant Pass QR" className="pass-qr-img" />
                   </div>
-
-                  {/* Pass Body */}
-                  <div className="pass-body-layout">
-                    <div className="pass-info-side">
-                      <div className="pass-ticket-id">
-                        PASS ID: <code>{issuedPass.registrationId}</code>
-                      </div>
-                      <h3 className="pass-attendee-name">{issuedPass.record.full_name}</h3>
-                      <p className="pass-attendee-college">{issuedPass.record.college}</p>
-
-                      <div className="pass-meta-grid">
-                        <div className="pass-meta-cell">
-                          <span className="pass-meta-label">Event</span>
-                          <span className="pass-meta-value">{issuedPass.record.event_title}</span>
-                        </div>
-                        <div className="pass-meta-cell">
-                          <span className="pass-meta-label">Venue</span>
-                          <span className="pass-meta-value">{activeEvent?.venue || 'CICR Robotics Lab, JIIT-128'}</span>
-                        </div>
-                        <div className="pass-meta-cell">
-                          <span className="pass-meta-label">Branch &amp; Year</span>
-                          <span className="pass-meta-value">{issuedPass.record.branch_and_year}</span>
-                        </div>
-                        <div className="pass-meta-cell">
-                          <span className="pass-meta-label">Participation</span>
-                          <span className="pass-meta-value">
-                            {issuedPass.record.participation_type}{' '}
-                            {issuedPass.record.team_name ? `(${issuedPass.record.team_name})` : ''}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* QR Code Pass for Lab Check-in Desk */}
-                    <div className="pass-qr-side">
-                      <div className="pass-qr-canvas-wrap">
-                        {passQrUrl ? (
-                          <img src={passQrUrl} alt="Check-in QR Code" />
-                        ) : (
-                          <span>Generating Pass...</span>
-                        )}
-                      </div>
-                      <span className="pass-qr-caption">Scan at Event Check-in</span>
-                    </div>
+                )}
+                <div className="pass-details-grid">
+                  <div className="pass-detail-col">
+                    <span className="pass-label">Participant</span>
+                    <span className="pass-value">{issuedPass.full_name}</span>
                   </div>
-
-                  {/* Pass Action Buttons */}
-                  <div className="pass-actions-strip">
-                    <button
-                      type="button"
-                      className="pass-btn pass-btn-primary"
-                      onClick={handleDownloadPassQr}
-                    >
-                      <Download size={15} />
-                      <span>Download Entry Pass</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="pass-btn pass-btn-outline"
-                      onClick={() => window.print()}
-                    >
-                      <Printer size={15} />
-                      <span>Print Ticket</span>
-                    </button>
-
-                    {activeEvent?.whatsappCommunityUrl && (
-                      <a
-                        href={activeEvent.whatsappCommunityUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="pass-btn pass-btn-whatsapp"
-                      >
-                        <span>Join Event WhatsApp Group</span>
-                        <ExternalLink size={13} />
-                      </a>
-                    )}
-
-                    <button
-                      type="button"
-                      className="pass-btn pass-btn-outline"
-                      onClick={handleResetRegistration}
-                    >
-                      <RotateCcw size={14} />
-                      <span>Register Another Attendee</span>
-                    </button>
+                  <div className="pass-detail-col">
+                    <span className="pass-label">Event</span>
+                    <span className="pass-value">{issuedPass.event_title}</span>
                   </div>
+                  <div className="pass-detail-col">
+                    <span className="pass-label">Pass ID</span>
+                    <span className="pass-value pass-id-code">{issuedPass.pass_id}</span>
+                  </div>
+                </div>
+                <div className="pass-actions-row">
+                  <button
+                    type="button"
+                    className="qr-action-btn download-btn"
+                    onClick={() => window.print()}
+                  >
+                    <Printer size={15} />
+                    <span>Print / Save PDF</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="qr-action-btn copy-btn"
+                    onClick={handleResetRegistration}
+                  >
+                    <RotateCcw size={15} />
+                    <span>New Registration</span>
+                  </button>
                 </div>
               </div>
             ) : (
-              /* Native Registration Form Handled Directly Through Our Website */
-              <form className="native-registration-form" onSubmit={handleFormSubmit}>
-                <div className="form-header-bar">
-                  <div className="form-header-title">
-                    <Sparkles size={17} className="text-orange" />
-                    <span>Direct Website Registration Form</span>
-                  </div>
-                  <div className="form-secure-badge">
-                    <ShieldCheck size={13} />
-                    <span>Supabase Secured</span>
-                  </div>
-                </div>
-
+              <form onSubmit={handleSubmit} className="native-registration-form">
                 {submitError && (
-                  <div className="form-error-banner" style={{ color: '#ef4444', marginBottom: 14, fontSize: '0.85rem' }}>
-                    {submitError}
+                  <div className="form-error-banner">
+                    <Info size={16} />
+                    <span>{submitError}</span>
                   </div>
                 )}
 
-                <div className="form-fields-grid">
-                  {/* Full Name */}
+                <div className="form-grid-2col">
                   <div className="form-field-group">
-                    <label className="form-label">
-                      Full Name <span className="required-star">*</span>
-                    </label>
+                    <label>Full Name *</label>
                     <input
                       type="text"
-                      name="fullName"
                       required
-                      placeholder="e.g. Aarav Sharma"
+                      placeholder="e.g. Gourav Kumar"
                       value={formData.fullName}
-                      onChange={handleFormChange}
-                      className="form-input"
+                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     />
                   </div>
-
-                  {/* Email */}
                   <div className="form-field-group">
-                    <label className="form-label">
-                      Email Address <span className="required-star">*</span>
-                    </label>
+                    <label>Email Address *</label>
                     <input
                       type="email"
-                      name="email"
                       required
-                      placeholder="e.g. student@jiit.ac.in"
+                      placeholder="e.g. gourav@example.com"
                       value={formData.email}
-                      onChange={handleFormChange}
-                      className="form-input"
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
                   </div>
+                </div>
 
-                  {/* Phone / WhatsApp */}
+                <div className="form-grid-2col">
                   <div className="form-field-group">
-                    <label className="form-label">
-                      WhatsApp / Contact Number <span className="required-star">*</span>
-                    </label>
+                    <label>WhatsApp / Phone *</label>
                     <input
                       type="tel"
-                      name="phone"
                       required
-                      placeholder="e.g. +91 9876543210"
+                      placeholder="e.g. +91 98765 43210"
                       value={formData.phone}
-                      onChange={handleFormChange}
-                      className="form-input"
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     />
                   </div>
-
-                  {/* Roll Number */}
                   <div className="form-field-group">
-                    <label className="form-label">Enrollment / Roll Number</label>
+                    <label>Enrollment / Roll No.</label>
                     <input
                       type="text"
-                      name="rollNumber"
-                      placeholder="e.g. 23103045"
+                      placeholder="e.g. 23103001"
                       value={formData.rollNumber}
-                      onChange={handleFormChange}
-                      className="form-input"
+                      onChange={(e) => setFormData({ ...formData, rollNumber: e.target.value })}
                     />
                   </div>
+                </div>
 
-                  {/* College / Institute */}
-                  <div className="form-field-group full-width">
-                    <label className="form-label">
-                      College / University Name <span className="required-star">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="college"
-                      required
-                      placeholder="e.g. Jaypee Institute of Information Technology, Sector 128"
-                      value={formData.college}
-                      onChange={handleFormChange}
-                      className="form-input"
-                    />
-                  </div>
+                <div className="form-field-group">
+                  <label>College / Institute</label>
+                  <input
+                    type="text"
+                    value={formData.college}
+                    onChange={(e) => setFormData({ ...formData, college: e.target.value })}
+                  />
+                </div>
 
-                  {/* Branch & Year */}
+                <div className="form-grid-2col">
                   <div className="form-field-group">
-                    <label className="form-label">
-                      Branch &amp; Academic Year <span className="required-star">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="branchAndYear"
-                      required
-                      placeholder="e.g. ECE - 2nd Year"
-                      value={formData.branchAndYear}
-                      onChange={handleFormChange}
-                      className="form-input"
-                    />
+                    <label>Participation Type</label>
+                    <select
+                      value={formData.participationType}
+                      onChange={(e) => setFormData({ ...formData, participationType: e.target.value })}
+                    >
+                      <option value="Individual">Individual Entry</option>
+                      <option value="Team">Team Entry</option>
+                    </select>
                   </div>
-
-                  {/* Participation Type */}
-                  <div className="form-field-group">
-                    <label className="form-label">Participation Type</label>
-                    <div className="participation-radio-group">
-                      <label className={`radio-pill-label ${formData.participationType === 'Individual' ? 'checked' : ''}`}>
-                        <input
-                          type="radio"
-                          name="participationType"
-                          value="Individual"
-                          checked={formData.participationType === 'Individual'}
-                          onChange={handleFormChange}
-                        />
-                        <span>Individual</span>
-                      </label>
-                      <label className={`radio-pill-label ${formData.participationType === 'Team' ? 'checked' : ''}`}>
-                        <input
-                          type="radio"
-                          name="participationType"
-                          value="Team"
-                          checked={formData.participationType === 'Team'}
-                          onChange={handleFormChange}
-                        />
-                        <span>Team</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Team details if Team is selected */}
                   {formData.participationType === 'Team' && (
-                    <>
-                      <div className="form-field-group">
-                        <label className="form-label">Team Name</label>
-                        <input
-                          type="text"
-                          name="teamName"
-                          placeholder="e.g. RoboStrikers"
-                          value={formData.teamName}
-                          onChange={handleFormChange}
-                          className="form-input"
-                        />
-                      </div>
-                      <div className="form-field-group">
-                        <label className="form-label">Team Size</label>
-                        <select
-                          name="teamSize"
-                          value={formData.teamSize}
-                          onChange={handleFormChange}
-                          className="form-select"
-                        >
-                          <option value="2">2 Members</option>
-                          <option value="3">3 Members</option>
-                          <option value="4">4 Members</option>
-                        </select>
-                      </div>
-                    </>
+                    <div className="form-field-group">
+                      <label>Team Name *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. RoboSlayers"
+                        value={formData.teamName}
+                        onChange={(e) => setFormData({ ...formData, teamName: e.target.value })}
+                      />
+                    </div>
                   )}
+                </div>
 
-                  {/* Special Interests / Notes */}
-                  <div className="form-field-group full-width">
-                    <label className="form-label">Prior Experience or Special Hardware Interests (Optional)</label>
-                    <textarea
-                      name="notes"
-                      placeholder="e.g. Interested in ROS2 SLAM, experience with Arduino / ESP32, or beginner eager to learn..."
-                      value={formData.notes}
-                      onChange={handleFormChange}
-                      className="form-textarea"
-                    />
-                  </div>
+                <div className="form-field-group">
+                  <label>Additional Notes / Hardware Requirements</label>
+                  <textarea
+                    rows={2}
+                    placeholder="Any specific battery connector or transmitter frequency needed?"
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-submit-registration"
+                  className="native-submit-btn"
                 >
-                  {isSubmitting ? (
-                    <span>Registering with Database...</span>
-                  ) : (
-                    <>
-                      <span>Complete Registration &amp; Issue Entry Pass</span>
-                      <ArrowRight size={17} />
-                    </>
-                  )}
+                  <ShieldCheck size={18} />
+                  <span>{isSubmitting ? 'Registering with Supabase...' : 'Confirm Registration Pass →'}</span>
                 </button>
               </form>
             )}
-
-            {/* Highlights */}
-            {activeEvent && activeEvent.highlights && activeEvent.highlights.length > 0 && (
-              <div className="active-highlights-section">
-                <h4 className="highlights-heading">Bootcamp Highlights &amp; Inclusions:</h4>
-                <ul className="highlights-list">
-                  {activeEvent.highlights.map((item, idx) => (
-                    <li key={idx} className="highlight-item">
-                      <CheckCircle2 size={16} className="text-cyan" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Participant Instructions */}
-            {activeEvent && activeEvent.instructions && activeEvent.instructions.length > 0 && (
-              <div className="active-instructions-box">
-                <h5 className="instructions-title">Important Guidelines for Attendees:</h5>
-                <ul className="instructions-list">
-                  {activeEvent.instructions.map((inst, i) => (
-                    <li key={i}>{inst}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-              </>
-            )}
           </main>
         </div>
+      )}
 
         {/* Upcoming Registration Queue */}
         {upcomingQueue && upcomingQueue.length > 0 && (

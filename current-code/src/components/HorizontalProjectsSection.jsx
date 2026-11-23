@@ -5,6 +5,8 @@ import { ArrowRight } from 'lucide-react';
 export default function HorizontalProjectsSection({ setCurrentPage }) {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
+  const stageRef = useRef(null);
+  const hasDraggedRef = useRef(false);
 
   const metricsRef = useRef({
     maxTranslate: 0,
@@ -52,8 +54,11 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
       };
     };
 
+    const isTouchActiveRef = { current: false };
+    const isMouseDownRef = { current: false };
+
     const updateTargetFromScroll = () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || isTouchActiveRef.current || isMouseDownRef.current) return;
       const { maxTranslate, scrollTravel } = metricsRef.current;
       if (maxTranslate <= 0) return;
 
@@ -156,6 +161,173 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
       containerEl.addEventListener('wheel', handleWheel, { passive: true });
     }
 
+    // Touch & Swipe gestures for mobile devices
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTargetX = 0;
+    let isSwipingHorizontal = false;
+    let directionDetermined = false;
+    let lastTouchX = 0;
+    let lastTouchTime = 0;
+    let touchVelocityX = 0;
+
+    const handleTouchStart = (e) => {
+      if (!e.touches || e.touches.length !== 1) return;
+      const touch = e.touches[0];
+      isTouchActiveRef.current = true;
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      lastTouchX = touch.clientX;
+      lastTouchTime = performance.now();
+      touchVelocityX = 0;
+      isSwipingHorizontal = false;
+      directionDetermined = false;
+      hasDraggedRef.current = false;
+      touchStartTargetX = stateRef.current.targetX;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!isTouchActiveRef.current || !e.touches || e.touches.length !== 1) return;
+      const touch = e.touches[0];
+      const currentX = touch.clientX;
+      const currentY = touch.clientY;
+      const dx = currentX - touchStartX;
+      const dy = currentY - touchStartY;
+      const now = performance.now();
+
+      const dt = now - lastTouchTime;
+      if (dt > 10) {
+        touchVelocityX = (currentX - lastTouchX) / dt;
+        lastTouchX = currentX;
+        lastTouchTime = now;
+      }
+
+      if (!directionDetermined) {
+        if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
+          directionDetermined = true;
+          isSwipingHorizontal = Math.abs(dx) > Math.abs(dy);
+        }
+      }
+
+      if (isSwipingHorizontal) {
+        hasDraggedRef.current = true;
+        const { maxTranslate, scrollTravel } = metricsRef.current;
+        if (maxTranslate > 0) {
+          // Swipe left (finger moves left, dx < 0): content flows right to left (targetX increases)
+          // Swipe right (finger moves right, dx > 0): content flows left to right (targetX decreases)
+          let newTargetX = touchStartTargetX - dx * 1.25;
+
+          // Prevent default vertical page scroll while swiping horizontally
+          if (newTargetX >= 0 && newTargetX <= maxTranslate) {
+            if (e.cancelable) e.preventDefault();
+          }
+
+          newTargetX = Math.max(0, Math.min(maxTranslate, newTargetX));
+          stateRef.current.targetX = newTargetX;
+
+          // Sync vertical page scroll position so leaving the section works smoothly
+          if (containerRef.current) {
+            const containerTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+            const progress = newTargetX / maxTranslate;
+            const targetScrollY = containerTop + progress * scrollTravel;
+            window.scrollTo({ top: targetScrollY, behavior: 'instant' });
+          }
+
+          if (!stateRef.current.isLooping) {
+            stateRef.current.isLooping = true;
+            stateRef.current.rafId = requestAnimationFrame(tick);
+          }
+        }
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (!isTouchActiveRef.current) return;
+      isTouchActiveRef.current = false;
+
+      if (isSwipingHorizontal) {
+        const { maxTranslate, scrollTravel } = metricsRef.current;
+        if (maxTranslate > 0 && Math.abs(touchVelocityX) > 0.25) {
+          const momentum = -touchVelocityX * 220;
+          const finalTargetX = Math.max(0, Math.min(maxTranslate, stateRef.current.targetX + momentum));
+          stateRef.current.targetX = finalTargetX;
+
+          if (containerRef.current) {
+            const containerTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+            const progress = finalTargetX / maxTranslate;
+            const targetScrollY = containerTop + progress * scrollTravel;
+            window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+          }
+
+          if (!stateRef.current.isLooping) {
+            stateRef.current.isLooping = true;
+            stateRef.current.rafId = requestAnimationFrame(tick);
+          }
+        }
+      }
+
+      setTimeout(() => {
+        hasDraggedRef.current = false;
+      }, 80);
+    };
+
+    // Desktop mouse drag
+    let mouseStartX = 0;
+    let mouseStartTargetX = 0;
+
+    const handleMouseDown = (e) => {
+      if (e.button !== 0) return;
+      isMouseDownRef.current = true;
+      mouseStartX = e.clientX;
+      mouseStartTargetX = stateRef.current.targetX;
+      hasDraggedRef.current = false;
+    };
+
+    const handleMouseMove = (e) => {
+      if (!isMouseDownRef.current) return;
+      const dx = e.clientX - mouseStartX;
+      if (Math.abs(dx) > 5) {
+        hasDraggedRef.current = true;
+        const { maxTranslate, scrollTravel } = metricsRef.current;
+        if (maxTranslate > 0) {
+          const newTargetX = Math.max(0, Math.min(maxTranslate, mouseStartTargetX - dx * 1.25));
+          stateRef.current.targetX = newTargetX;
+
+          if (containerRef.current) {
+            const containerTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+            const progress = newTargetX / maxTranslate;
+            const targetScrollY = containerTop + progress * scrollTravel;
+            window.scrollTo({ top: targetScrollY, behavior: 'instant' });
+          }
+
+          if (!stateRef.current.isLooping) {
+            stateRef.current.isLooping = true;
+            stateRef.current.rafId = requestAnimationFrame(tick);
+          }
+        }
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (isMouseDownRef.current) {
+        isMouseDownRef.current = false;
+        setTimeout(() => {
+          hasDraggedRef.current = false;
+        }, 80);
+      }
+    };
+
+    const stageEl = stageRef.current;
+    if (stageEl) {
+      stageEl.addEventListener('touchstart', handleTouchStart, { passive: true });
+      stageEl.addEventListener('touchmove', handleTouchMove, { passive: false });
+      stageEl.addEventListener('touchend', handleTouchEnd, { passive: true });
+      stageEl.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+      stageEl.addEventListener('mousedown', handleMouseDown);
+    }
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
@@ -167,6 +339,15 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
       if (containerEl) {
         containerEl.removeEventListener('wheel', handleWheel);
       }
+      if (stageEl) {
+        stageEl.removeEventListener('touchstart', handleTouchStart);
+        stageEl.removeEventListener('touchmove', handleTouchMove);
+        stageEl.removeEventListener('touchend', handleTouchEnd);
+        stageEl.removeEventListener('touchcancel', handleTouchEnd);
+        stageEl.removeEventListener('mousedown', handleMouseDown);
+      }
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
       if (stateRef.current.rafId) {
         cancelAnimationFrame(stateRef.current.rafId);
       }
@@ -211,7 +392,7 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
         </div>
 
         {/* Sliding Stage */}
-        <div className="h-projects-sliding-stage">
+        <div className="h-projects-sliding-stage" ref={stageRef}>
           <div className="h-projects-track" ref={trackRef}>
             {/* 1. Intro Callout Card */}
             <div className="h-project-intro-card">
@@ -226,7 +407,14 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
                 </p>
 
                 <button
-                  onClick={() => setCurrentPage && setCurrentPage('projects')}
+                  onClick={(e) => {
+                    if (hasDraggedRef.current) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      return;
+                    }
+                    if (setCurrentPage) setCurrentPage('projects');
+                  }}
                   className="h-intro-cta-btn"
                   title="View all projects in detail"
                 >
@@ -243,7 +431,14 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
                 <div
                   key={project.id}
                   className="h-project-card"
-                  onClick={() => setCurrentPage && setCurrentPage('projects')}
+                  onClick={(e) => {
+                    if (hasDraggedRef.current) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      return;
+                    }
+                    if (setCurrentPage) setCurrentPage('projects');
+                  }}
                   title={`View ${project.title}`}
                 >
                   {/* Card Visual / Photo Box */}
