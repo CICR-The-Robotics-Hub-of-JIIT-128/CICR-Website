@@ -59,20 +59,13 @@ export default function ProjectsPage({ setCurrentPage }) {
                 <div className="project-card-img-overlay" />
               </div>
 
-              {/* Subtitle if present */}
-              {project.subtitle && (
-                <div className="project-card-header">
-                  <span className="project-card-subtitle">{project.subtitle}</span>
-                </div>
-              )}
-
               {/* Title */}
               <h2 className="project-card-title">{project.title}</h2>
 
               {/* Idea (in short) */}
               <p className="project-card-desc">{project.description}</p>
 
-              {/* Achievement Badge (from ss) */}
+              {/* Achievement Badge (only if genuine award) */}
               {project.achievement && (
                 <div className="project-achievement-badge">
                   <Award size={15} className="achievement-icon" />

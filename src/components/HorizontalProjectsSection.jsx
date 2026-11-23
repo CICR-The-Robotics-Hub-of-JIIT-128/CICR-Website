@@ -424,8 +424,8 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
               </div>
             </div>
 
-            {/* 2. The 13 Featured Project Cards */}
-            {projectsCatalog.map((project, idx) => {
+            {/* 2. The First 11 Featured Project Cards (Remaining available in Projects section) */}
+            {projectsCatalog.slice(0, 11).map((project, idx) => {
               const numStr = String(idx + 1).padStart(2, '0');
               return (
                 <div
@@ -459,12 +459,6 @@ export default function HorizontalProjectsSection({ setCurrentPage }) {
                       <span className="h-num-accent">{numStr}</span>
                       <span className="h-title-text">{project.title.toUpperCase()}</span>
                     </div>
-
-                    {project.subtitle && (
-                      <div className="h-card-subtitle-row">
-                        <span className="h-sub-text">{project.subtitle.toUpperCase()}</span>
-                      </div>
-                    )}
 
                     {/* Idea summary in short */}
                     <p className="h-card-short-idea">{project.description}</p>

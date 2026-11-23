@@ -384,16 +384,6 @@ export default function Navbar({ currentPage, setCurrentPage, onOpenChat }) {
                   <span className="mobile-nav-arrow">→</span>
                 </button>
 
-                {/* Register */}
-                <button
-                  type="button"
-                  className={`jodc-mobile-nav-item ${currentPage === 'registrations' ? 'active-orange' : ''}`}
-                  onClick={() => handleNavClick('registrations')}
-                >
-                  <span>Register</span>
-                  <span className="mobile-nav-arrow">→</span>
-                </button>
-
                 {/* Inventory with SPOTLIGHT badge */}
                 <a
                   href="https://inventory.cicr.in"

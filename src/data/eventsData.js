@@ -17,7 +17,7 @@ export const eventsCatalog = [
     category: 'techtonic',
     tagline: 'Heavyweight battlebots, computer vision tracking & collegiate battles.',
     image: '/gallery/techtonic-2/techtonic-2-1.jpg',
-    status: 'upcoming',
+    status: 'completed',
     isActiveForRegistration: false,
     gallery: [
       '/gallery/techtonic-2/techtonic-2-1.jpg',
@@ -43,7 +43,7 @@ export const eventsCatalog = [
     category: 'cicr-ki-kaksha',
     tagline: 'Hands-on hardware masterclass in circuit design, sensor fusion & autonomous rovers.',
     image: '/gallery/cicr-ki-kaksha/kaksha-1.jpg',
-    status: 'upcoming',
+    status: 'completed',
     isActiveForRegistration: false,
     gallery: [
       '/gallery/cicr-ki-kaksha/kaksha-1.jpg',
@@ -65,11 +65,11 @@ export const eventsCatalog = [
   {
     id: 'dron-o-war',
     slug: 'dron-o-war',
-    title: 'Dron-O-War',
+    title: 'Dron-o-war 1.0',
     category: 'dron-o-war',
     tagline: 'High-speed FPV drone racing through illuminated gates & aerial dogfights.',
     image: '/gallery/cicr-moment-3.jpg',
-    status: 'upcoming',
+    status: 'completed',
     isActiveForRegistration: false,
     gallery: [
       '/gallery/cicr-moment-3.jpg',
@@ -83,7 +83,7 @@ export const eventsCatalog = [
     category: 'converge',
     tagline: 'Robotics innovation conclave, hardware project expo & keynote symposium.',
     image: '/gallery/cicr-moment-7.jpg',
-    status: 'upcoming',
+    status: 'completed',
     isActiveForRegistration: false,
     gallery: [
       '/gallery/cicr-moment-7.jpg',
@@ -97,7 +97,7 @@ export const eventsCatalog = [
     category: 'techtonic',
     tagline: 'Autonomous line trackers, maze solvers & 24hr hardware hackathon sprint.',
     image: '/gallery/cicr-moment-6.jpg',
-    status: 'upcoming',
+    status: 'completed',
     isActiveForRegistration: false,
     gallery: [
       '/gallery/cicr-moment-6.jpg',
